@@ -4,13 +4,15 @@
   .stage{order:-1;padding:16px 14px 18px}
   .stage-inner{position:static}
   .poster-wrap{max-width:min(100%,calc(70svh/1.4142))}
-  .panel{border-right:0}
+  .panel{border-right:0;min-height:100vh}/* Platz, damit „Weiter“ jeden Schritt an den oberen Rand holen kann */
   .brand p{display:none}
 }
 @media (max-width:520px){
   .top{padding:10px 14px}
   .brand h1{font-size:23px}
-  .top-actions .btn{padding:7px 11px}
+  .top{flex-wrap:wrap;row-gap:8px}
+  .top-actions{flex:1 0 100%}
+  .top-actions .btn{flex:1 1 0;padding:7px 8px}
   .tabpanel{padding:4px 14px 40px}
 }
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}

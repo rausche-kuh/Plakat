@@ -1,4 +1,4 @@
-/* ---------- Auftrag für die KI (Tab „KI-Entwurf“) ----------
+/* ---------- Auftrag für die KI (Dialog „KI-Entwurf“) ----------
    Die erlaubten Werte für Anlass, Layout, Schrift, Farbvariante und Bildstimmung werden aus den
    Verzeichnissen eingesetzt – neue Layouts (mit Gruppe und Beschreibung) und Anlässe kennt die KI damit automatisch.
    Hinter den Auftrag hängt das Programm die Infos des Nutzers. */

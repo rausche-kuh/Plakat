@@ -36,7 +36,7 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
 ## Rules
 
 - **Privacy:** posters, texts, photos and logos never leave the browser. No uploads, analytics, external APIs
-  or AI calls from the app. AI use stays a manual copy-and-paste step by the user (tab "KI-Entwurf").
+  or AI calls from the app. AI use stays a manual copy-and-paste step by the user (dialog "KI-Entwurf", offered in step 1).
   The fonts from Google Fonts are the only network requests.
 - Layouts and drawing helpers read the state only through `env.st`, never the global `st` (thumbnails render with a different layout).
 - Measures in poster units times `u` (width = 1000 units).

@@ -77,7 +77,7 @@ src/
   occasions/          one occasion per file: colours, sample texts, ornament   → README.md
   data/
     fontsets.js       font choices (Herzlich, Edel, …)
-    ki-prompt.js      instruction for ChatGPT/Claude in the "KI-Entwurf" tab (German)
+    ki-prompt.js      instruction for ChatGPT/Claude in the "KI-Entwurf" dialog (German)
   render/             drawing on the canvas
     poster.js         renderPoster(): builds env and calls the layout
     toolkit.js        single export of all drawing helpers for layouts
@@ -87,7 +87,7 @@ src/
     parts.js          photo, footer, frame
     text.js, shapes.js
   core/               no UI: state, colour scheme, images, storage, file format, PDF writer
-  ui/                 one module per tab (anlass, texte, foto, layout = step "Gestaltung", ablage, ki) + preview, export, sync
+  ui/                 one module per step (anlass, texte, foto, layout = step "Gestaltung") and dialog (ablage = "Meine Plakate", ki, export) + preview, sync
 scripts/              build.mjs (single file), serve.mjs (dev server)
 docs/product-concept.md  users, principles, step structure, sample texts
 docs/ai-guide.md      using the workshop with AI (optional)

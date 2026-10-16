@@ -1,4 +1,4 @@
-/* ---------- Tab „Meine Plakate“: Entwurf, Speichern, Liste, Datei sichern und öffnen ---------- */
+/* ---------- Dialog „Meine Plakate“: Entwurf, Speichern, Liste, Datei sichern und öffnen ---------- */
 import { st, setState, defaults, sanitize } from '../core/state.js';
 import { clone, uid, firstLine, slug } from '../core/util.js';
 import { ensureImages } from '../core/images.js';
@@ -6,12 +6,12 @@ import { store } from '../core/store.js';
 import { packFile, posterList } from '../core/files.js';
 import { OCC, occLabel } from '../occasions/index.js';
 import { renderPoster } from '../render/poster.js';
-import { $, toast, setStatus } from './dom.js';
+import { $, toast, setStatus, initDialog } from './dom.js';
 import { syncUI, changed } from './sync.js';
 import { requestRender } from './preview.js';
-import { activeTab } from './tabs.js';
+import { showTab } from './tabs.js';
 import { saveFile } from './download.js';
-import { kiMsg } from './ki.js';
+import { kiDone } from './ki.js';
 
 /* Entwurf: wird nach jeder Änderung kurz verzögert im Browser gesichert */
 let draftTimer;
@@ -50,7 +50,7 @@ export async function refreshList(){
     info.append(nm,dt);
     const acts=document.createElement('div'); acts.className='acts';
     const open=document.createElement('button'); open.className='btn small'; open.textContent='Öffnen';
-    open.addEventListener('click',async()=>{ const rec=await store.get('posters',p.id); if (!rec) return; await loadState({...rec.state,id:rec.id,name:rec.name}); saveDraft(); refreshList(); toast(`„${rec.name}“ geöffnet`); });
+    open.addEventListener('click',async()=>{ const rec=await store.get('posters',p.id); if (!rec) return; await loadState({...rec.state,id:rec.id,name:rec.name}); saveDraft(); refreshList(); $('#ablageDlg').close(); toast(`„${rec.name}“ geöffnet`); });
     const del=document.createElement('button'); del.className='btn small ghost danger'; del.textContent='Löschen';
     let armed=false, t;
     del.addEventListener('click',async()=>{
@@ -83,13 +83,16 @@ export async function importData(data,keepMedia,fromKI){
 }
 
 export function initAblage(){
+  const show=initDialog('#ablageDlg');
+  $('#openAblage').addEventListener('click',()=>{ refreshList(); show(); });
   $('#saveBtn').addEventListener('click',()=>savePoster(false));
   $('#quickSave').addEventListener('click',()=>savePoster(false));
   $('#saveCopyBtn').addEventListener('click',()=>savePoster(true));
   $('#posterName').addEventListener('input',e=>{ st.name=e.target.value; scheduleDraft(); });
   $('#newBtn').addEventListener('click',async()=>{
     setState(defaults(st.occasion,{place:st.texts.place,address:st.texts.address,parish:st.texts.parish,logo:st.logo.src}));
-    await ensureImages(st); syncUI(); changed(); refreshList(); toast('Neues Plakat begonnen – Ort, Gemeinde und Logo wurden übernommen.');
+    await ensureImages(st); syncUI(); changed(); refreshList(); $('#ablageDlg').close(); showTab('anlass');
+    toast('Neues Plakat begonnen – Ort, Gemeinde und Logo wurden übernommen.');
   });
 
   /* Als Datei sichern und übertragen */
@@ -103,9 +106,10 @@ export function initAblage(){
   $('#impFile').addEventListener('change',async e=>{
     const f=e.target.files[0]; e.target.value=''; if (!f) return;
     let data; try{ data=JSON.parse(await f.text()); }catch{ toast('Die Datei konnte nicht gelesen werden.'); return; }
-    const n=await importData(data,activeTab==='ki'&&$('#kiKeepMedia').checked,activeTab==='ki');
-    if (!n) toast('Diese Datei ist keine Plakatwerkstatt-Datei.');
-    else if (activeTab==='ki') kiMsg(n===1?'Entwurf übernommen und geöffnet. Er liegt auch unter „Meine Plakate“.':`${n} Entwürfe übernommen. Der erste ist geöffnet, alle liegen unter „Meine Plakate“.`);
+    const fromKI=$('#kiDlg').open, n=await importData(data,fromKI&&$('#kiKeepMedia').checked,fromKI);
+    if (!n){ toast('Diese Datei ist keine Plakatwerkstatt-Datei.'); return; }
+    $(fromKI?'#kiDlg':'#ablageDlg').close();
+    if (fromKI) kiDone(n);
   });
 }
 
