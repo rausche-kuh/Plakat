@@ -27,69 +27,33 @@
 <main class="app">
   <aside class="panel">
     <nav class="tabs" role="tablist" aria-label="Bereiche">
-      <button class="tab" role="tab" data-tab="anlass" aria-selected="true">Anlass</button>
-      <button class="tab" role="tab" data-tab="layout" aria-selected="false">Layout</button>
-      <button class="tab" role="tab" data-tab="texte" aria-selected="false">Texte</button>
-      <button class="tab" role="tab" data-tab="foto" aria-selected="false">Foto</button>
+      <button class="tab" role="tab" data-tab="anlass" aria-selected="true"><span class="num">1</span>Anlass</button>
+      <button class="tab" role="tab" data-tab="texte" aria-selected="false"><span class="num">2</span>Texte</button>
+      <button class="tab" role="tab" data-tab="foto" aria-selected="false"><span class="num">3</span>Foto</button>
+      <button class="tab" role="tab" data-tab="layout" aria-selected="false"><span class="num">4</span>Gestaltung</button>
+      <span class="tab-sep" aria-hidden="true"></span>
       <button class="tab" role="tab" data-tab="ablage" aria-selected="false">Meine Plakate</button>
       <button class="tab" role="tab" data-tab="ki" aria-selected="false">KI-Entwurf</button>
     </nav>
 
     <section class="tabpanel" id="tab-anlass" role="tabpanel">
-      <h2>Grundstimmung</h2>
-      <div class="grid three" id="moodGrid">
-        <button class="tile" data-mood="herzlich"><span class="sample" style="font-family:'Caveat Brush',cursive;color:#CF5F1B;font-size:21px">Willkommen</span><span class="lbl">Herzlich und bunt</span><span class="sub">für Feste und Familien</span></button>
-        <button class="tile" data-mood="freundlich"><span class="sample" style="font-family:Fraunces,Georgia,serif;font-weight:600;color:#3E6F8E;font-size:15px">Willkommen</span><span class="lbl">Freundlich und klar</span><span class="sub">für Konzerte, Taufe, Jugend</span></button>
-        <button class="tile" data-mood="ruhig"><span class="sample" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600">Willkommen</span><span class="lbl">Ruhig und edel</span><span class="sub">für stille Anlässe</span></button>
-      </div>
-      <p class="hint">Stellt Schrift, Farbe und Layout passend ein. Alles lässt sich danach einzeln ändern.</p>
-
-      <h2>Anlass</h2>
+      <h2>Wofür ist das Plakat?</h2>
       <div class="grid" id="occGrid"></div><!-- Kacheln aus src/occasions/ -->
       <div class="note" id="tplHint" hidden>
         <p>Ihre eigenen Texte wurden behalten.</p>
         <button class="btn small" id="tplApply">Beispieltexte einsetzen</button>
       </div>
-
-      <h2>Farbe</h2>
-      <div class="seg" id="variantSeg">
-        <button data-v="hell" aria-pressed="true">Hell</button>
-        <button data-v="getoent" aria-pressed="false">Getönt</button>
-        <button data-v="kraeftig" aria-pressed="false">Kräftig</button>
-        <button data-v="dunkel" aria-pressed="false">Dunkel</button>
-      </div>
-      <div class="colorrow">
-        <input type="color" id="accentPick" aria-label="Akzentfarbe">
-        <span>Akzentfarbe</span>
-        <button class="btn small ghost" id="accentReset">Farbe des Anlasses</button>
-      </div>
-
-      <h2>Schrift</h2>
-      <div class="grid two" id="fontGrid"></div><!-- Kacheln aus src/data/fontsets.js -->
-    </section>
-
-    <section class="tabpanel" id="tab-layout" role="tabpanel" hidden>
-      <h2>Layout <small>– frei mit jedem Anlass kombinierbar</small></h2>
-      <div id="layoutGroups"></div><!-- Gruppen und Kacheln aus src/layouts/ -->
-
-      <h2>Feinschliff</h2>
-      <label class="check"><input type="checkbox" id="optOrnament"> Zierelement des Anlasses zeigen</label>
-      <label class="check"><input type="checkbox" id="optFrame"> Feine Rahmenlinie</label>
-      <label class="check"><input type="checkbox" id="optDoodles"> Kleine Verzierungen (Striche, Herzen, Kirchen-Symbol)</label>
-      <label class="check"><input type="checkbox" id="optSun"> Warmes Sonnenlicht im Foto</label>
-      <p class="hint"><span id="warmLayoutsHint">Verzierungen und Sonnenlicht wirken in den Layouts „Einladung“ und „Pinnwand“.</span> Am Karfreitag und Ewigkeitssonntag bleiben sie weg.</p>
-      <div class="range">
-        <div class="head"><label for="titleScale">Größe des Titels</label><output id="titleScaleOut">100 %</output></div>
-        <input type="range" id="titleScale" min="60" max="150" step="5">
-      </div>
-      <div class="range">
-        <div class="head"><label for="textScale">Größe der übrigen Texte</label><output id="textScaleOut">100 %</output></div>
-        <input type="range" id="textScale" min="80" max="130" step="5">
-      </div>
-      <p class="hint">Wird es zu voll, verkleinert die Werkstatt alle Texte automatisch, damit nichts abgeschnitten wird.</p>
+      <p class="hint">Der Anlass bringt Farben, ein Zierelement und Beispieltexte mit. Die Beispieltexte prüfen Sie im nächsten Schritt.</p>
+      <button class="btn primary next" data-next="texte">Weiter: Texte</button>
     </section>
 
     <section class="tabpanel" id="tab-texte" role="tabpanel" hidden>
+      <div class="note sample-note" id="sampleNote" hidden>
+        <p><strong id="sampleNoteCount"></strong></p>
+        <p>Gelb markierte Felder sind Beispiele des Anlasses. Ändern Sie sie, leeren Sie sie oder bestätigen Sie sie mit „Passt so“.</p>
+      </div>
+
+      <h2>Was?</h2>
       <label class="f" for="t-eyebrow">Einladungszeile</label>
       <input class="in" id="t-eyebrow" data-t="eyebrow" placeholder="z. B. Herzliche Einladung zum">
 
@@ -100,11 +64,7 @@
       <label class="f" for="t-subtitle">Untertitel</label>
       <input class="in" id="t-subtitle" data-t="subtitle">
 
-      <label class="f" for="t-verse">Bibelvers</label>
-      <textarea class="in" id="t-verse" data-t="verse" rows="3"></textarea>
-      <label class="f" for="t-ref">Bibelstelle</label>
-      <input class="in" id="t-ref" data-t="ref" placeholder="z. B. Lukas 2,11">
-
+      <h2>Wann und wo?</h2>
       <label class="f" for="t-date">Datum</label>
       <div class="datefield">
         <input class="in" id="t-date" data-t="date">
@@ -113,21 +73,26 @@
       <label class="f" for="t-time">Uhrzeit</label>
       <input class="in" id="t-time" data-t="time">
 
-      <div class="pair">
-        <div><label class="f" for="t-place">Ort</label><input class="in" id="t-place" data-t="place"></div>
-        <div><label class="f" for="t-address">Adresse</label><input class="in" id="t-address" data-t="address"></div>
-      </div>
+      <label class="f" for="t-place">Ort</label>
+      <input class="in" id="t-place" data-t="place">
+      <label class="f" for="t-address">Adresse</label>
+      <input class="in" id="t-address" data-t="address">
+
+      <h2>Mehr dazu</h2>
+      <label class="f" for="t-verse">Bibelvers</label>
+      <textarea class="in" id="t-verse" data-t="verse" rows="3"></textarea>
+      <label class="f" for="t-ref">Bibelstelle</label>
+      <input class="in" id="t-ref" data-t="ref" placeholder="z. B. Lukas 2,11">
 
       <label class="f" for="t-people">Mitwirkende oder Programm</label>
       <textarea class="in" id="t-people" data-t="people" rows="3"></textarea>
       <p class="hint">Eine Zeile pro Eintrag. Eine Erläuterung mit „ – “ anhängen, z. B. „Kuchenbuffet – bringt gern etwas mit“; manche Layouts setzen sie kleiner darunter.</p>
 
-      <h2 style="margin-top:26px">Hervorgehobener Kasten</h2>
-      <p class="hint" style="margin-top:-4px">Für das Wichtigste neben dem Termin, etwa „Für die ganze Familie!“.</p>
-      <label class="f" for="t-boxTitle">Überschrift</label>
+      <label class="f" for="t-boxTitle">Kasten – Überschrift</label>
       <input class="in" id="t-boxTitle" data-t="boxTitle">
-      <label class="f" for="t-boxText">Text</label>
+      <label class="f" for="t-boxText">Kasten – Text</label>
       <textarea class="in" id="t-boxText" data-t="boxText" rows="2"></textarea>
+      <p class="hint">Der hervorgehobene Kasten ist für das Wichtigste neben dem Termin, etwa „Für die ganze Familie!“.</p>
 
       <label class="f" for="t-note">Hinweis</label>
       <input class="in" id="t-note" data-t="note" placeholder="z. B. Eintritt frei – Spenden erbeten">
@@ -135,12 +100,14 @@
       <label class="f" for="t-closing">Schlusszeile</label>
       <input class="in" id="t-closing" data-t="closing" placeholder="z. B. Wir freuen uns auf euch!">
 
+      <h2>Absender</h2>
       <label class="f" for="t-parish">Gemeinde (Fußzeile)</label>
       <input class="in" id="t-parish" data-t="parish">
       <label class="f">Logo der Gemeinde</label>
       <div id="logoBox"></div>
       <input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="sr">
       <p class="hint">Leere Felder erscheinen nicht auf dem Plakat.</p>
+      <button class="btn primary next" data-next="foto">Weiter: Foto</button>
     </section>
 
     <section class="tabpanel" id="tab-foto" role="tabpanel" hidden>
@@ -152,16 +119,7 @@
           <div class="head"><label for="pZoom">Vergrößern</label><output id="pZoomOut">100 %</output></div>
           <input type="range" id="pZoom" min="100" max="300" step="1">
         </div>
-        <div class="range">
-          <div class="head"><label for="pX">Ausschnitt waagerecht</label></div>
-          <input type="range" id="pX" min="-100" max="100" step="1">
-        </div>
-        <div class="range">
-          <div class="head"><label for="pY">Ausschnitt senkrecht</label></div>
-          <input type="range" id="pY" min="-100" max="100" step="1">
-        </div>
         <p class="hint" id="panHint">Tipp: Ziehen Sie das Foto in der Vorschau mit der Maus, um den Ausschnitt zu verschieben.</p>
-        <button class="btn small" id="pCenter" style="margin-top:8px">Ausschnitt zurücksetzen</button>
 
         <h2>Bildstimmung</h2>
         <div class="chips" id="filterChips">
@@ -172,12 +130,76 @@
           <button class="chip" data-f="sw">Schwarzweiß</button>
           <button class="chip" data-f="sepia">Sepia</button>
         </div>
-        <div class="range">
-          <div class="head"><label for="pBright">Helligkeit</label><output id="pBrightOut">0</output></div>
-          <input type="range" id="pBright" min="-30" max="30" step="1">
-        </div>
+
+        <details class="more">
+          <summary>Weitere Einstellungen</summary>
+          <div class="range">
+            <div class="head"><label for="pX">Ausschnitt waagerecht</label></div>
+            <input type="range" id="pX" min="-100" max="100" step="1">
+          </div>
+          <div class="range">
+            <div class="head"><label for="pY">Ausschnitt senkrecht</label></div>
+            <input type="range" id="pY" min="-100" max="100" step="1">
+          </div>
+          <button class="btn small" id="pCenter" style="margin-top:8px">Ausschnitt zurücksetzen</button>
+          <div class="range">
+            <div class="head"><label for="pBright">Helligkeit</label><output id="pBrightOut">0</output></div>
+            <input type="range" id="pBright" min="-30" max="30" step="1">
+          </div>
+        </details>
       </div>
-      <p class="hint" id="noPhotoLayoutHint" hidden>Das Layout „<span id="noPhotoLayoutName">Nur Schrift</span>“ zeigt kein Foto. Wählen Sie unter Layout eine andere Gestaltung, um Ihr Foto zu sehen.</p>
+      <p class="hint" id="noPhotoLayoutHint" hidden>Das Layout „<span id="noPhotoLayoutName">Nur Schrift</span>“ zeigt kein Foto. Wählen Sie unter „Gestaltung“ ein anderes Layout, um Ihr Foto zu sehen.</p>
+      <button class="btn primary next" data-next="layout">Weiter: Gestaltung</button>
+    </section>
+
+    <section class="tabpanel" id="tab-layout" role="tabpanel" hidden>
+      <h2>Grundstimmung</h2>
+      <div class="grid three" id="moodGrid">
+        <button class="tile" data-mood="herzlich"><span class="sample" style="font-family:'Caveat Brush',cursive;color:#CF5F1B;font-size:21px">Willkommen</span><span class="lbl">Herzlich und bunt</span><span class="sub">für Feste und Familien</span></button>
+        <button class="tile" data-mood="freundlich"><span class="sample" style="font-family:Fraunces,Georgia,serif;font-weight:600;color:#3E6F8E;font-size:15px">Willkommen</span><span class="lbl">Freundlich und klar</span><span class="sub">für Konzerte, Taufe, Jugend</span></button>
+        <button class="tile" data-mood="ruhig"><span class="sample" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600">Willkommen</span><span class="lbl">Ruhig und edel</span><span class="sub">für stille Anlässe</span></button>
+      </div>
+      <p class="hint">Stellt Schrift, Farbe und Layout passend ein. Alles lässt sich danach einzeln ändern.</p>
+
+      <h2>Farbe</h2>
+      <div class="seg" id="variantSeg">
+        <button data-v="hell" aria-pressed="true">Hell</button>
+        <button data-v="getoent" aria-pressed="false">Getönt</button>
+        <button data-v="kraeftig" aria-pressed="false">Kräftig</button>
+        <button data-v="dunkel" aria-pressed="false">Dunkel</button>
+      </div>
+
+      <h2>Layout <small>– frei mit jedem Anlass kombinierbar</small></h2>
+      <div id="layoutGroups"></div><!-- Gruppen und Kacheln aus src/layouts/ -->
+
+      <details class="more">
+        <summary>Weitere Einstellungen</summary>
+        <div class="colorrow">
+          <input type="color" id="accentPick" aria-label="Akzentfarbe">
+          <span>Akzentfarbe</span>
+          <button class="btn small ghost" id="accentReset">Farbe des Anlasses</button>
+        </div>
+
+        <h2>Schrift</h2>
+        <div class="grid two" id="fontGrid"></div><!-- Kacheln aus src/data/fontsets.js -->
+
+        <h2>Feinschliff</h2>
+        <label class="check"><input type="checkbox" id="optOrnament"> Zierelement des Anlasses zeigen</label>
+        <label class="check"><input type="checkbox" id="optFrame"> Feine Rahmenlinie</label>
+        <label class="check"><input type="checkbox" id="optDoodles"> Kleine Verzierungen (Striche, Herzen, Kirchen-Symbol)</label>
+        <label class="check"><input type="checkbox" id="optSun"> Warmes Sonnenlicht im Foto</label>
+        <p class="hint"><span id="warmLayoutsHint">Verzierungen und Sonnenlicht wirken in den Layouts „Einladung“ und „Pinnwand“.</span> Am Karfreitag und Ewigkeitssonntag bleiben sie weg.</p>
+        <div class="range">
+          <div class="head"><label for="titleScale">Größe des Titels</label><output id="titleScaleOut">100 %</output></div>
+          <input type="range" id="titleScale" min="60" max="150" step="5">
+        </div>
+        <div class="range">
+          <div class="head"><label for="textScale">Größe der übrigen Texte</label><output id="textScaleOut">100 %</output></div>
+          <input type="range" id="textScale" min="80" max="130" step="5">
+        </div>
+        <p class="hint">Wird es zu voll, verkleinert die Werkstatt alle Texte automatisch, damit nichts abgeschnitten wird.</p>
+      </details>
+      <button class="btn primary next" id="nextExport">Weiter: Exportieren</button>
     </section>
 
     <section class="tabpanel" id="tab-ki" role="tabpanel" hidden>
@@ -233,6 +255,7 @@
         <div class="drop-hint">Foto hier ablegen</div>
       </div>
       <div class="stage-bar">
+        <button class="btn small sample-btn" id="sampleBtn" hidden></button>
         <button class="btn small" id="noPhotoBtn" hidden>Foto hochladen</button>
         <button class="btn small" id="panToggle" hidden aria-pressed="false">Ausschnitt verschieben</button>
         <span id="status">A4 Hochformat</span>
@@ -244,6 +267,15 @@
 <dialog id="exportDlg" aria-labelledby="expTitle">
   <div class="dlg-head"><h2 id="expTitle">Plakat exportieren</h2><button class="btn small ghost" id="expClose">Schließen</button></div>
   <div class="dlg-body">
+    <div class="warn" id="expWarn" hidden>
+      <h3>Noch nicht alle Texte bearbeitet</h3>
+      <p id="expWarnText"></p>
+      <p>Möchten Sie trotzdem exportieren?</p>
+      <div class="row">
+        <button class="btn primary" id="expToTexts">Zu den Texten</button>
+        <button class="btn" id="expAnyway">Trotzdem exportieren</button>
+      </div>
+    </div>
     <div class="exp">
       <h3>PDF zum Drucken</h3>
       <p>A4 Hochformat, randlos angelegt. Im Druckdialog „Tatsächliche Größe“ wählen.</p>

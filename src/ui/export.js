@@ -2,7 +2,8 @@
 import { st } from '../core/state.js';
 import { firstLine, slug } from '../core/util.js';
 import { renderPoster } from '../render/poster.js';
-import { $, toast } from './dom.js';
+import { $, $$, toast, listDe } from './dom.js';
+import { openSamples, goToSamples } from './texte.js';
 import { saveFile } from './download.js';
 import { jpegToPdf } from '../core/pdf.js';
 
@@ -11,7 +12,18 @@ async function busy(btn,label,fn){ const old=btn.textContent; btn.disabled=true;
 
 export function initExport(){
   const dlg=$('#exportDlg');
-  $('#openExport').addEventListener('click',()=>{ if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open',''); });
+  // Stehen noch Beispieltexte darin, zeigt der Dialog zuerst eine Warnung
+  const step=warn=>{ $('#expWarn').hidden=!warn; $$('#exportDlg .exp').forEach(e=>e.hidden=warn); };
+  const open=()=>{
+    const names=openSamples().map(f=>`„${f.name}“`);
+    $('#expWarnText').textContent=`Diese Beispieltexte des Anlasses haben Sie nicht bearbeitet: ${listDe(names)}. Sie stehen so auf dem Plakat.`;
+    step(names.length>0);
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+  };
+  $('#openExport').addEventListener('click',open);
+  $('#nextExport').addEventListener('click',open);
+  $('#expToTexts').addEventListener('click',()=>{ dlg.close(); goToSamples(); });
+  $('#expAnyway').addEventListener('click',()=>step(false));
   $('#expClose').addEventListener('click',()=>dlg.close());
   dlg.addEventListener('click',e=>{ if (e.target===dlg) dlg.close(); });
   $('#doPdf').addEventListener('click',e=>busy(e.currentTarget,'Wird erstellt …',async()=>{

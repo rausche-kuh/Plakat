@@ -27,7 +27,7 @@ export function initKI(){
     let data=null;
     try{ const t=raw.replace(/```(?:json)?/gi,''), a=t.indexOf('{'), b=t.lastIndexOf('}'); if (a>=0&&b>a) data=JSON.parse(t.slice(a,b+1)); }catch{}
     if (!data){ kiMsg('In der Antwort wurde kein gültiger Entwurf gefunden. Kopieren Sie die komplette Antwort der KI, einschließlich aller geschweiften Klammern { }.'); return; }
-    const n=await importData(data,$('#kiKeepMedia').checked);
+    const n=await importData(data,$('#kiKeepMedia').checked,true);
     if (!n){ kiMsg('Die Antwort hat nicht das erwartete Format. Bitten Sie die KI, sich genau an das Format im Auftrag zu halten.'); return; }
     $('#kiAnswer').value='';
     kiMsg(n===1?'Entwurf übernommen und geöffnet. Er liegt auch unter „Meine Plakate“.':`${n} Entwürfe übernommen. Der erste ist geöffnet, alle liegen unter „Meine Plakate“.`);

@@ -48,7 +48,7 @@ on double-click and can be published as a Claude artifact.
 
 ## Layouts
 
-Every layout works with every occasion, font and colour variant. In the "Layout" tab they are grouped
+Every layout works with every occasion, font and colour variant. In step 4, "Gestaltung", they are grouped
 from playful to quiet:
 
 | Group (UI name) | Layouts | For |
@@ -87,8 +87,9 @@ src/
     parts.js          photo, footer, frame
     text.js, shapes.js
   core/               no UI: state, colour scheme, images, storage, file format, PDF writer
-  ui/                 one module per tab (anlass, layout, texte, foto, ablage, ki) + preview, export, sync
+  ui/                 one module per tab (anlass, texte, foto, layout = step "Gestaltung", ablage, ki) + preview, export, sync
 scripts/              build.mjs (single file), serve.mjs (dev server)
+docs/product-concept.md  users, principles, step structure, sample texts
 docs/ai-guide.md      using the workshop with AI (optional)
 ```
 
@@ -104,7 +105,8 @@ so never rename them. A layout that is removed gets an entry in `RETIRED` in `sr
 ## Data flow
 
 The state of the current poster (`st` in `src/core/state.js`) is a plain object: occasion, layout, font,
-colour variant, options, texts, photo and logo (as data URLs). The UI changes `st` and calls `changed()`
+colour variant, options, texts, `confirmed` (sample texts kept with „Passt so“), photo and logo (as data URLs).
+Whether a text is still a sample is not stored: `sampleKeys()` compares it with the occasion's sample text. The UI changes `st` and calls `changed()`
 (`src/ui/sync.js`), which redraws the preview and saves the draft. `renderPoster(ctx, st, W)` draws the poster
 at any resolution, the same way for preview, thumbnails and export. Saved files and AI answers go through
 `sanitize()`, so unknown values fall back to defaults.
