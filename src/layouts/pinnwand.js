@@ -5,6 +5,8 @@ import { paperGrain, warmCols, warmEls, warmCard, warmClosing, warmStack, warmFo
 export default {
   id: 'pinnwand',
   name: 'Pinnwand',
+  group: 'herzlich',
+  about: 'Papiergrund, Foto als Sofortbild mit Klebestreifen, alles mittig gestapelt',
   photo: true,
   warm: true,
   draw(env){

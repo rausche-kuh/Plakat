@@ -2,7 +2,7 @@
    `st` ist das aktuell bearbeitete Plakat. Es wird an vielen Stellen direkt verändert
    (st.layout = …); ganz ersetzt wird es nur über setState(). */
 import { OCC } from '../occasions/index.js';
-import { LAYOUT_BY_ID } from '../layouts/index.js';
+import { layoutId } from '../layouts/index.js';
 import { FONTSETS } from '../data/fontsets.js';
 import { clamp } from './util.js';
 
@@ -27,7 +27,7 @@ export function sanitize(s){
   out.id = typeof s.id==='string'?s.id:null;
   out.name = typeof s.name==='string'?s.name:'';
   out.occasion = OCC[s.occasion]?s.occasion:d.occasion;
-  out.layout = LAYOUT_BY_ID[s.layout]?s.layout:d.layout;
+  out.layout = layoutId(s.layout) || d.layout;
   out.fontStyle = FONTSETS[s.fontStyle]?s.fontStyle:d.fontStyle;
   out.variant = VARIANTS.includes(s.variant)?s.variant:'hell';
   out.accent = typeof s.accent==='string' && /^#[0-9a-f]{6}$/i.test(s.accent)?s.accent:null;

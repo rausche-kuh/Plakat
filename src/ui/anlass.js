@@ -11,6 +11,7 @@ import { syncUI, changed } from './sync.js';
     Eine Kachel gilt als gewählt, wenn Schrift und Farbvariante passen. */
 const MOODS = {
   herzlich:{fontStyle:'herzlich',variant:'kraeftig',layout:'einladung',doodles:true,sunlight:true},
+  freundlich:{fontStyle:'freundlich',variant:'getoent',layout:'farbfeld'},
   ruhig:{fontStyle:'edel',variant:'hell',layout:'klassisch'}
 };
 

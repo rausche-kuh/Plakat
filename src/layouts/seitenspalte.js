@@ -4,6 +4,8 @@ import { rgba, drawPhoto, blocks, fitDraw, footerH, drawFooter, drawFrame } from
 export default {
   id: 'seitenspalte',
   name: 'Seitenspalte',
+  group: 'ruhig',
+  about: 'Foto als Spalte links, Text linksbündig daneben',
   photo: true,
   draw(env){
     const {W,H,u,th,st}=env, pw=430*u;

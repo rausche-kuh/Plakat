@@ -1,5 +1,6 @@
 // Baut die ganze Werkstatt zu einer einzigen HTML-Datei: dist/plakatwerkstatt.html
 // Die Datei funktioniert per Doppelklick ohne Server und lässt sich als Claude-Artefakt veröffentlichen.
+// Nur die Schriften kommen aus dem Netz (Google Fonts); Plakate, Fotos und Texte verlassen nie den Browser.
 import { build } from 'esbuild';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';

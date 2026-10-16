@@ -1,19 +1,21 @@
 /* ---------- Auftrag für die KI (Tab „KI-Entwurf“) ----------
    Die erlaubten Werte für Anlass, Layout, Schrift, Farbvariante und Bildstimmung werden aus den
-   Verzeichnissen eingesetzt – neue Layouts und Anlässe kennt die KI damit automatisch.
+   Verzeichnissen eingesetzt – neue Layouts (mit Gruppe und Beschreibung) und Anlässe kennt die KI damit automatisch.
    Hinter den Auftrag hängt das Programm die Infos des Nutzers. */
 import { OCC_KEYS } from '../occasions/index.js';
-import { LAYOUTS } from '../layouts/index.js';
+import { LAYOUTS, LAYOUT_GROUPS } from '../layouts/index.js';
 import { FONTSETS } from './fontsets.js';
 import { VARIANTS, FILTERS } from '../core/state.js';
+
+const layoutList = () => LAYOUT_GROUPS.map(g=>`${g.name}:\n`+LAYOUTS.filter(l=>l.group===g.id).map(l=>`- ${l.id}: ${l.about||l.name}`).join('\n')).join('\n');
 
 export const kiPrompt = () => String.raw`Du erstellst Entwürfe für Plakate einer evangelischen Kirchengemeinde. Das Ergebnis ist eine JSON-Datei, die ich in mein Programm „Plakatwerkstatt“ importiere. Halte dich exakt an das folgende Format, sonst lässt sich die Datei nicht öffnen.
 
 AUFGABE
 Lies die Infos am Ende dieser Nachricht und erstelle daraus ZWEI Plakatentwürfe in einer Datei:
 1. Entwurf „herzlich“: fontStyle "herzlich", variant "kraeftig", layout "einladung"
-2. Entwurf „Alternative“: dasselbe mit layout "pinnwand"
-Ausnahme: Bei Karfreitag, Ewigkeitssonntag, Trauer- oder Gedenkanlässen nimm stattdessen fontStyle "edel", variant "hell", layout "klassisch" (Entwurf 1) und layout "kirchenfenster" (Entwurf 2).
+2. Entwurf „Alternative“: dieselben Texte mit dem Layout aus der Gruppe „Herzlich und bunt“, das am besten passt (siehe LAYOUTS), z. B. "milchglas" für Feste im Freien, "aquarell" für Taufe und Familien.
+Ausnahme: Bei Karfreitag, Ewigkeitssonntag, Trauer- oder Gedenkanlässen nimm stattdessen fontStyle "edel", variant "hell", layout "klassisch" (Entwurf 1) und layout "typografie" (Entwurf 2).
 
 FORMAT (genau so, nur die Werte ändern)
 {
@@ -61,13 +63,16 @@ FORMAT (genau so, nur die Werte ändern)
 ERLAUBTE WERTE
 - occasion: ${OCC_KEYS.join(', ')}
   (Andere Veranstaltungen: nimm den passendsten, z. B. Seniorennachmittag oder Basar → gemeindefest, Musik aller Art → konzert)
-- layout: ${LAYOUTS.map(l=>l.id).join(', ')}
+- layout: ${LAYOUTS.map(l=>l.id).join(', ')} (Beschreibungen unter LAYOUTS)
 - fontStyle: ${Object.keys(FONTSETS).join(', ')}
 - variant: ${VARIANTS.join(', ')}
 - photo.filter: ${FILTERS.join(', ')}
 - accent: null (Farbe des Anlasses) oder eine Farbe als "#RRGGBB"
 - titleScale zwischen 0.6 und 1.5, textScale zwischen 0.8 und 1.3
 - photo.src und logo.src IMMER null lassen (Fotos lade ich selbst hoch)
+
+LAYOUTS
+${layoutList()}
 
 DIE TEXTFELDER
 - eyebrow: kleine Einladungszeile über dem Titel, grammatisch passend zum Titel, z. B. „Herzliche Einladung zum“ + Titel „Erntedankfest“. Bei stillen Anlässen leer lassen.
@@ -77,7 +82,7 @@ DIE TEXTFELDER
 - date: ausgeschrieben mit Wochentag, z. B. „Sonntag, 18. Oktober 2026“. Prüfe, dass der Wochentag zum Datum passt. Fehlt das Jahr, nimm das nächste passende Datum in der Zukunft.
 - time: z. B. „10:00 Uhr“ oder „ab 11:00 Uhr“.
 - place und address: z. B. „Kirche Jabel“ und „Dorfstraße 5“.
-- people: Mitwirkende oder Programmpunkte, ein Eintrag pro Zeile, getrennt mit \n. Höchstens 4 Zeilen.
+- people: Mitwirkende oder Programmpunkte, ein Eintrag pro Zeile, getrennt mit \n. Höchstens 4 Zeilen. Eine kurze Erläuterung zu einem Programmpunkt hängst du mit " – " an, z. B. „Gemeinschaftsbuffet – Geschirr und Besteck bringt ihr mit“; einige Layouts setzen sie kleiner darunter.
 - boxTitle und boxText: der hervorgehobene Kasten für das Zweitwichtigste nach dem Termin, z. B. „Für die ganze Familie!“ und ein Satz dazu. Der Satz soll konkret sein (was genau passiert), keine Floskeln wie „bunte Überraschungen“.
 - note: ein praktischer Hinweis, z. B. „Eintritt frei – Spenden erbeten“.
 - closing: kurze Schlusszeile, z. B. „Wir freuen uns auf euch!“. Bei stillen Anlässen leer lassen.

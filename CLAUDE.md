@@ -1,23 +1,37 @@
-# Plakatwerkstatt – Hinweise für Claude
+# Plakatwerkstatt – notes for Claude
 
-Browser-Werkzeug für Gemeindeplakate (Canvas, ES-Module, kein Framework). Oberfläche, Kommentare und Doku auf Deutsch.
+Browser tool for parish posters (canvas, ES modules, no framework). Goal: the warm, hand-lettered look of
+AI-generated posters, but with real text, real photos and nothing uncanny. See `README.md` ("Why this exists").
 
-## Nur lesen, was die Aufgabe braucht
+**Languages:** the UI and everything that ends up on a poster are German. Code comments are German too,
+matching the existing code. Markdown docs are English.
 
-- **Neues Layout:** `src/layouts/README.md`, `src/render/toolkit.js` und ein ähnliches Layout aus der Vorlagen-Tabelle der README. Danach die Zeile in `src/layouts/index.js`. Sonst nichts.
-- **Neuer Anlass:** `src/occasions/README.md` und einen bestehenden Anlass als Vorlage, dann `src/occasions/index.js`.
-- **Textsatz ändern:** `src/render/blocks.js` (klassisch) bzw. `src/render/warm.js` (Herzlich). Wirkt auf mehrere Layouts – prüfen, welche es nutzen.
-- **Oberfläche:** das Modul des Tabs in `src/ui/` plus die Stelle in `index.html`. Styles in `css/components.css`.
-- Überblick über alle Ordner: `README.md`.
+## Only read what the task needs
 
-## Regeln
+- **New layout:** `src/layouts/README.md`, `src/render/toolkit.js` and a similar layout from the templates table
+  in that README. Then the line in `src/layouts/index.js` (with `group` and `about`). Nothing else.
+- **New occasion:** `src/occasions/README.md` and an existing occasion as a template, then `src/occasions/index.js`.
+- **Typesetting:** `src/render/blocks.js` (classic), `src/render/warm.js` (Herzlich) or `src/render/decor.js`
+  (elements of the newer layouts). Each affects several layouts, so check which ones use it.
+- **UI:** the tab's module in `src/ui/` plus its place in `index.html`. Styles in `css/components.css`.
+- **AI usage / instruction:** `docs/ai-guide.md`, `src/data/ki-prompt.js`.
+- Overview of all folders: `README.md`.
 
-- Layouts und Zeichenhilfen lesen den Zustand nur über `env.st`, nie über den globalen `st` (Miniaturen rendern mit anderem Layout).
-- Maße in Plakat-Einheiten mal `u` (Breite = 1000 Einheiten).
-- `id`s von Layouts/Anlässen und Schlüssel der Schriften nie umbenennen – sie stehen in gespeicherten Plakaten.
-- UI-Module haben keine Seiteneffekte beim Laden; alles passiert in `init…()`, aufgerufen aus `src/main.js`.
-- Kompakter Stil wie im bestehenden Code (Zeichencode in dichten Zeilen), kein Build-Schritt nötig für die Entwicklung.
+## Rules
 
-## Ausprobieren
+- **Privacy:** posters, texts, photos and logos never leave the browser. No uploads, analytics, external APIs
+  or AI calls from the app. AI use stays a manual copy-and-paste step by the user (tab "KI-Entwurf").
+  The fonts from Google Fonts are the only network requests.
+- Layouts and drawing helpers read the state only through `env.st`, never the global `st` (thumbnails render with a different layout).
+- Measures in poster units times `u` (width = 1000 units).
+- Never rename `id`s of layouts/occasions or font-set keys, because they are stored in saved posters.
+  A removed layout goes into `RETIRED` in `src/layouts/index.js`.
+- UI modules have no side effects on load; everything happens in `init…()`, called from `src/main.js`.
+- Compact style like the existing code (dense drawing lines), no build step needed for development.
+- Draw decorations in code (shapes, textures). Don't add generated images.
 
-`npm run dev` (http://localhost:8000); Layouts per Screenshot der Vorschau prüfen (z. B. mit Playwright). `npm run build` erzeugt `dist/plakatwerkstatt.html` (nicht eingecheckt).
+## Trying it out
+
+`npm run dev` (http://localhost:8000). Check layouts with screenshots of the preview (e.g. with Playwright).
+Cover several occasions, all colour variants and fonts, with and without a photo, and long and empty texts.
+`npm run build` creates `dist/plakatwerkstatt.html` (not checked in).

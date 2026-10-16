@@ -4,6 +4,8 @@ import { rgba, blocks, fitDraw, footerH, drawFooter, drawFrame } from '../render
 export default {
   id: 'typografie',
   name: 'Nur Schrift',
+  group: 'ruhig',
+  about: 'Ohne Foto: großes Zierelement und Titel – das Stillste, z. B. für Trauerfeiern',
   photo: false,
   draw(env){
     const {ctx,W,H,u,th,st}=env, o=env.orn;
