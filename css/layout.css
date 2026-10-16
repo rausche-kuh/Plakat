@@ -7,20 +7,15 @@
 
 .app{display:grid;grid-template-columns:minmax(330px,420px) minmax(0,1fr);min-height:calc(100vh - 62px)}
 .panel{background:var(--panel);border-right:1px solid var(--line);min-width:0}
-.tabs{display:flex;flex-wrap:wrap;gap:2px;padding:6px 12px 0;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:0;background:var(--panel);z-index:3;scrollbar-width:none}
+.tabs{display:flex;gap:2px;padding:6px 12px 0;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:0;background:var(--panel);z-index:3;scrollbar-width:none}
 .tab{appearance:none;border:0;background:none;font-weight:600;font-size:14px;color:var(--muted);padding:11px 8px 10px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--ink)}
 .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
 .tab .num{display:inline-grid;place-items:center;width:18px;height:18px;margin-right:5px;border-radius:50%;background:var(--line);color:var(--ink);font-size:11.5px;vertical-align:1px}
 .tab[aria-selected="true"] .num{background:var(--accent);color:var(--accent-ink)}
-/* „Meine Plakate“ und „KI-Entwurf“ abgesetzt: kleine Zeile oben rechts, darunter die Schritte */
-.tab-sep{order:-1;flex-basis:100%}
-.tab-sep~.tab{order:-2;font-size:13px;padding:5px 6px 0;border-bottom:0}
-.tab-sep+.tab{margin-left:auto}
-.tab-sep~.tab[aria-selected="true"]{text-decoration:underline 2px var(--accent);text-underline-offset:5px}
 .tabpanel{padding:6px 20px 48px}
 .tabpanel[hidden]{display:none}
-.tabpanel h2{font-size:14px;font-weight:600;margin:22px 0 10px;color:var(--ink)}
+.tabpanel h2,.dlg-main h3{font-size:14px;font-weight:600;margin:22px 0 10px;color:var(--ink)}
 .tabpanel h2 small{font-weight:400;color:var(--muted)}
 
 .stage{background:var(--stage);padding:28px 24px 36px;min-width:0}

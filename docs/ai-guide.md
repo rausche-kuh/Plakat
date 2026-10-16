@@ -11,21 +11,21 @@ Anything an AI sees, you pasted or uploaded to it yourself.
 
 ## 1. Let a chatbot draft a poster
 
-The tab **„KI-Entwurf“** builds a ready-made instruction (in German) that tells ChatGPT, Claude or a similar
+The **„KI-Entwurf“** helper (step 1 „Anlass“, below „Weiter“: **„KI-Entwurf öffnen“**) builds a ready-made instruction (in German) that tells ChatGPT, Claude or a similar
 assistant exactly which file format, occasions, layouts, fonts and colour variants exist. The AI sends back
 a small JSON file, and the workshop turns it into one or two finished drafts.
 
 ### Step by step
 
-1. Open **KI-Entwurf** and type the facts under **„1. Infos zur Veranstaltung eingeben“**. Keywords are enough:
+1. Click **„KI-Entwurf öffnen“** in step 1 and type the facts under **„1. Infos zur Veranstaltung eingeben“**. Keywords are enough:
    *"Sommerpicknick, Sa 4.7.2026, 14 Uhr, Freifläche Gemeindehaus Vollrathsruhe, bei Regen Mehrzweckhalle.
    Jeder bringt Geschirr und Essen mit, Federball, Wikingerschach, Public Viewing."*
 2. Click **„Auftrag kopieren“** and paste it into a **new** chat with the AI.
 3. Copy the AI's **complete** answer, or download its `plakat.json`, then:
    - paste the answer into **„3. Antwort der KI einfügen“** and click **„Entwurf übernehmen“**, or
    - click **„Datei der KI öffnen“** and pick the file.
-4. The drafts open and are also saved under **„Meine Plakate“**.
-5. Upload **your own photo** in the **Foto** tab, read everything once, then export.
+4. The dialog closes and the draft shows in the preview. All drafts are also saved under **„Meine Plakate“** (header).
+5. Upload **your own photo** in step 3 **Foto**, read everything once, then export.
 
 ### What the AI gets, and what it doesn't
 

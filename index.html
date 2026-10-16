@@ -19,6 +19,7 @@
     <p>Plakate für Gottesdienste und Veranstaltungen der Gemeinde</p>
   </div>
   <div class="top-actions">
+    <button class="btn ghost" id="openAblage">Meine Plakate</button>
     <button class="btn" id="quickSave">Speichern</button>
     <button class="btn primary" id="openExport">Exportieren</button>
   </div>
@@ -26,14 +27,11 @@
 
 <main class="app">
   <aside class="panel">
-    <nav class="tabs" role="tablist" aria-label="Bereiche">
+    <nav class="tabs" role="tablist" aria-label="Schritte">
       <button class="tab" role="tab" data-tab="anlass" aria-selected="true"><span class="num">1</span>Anlass</button>
       <button class="tab" role="tab" data-tab="texte" aria-selected="false"><span class="num">2</span>Texte</button>
       <button class="tab" role="tab" data-tab="foto" aria-selected="false"><span class="num">3</span>Foto</button>
       <button class="tab" role="tab" data-tab="layout" aria-selected="false"><span class="num">4</span>Gestaltung</button>
-      <span class="tab-sep" aria-hidden="true"></span>
-      <button class="tab" role="tab" data-tab="ablage" aria-selected="false">Meine Plakate</button>
-      <button class="tab" role="tab" data-tab="ki" aria-selected="false">KI-Entwurf</button>
     </nav>
 
     <section class="tabpanel" id="tab-anlass" role="tabpanel">
@@ -45,6 +43,11 @@
       </div>
       <p class="hint">Der Anlass bringt Farben, ein Zierelement und Beispieltexte mit. Die Beispieltexte prüfen Sie im nächsten Schritt.</p>
       <button class="btn primary next" data-next="texte">Weiter: Texte</button>
+      <div class="ki-offer">
+        <p><strong>Lieber mit einem KI-Entwurf beginnen?</strong></p>
+        <p class="hint">ChatGPT, Claude oder eine andere KI schreibt die Texte und wählt die Gestaltung. Sie kopieren nur hin und her.</p>
+        <button class="btn small" id="openKI">KI-Entwurf öffnen</button>
+      </div>
     </section>
 
     <section class="tabpanel" id="tab-texte" role="tabpanel" hidden>
@@ -202,50 +205,7 @@
       <button class="btn primary next" id="nextExport">Weiter: Exportieren</button>
     </section>
 
-    <section class="tabpanel" id="tab-ki" role="tabpanel" hidden>
-      <p class="hint" style="margin-top:16px">Lassen Sie ChatGPT, Claude oder eine andere KI einen ersten Entwurf schreiben. Sie bekommen Texte und Gestaltung zurück, das Foto laden Sie hier selbst hoch – so bleibt Ihre Kirche echt.</p>
-      <p class="hint">Das ist freiwillig – die Werkstatt funktioniert auch ganz ohne KI. Ihre Texte, Fotos und Plakate bleiben in diesem Browser. Zur KI gelangt nur, was Sie unter 1. eintragen und selbst hinüberkopieren; schreiben Sie dort nur, was ohnehin öffentlich auf dem Plakat stehen soll.</p>
 
-      <h2>1. Infos zur Veranstaltung eingeben</h2>
-      <textarea class="in" id="kiInfo" rows="7" placeholder="z. B. Erntedank-Gottesdienst in der Kirche Jabel, Sonntag 18.10.2026, 10 Uhr. Für die ganze Familie, Kinder gestalten mit. Kirchengemeinde Jabel"></textarea>
-      <p class="hint">Anlass, Datum, Uhrzeit, Ort, Mitwirkende, Besonderheiten und Name der Gemeinde. Stichworte genügen.</p>
-
-      <h2>2. Auftrag kopieren und an die KI schicken</h2>
-      <button class="btn primary" id="kiCopy">Auftrag kopieren</button>
-      <p class="hint">Fügen Sie den kopierten Text in ein neues Gespräch mit der KI ein. Ihre Infos sind darin schon enthalten.</p>
-      <details class="ki-prompt"><summary>Auftrag ansehen</summary><textarea class="in" id="kiPrompt" rows="12" readonly></textarea></details>
-
-      <h2>3. Antwort der KI einfügen</h2>
-      <textarea class="in" id="kiAnswer" rows="6" placeholder="Die komplette Antwort hier einfügen – Text drumherum ist kein Problem"></textarea>
-      <label class="check"><input type="checkbox" id="kiKeepMedia" checked> Aktuelles Foto und Logo übernehmen</label>
-      <div class="row">
-        <button class="btn primary" id="kiApply">Entwurf übernehmen</button>
-        <button class="btn ghost" id="kiFile">Datei der KI öffnen</button>
-      </div>
-      <p class="hint" id="kiMsg" role="status" aria-live="polite"></p>
-    </section>
-
-    <section class="tabpanel" id="tab-ablage" role="tabpanel" hidden>
-      <label class="f" for="posterName">Name dieses Plakats</label>
-      <input class="in" id="posterName" placeholder="wird sonst aus dem Titel übernommen">
-      <div class="row" style="margin-top:10px">
-        <button class="btn primary" id="saveBtn">Speichern</button>
-        <button class="btn" id="saveCopyBtn">Als Kopie speichern</button>
-        <button class="btn ghost" id="newBtn">Neues Plakat</button>
-      </div>
-
-      <h2>Gespeicherte Plakate</h2>
-      <ul class="plist" id="plist"></ul>
-
-      <h2>Als Datei sichern und übertragen</h2>
-      <p class="hint" style="margin-top:0">Die Werkstatt speichert nur in diesem Browser. Als Datei gesichert, können Sie Plakate aufbewahren, weitergeben oder an einem anderen Rechner wieder öffnen – mit Foto und allen Einstellungen.</p>
-      <div class="row" style="margin-top:10px">
-        <button class="btn" id="expOne">Dieses Plakat sichern</button>
-        <button class="btn" id="expAll">Alle Plakate sichern</button>
-        <button class="btn" id="impBtn">Datei öffnen</button>
-      </div>
-      <input type="file" id="impFile" accept=".json,application/json" class="sr">
-    </section>
   </aside>
 
   <section class="stage" id="stage" aria-label="Vorschau">
@@ -264,8 +224,58 @@
   </section>
 </main>
 
+<dialog id="ablageDlg" aria-labelledby="ablTitle">
+  <div class="dlg-head"><h2 id="ablTitle">Meine Plakate</h2><button class="btn small ghost dlg-close">Schließen</button></div>
+  <div class="dlg-main">
+    <label class="f" for="posterName">Name dieses Plakats</label>
+    <input class="in" id="posterName" placeholder="wird sonst aus dem Titel übernommen">
+    <div class="row">
+      <button class="btn primary" id="saveBtn">Speichern</button>
+      <button class="btn" id="saveCopyBtn">Als Kopie speichern</button>
+      <button class="btn ghost" id="newBtn">Neues Plakat</button>
+    </div>
+
+    <h3>Gespeicherte Plakate</h3>
+    <ul class="plist" id="plist"></ul>
+
+    <h3>Als Datei sichern und übertragen</h3>
+    <p class="hint">Die Werkstatt speichert nur in diesem Browser. Als Datei gesichert, können Sie Plakate aufbewahren, weitergeben oder an einem anderen Rechner wieder öffnen – mit Foto und allen Einstellungen.</p>
+    <div class="row">
+      <button class="btn" id="expOne">Dieses Plakat sichern</button>
+      <button class="btn" id="expAll">Alle Plakate sichern</button>
+      <button class="btn" id="impBtn">Datei öffnen</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="kiDlg" aria-labelledby="kiTitle">
+  <div class="dlg-head"><h2 id="kiTitle">KI-Entwurf</h2><button class="btn small ghost dlg-close">Schließen</button></div>
+  <div class="dlg-main">
+    <p class="hint">Lassen Sie ChatGPT, Claude oder eine andere KI einen ersten Entwurf schreiben. Sie bekommen Texte und Gestaltung zurück, das Foto laden Sie hier selbst hoch – so bleibt Ihre Kirche echt.</p>
+    <p class="hint">Das ist freiwillig – die Werkstatt funktioniert auch ganz ohne KI. Ihre Texte, Fotos und Plakate bleiben in diesem Browser. Zur KI gelangt nur, was Sie unter 1. eintragen und selbst hinüberkopieren; schreiben Sie dort nur, was ohnehin öffentlich auf dem Plakat stehen soll.</p>
+
+    <h3>1. Infos zur Veranstaltung eingeben</h3>
+    <textarea class="in" id="kiInfo" rows="7" placeholder="z. B. Erntedank-Gottesdienst in der Kirche Jabel, Sonntag 18.10.2026, 10 Uhr. Für die ganze Familie, Kinder gestalten mit. Kirchengemeinde Jabel"></textarea>
+    <p class="hint">Anlass, Datum, Uhrzeit, Ort, Mitwirkende, Besonderheiten und Name der Gemeinde. Stichworte genügen.</p>
+
+    <h3>2. Auftrag kopieren und an die KI schicken</h3>
+    <button class="btn primary" id="kiCopy">Auftrag kopieren</button>
+    <p class="hint">Fügen Sie den kopierten Text in ein neues Gespräch mit der KI ein. Ihre Infos sind darin schon enthalten.</p>
+    <details class="ki-prompt"><summary>Auftrag ansehen</summary><textarea class="in" id="kiPrompt" rows="12" readonly></textarea></details>
+
+    <h3>3. Antwort der KI einfügen</h3>
+    <textarea class="in" id="kiAnswer" rows="6" placeholder="Die komplette Antwort hier einfügen – Text drumherum ist kein Problem"></textarea>
+    <label class="check"><input type="checkbox" id="kiKeepMedia" checked> Aktuelles Foto und Logo übernehmen</label>
+    <div class="row">
+      <button class="btn primary" id="kiApply">Entwurf übernehmen</button>
+      <button class="btn ghost" id="kiFile">Datei der KI öffnen</button>
+    </div>
+    <p class="hint" id="kiMsg" role="status" aria-live="polite"></p>
+  </div>
+</dialog>
+
 <dialog id="exportDlg" aria-labelledby="expTitle">
-  <div class="dlg-head"><h2 id="expTitle">Plakat exportieren</h2><button class="btn small ghost" id="expClose">Schließen</button></div>
+  <div class="dlg-head"><h2 id="expTitle">Plakat exportieren</h2><button class="btn small ghost dlg-close">Schließen</button></div>
   <div class="dlg-body">
     <div class="warn" id="expWarn" hidden>
       <h3>Noch nicht alle Texte bearbeitet</h3>
@@ -301,6 +311,7 @@
   </div>
 </dialog>
 
+<input type="file" id="impFile" accept=".json,application/json" class="sr"><!-- für „Datei öffnen“ und „Datei der KI öffnen“ -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="module" src="src/main.js"></script>

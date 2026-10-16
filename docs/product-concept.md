@@ -32,8 +32,16 @@ make a poster now and then. What they know is a template they fill in and print.
 
 ## Structure
 
-The tabs are numbered steps. All tabs stay freely clickable (no forced wizard), and each step ends with a
-"Weiter: …" button. "Meine Plakate" and "KI-Entwurf" sit apart from the steps.
+The tabs are numbered steps, and the tab bar holds nothing else. All tabs stay freely clickable (no forced
+wizard), and each step ends with a "Weiter: …" button that brings the next step to the top of the screen (on a
+phone the preview sits above the steps, so the page scrolls down to them).
+
+Two things are not steps and sit outside the tab bar, each in its own dialog:
+
+- **Meine Plakate** (save, saved posters, backup files): a button in the header next to "Speichern" and
+  "Exportieren", because it is about the whole poster, not one step.
+- **KI-Entwurf**: offered below "Weiter" in step 1 ("Lieber mit einem KI-Entwurf beginnen?"), because an AI
+  draft is another way to start. When the draft is applied, the dialog closes and the poster shows in the preview.
 
 | Step | Basic | Weitere Einstellungen |
 |---|---|---|
