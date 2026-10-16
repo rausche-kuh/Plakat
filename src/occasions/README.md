@@ -1,39 +1,40 @@
-# Anlässe
+# Occasions
 
-Jeder Anlass ist eine eigene Datei: Farben, Beispieltexte und ein gezeichnetes Zierelement.
-Neuer Anlass: Datei anlegen (z. B. eine bestehende kopieren) und in `index.js` in `OCCASIONS` eintragen.
-Kachel, Gültigkeit beim Laden und die Liste im KI-Auftrag ergeben sich daraus.
+Each occasion is a file of its own: colours, sample texts and a drawn ornament.
+New occasion: create a file (e.g. copy an existing one) and add it to `OCCASIONS` in `index.js`.
+The tile, validity when loading and the list in the AI instruction follow from that.
+Sample texts and names are German, because they appear on the posters.
 
 ```js
-import { flame } from '../render/shapes.js';   // nur falls gebraucht (flame, heart)
+import { flame } from '../render/shapes.js';   // only if needed (flame, heart)
 
 export default {
-  id: 'sommerfest',          // Kennung in gespeicherten Plakaten – später nie umbenennen
+  id: 'sommerfest',          // stored in saved posters – never rename later
   name: 'Sommerfest',
-  short: 'Sommer',           // optional: kürzerer Name für Kachel und Liste
-  quiet: true,               // optional: stiller Anlass – keine Verzierungen (Striche, Kirchen-Symbol)
-  colors: {                  // Farbvarianten „Hell“, „Getönt“, „Dunkel“
-    paper: '#…',             //   Hintergrund „Hell“
-    ink: '#…',               //   Schrift
-    accent: '#…',            //   Akzent (Uhrzeit, Linien, Zierelement)
-    onDark: '#…',            //   Akzent auf dunklem Grund („Dunkel“, „Vollbild“)
-    deep: '#…',              //   Hintergrund „Dunkel“, Verlauf bei „Vollbild“
-    soft: '#…',              //   Hintergrund „Getönt“, Fläche ohne Foto
-    second: '#…',            //   optional: Zweitfarbe
+  short: 'Sommer',           // optional: shorter name for tile and lists
+  quiet: true,               // optional: quiet occasion – no decorations (strokes, hearts, church icon)
+  colors: {                  // colour variants "Hell", "Getönt", "Dunkel"
+    paper: '#…',             //   background "Hell"
+    ink: '#…',               //   text
+    accent: '#…',            //   accent (time, rules, ornament)
+    onDark: '#…',            //   accent on dark ground ("Dunkel", "Vollbild")
+    deep: '#…',              //   background "Dunkel", gradient in "Vollbild"
+    soft: '#…',              //   background "Getönt", area without photo
+    second: '#…',            //   optional: second colour (date stamps, arches, watercolour)
   },
-  warm: { paper: '#…', ink: '#…', a: '#…', b: '#…' },   // Farbvariante „Kräftig“: Papier, Schrift, Akzent, Zweitfarbe
-  texts: {                   // Beispieltexte; fehlende Felder bleiben leer
+  warm: { paper: '#…', ink: '#…', a: '#…', b: '#…' },   // colour variant "Kräftig": paper, text, accent, second colour
+  texts: {                   // sample texts; missing fields stay empty
     eyebrow: 'Herzliche Einladung zum', title: '…', subtitle: '…', verse: '…', ref: '…',
     date: 'Sonntag, …', time: '… Uhr', people: 'Zeile 1\nZeile 2', boxTitle: '…', boxText: '…', note: '…', closing: '…',
   },
   ornament: {
-    wf: 1,                   // Breite im Verhältnis zur Höhe (z. B. 1.6 für die Wimpelkette)
-    draw(c,x,y,s,k){ … },    // mittig um (x,y), Höhe s, Breite s*wf
-  },                         // Farben k: a = Akzent, b = Linien, bg = Hintergrund (zum Ausstanzen), c = Zweitfarbe
+    wf: 1,                   // width relative to height (e.g. 1.6 for the bunting)
+    draw(c,x,y,s,k){ … },    // centred on (x,y), height s, width s*wf
+  },                         // colours k: a = accent, b = lines, bg = background (for cut-outs), c = second colour
 };
 ```
 
-Ort, Adresse und Gemeinde sind keine Beispieltexte des Anlasses, sondern gelten für alle (`src/core/state.js`).
+Place, address and parish are not sample texts of the occasion; they apply to all occasions (`src/core/state.js`).
 
-Bei einem stillen Anlass zusätzlich den festen Hinweis in `index.html` („Am Karfreitag und Ewigkeitssonntag
-bleiben sie weg.“) und die Ausnahme-Regel im KI-Auftrag (`src/data/ki-prompt.js`) anpassen.
+For a quiet occasion, also adjust the fixed hint in `index.html` („Am Karfreitag und Ewigkeitssonntag
+bleiben sie weg.“) and the exception rule in the AI instruction (`src/data/ki-prompt.js`).

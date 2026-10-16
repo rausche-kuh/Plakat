@@ -1,5 +1,5 @@
 /* ---------- Herzlich-Baukasten: Papier, Pinsel, Handschrift ----------
-   Für die Layouts „Einladung“ und „Pinnwand“. Die Elemente aus warmEls/warmCard/warmClosing
+   Für die Herzlich-Layouts (Einladung, Pinnwand; Teile auch in Abriss und Aquarell). Die Elemente aus warmEls/warmCard/warmClosing
    haben die Form {gap, measure(k) → Höhe, draw(y[,x])} und werden mit warmStack gestapelt. */
 import { mix } from '../core/color.js';
 import { rng, rot } from './shapes.js';
@@ -176,13 +176,14 @@ export function warmClosing(env,wc,maxW){
         if (doodle) churchIcon(ctx,bx+m.padX+m.hs*0.3,y+m.bh/2-m.f.px*0.05,m.f.px*1.0,wc.onBand); }); } };
 }
 /** Stapelt Elemente in Rechteck r; verkleinert bis es passt und verteilt übrigen Platz auf die Abstände.
-    mode: 'top' (oben beginnen) oder 'center' */
+    mode: 'top' (oben beginnen) oder 'center'. Gibt die Unterkante zurück. */
 export function warmStack(env,els,r,mode){
   const {u}=env; if (!els.length) return; let hs,total,gaps;
   for (let k=1;k>=0.4;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); total=hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0); if (total<=r.h) break; }
   const gsum=gaps.reduce((a,b)=>a+b,0), extra=Math.max(0,r.h-total), add=Math.min(extra,gsum*(mode==='top'?0.7:1.5)), f=gsum?add/gsum:0;
   let y=mode==='top'?r.y:r.y+(r.h-total-add)/2;
   els.forEach((e,i)=>{ y+=gaps[i]*(1+f); e.draw(y); y+=hs[i]; });
+  return y;
 }
 /** Fußleiste über die ganze Breite (Papier mit Logo und Gemeindename) */
 export function warmFooterH(env){ return ((env.st.texts.parish||'').trim()||env.logo)?66*env.u:0; }

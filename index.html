@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:ital,wght@0,300;0,400;0,500;1,300&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Caveat+Brush&family=Kalam:wght@400;700&family=Nunito:wght@600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="stylesheet" href="css/theme.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
@@ -38,8 +37,9 @@
 
     <section class="tabpanel" id="tab-anlass" role="tabpanel">
       <h2>Grundstimmung</h2>
-      <div class="grid two" id="moodGrid">
-        <button class="tile" data-mood="herzlich"><span class="sample" style="font-family:'Caveat Brush',cursive;color:#CF5F1B;font-size:30px">Willkommen</span><span class="lbl">Herzlich und bunt</span><span class="sub">für Feste und Familien</span></button>
+      <div class="grid three" id="moodGrid">
+        <button class="tile" data-mood="herzlich"><span class="sample" style="font-family:'Caveat Brush',cursive;color:#CF5F1B;font-size:21px">Willkommen</span><span class="lbl">Herzlich und bunt</span><span class="sub">für Feste und Familien</span></button>
+        <button class="tile" data-mood="freundlich"><span class="sample" style="font-family:Fraunces,Georgia,serif;font-weight:600;color:#3E6F8E;font-size:15px">Willkommen</span><span class="lbl">Freundlich und klar</span><span class="sub">für Konzerte, Taufe, Jugend</span></button>
         <button class="tile" data-mood="ruhig"><span class="sample" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600">Willkommen</span><span class="lbl">Ruhig und edel</span><span class="sub">für stille Anlässe</span></button>
       </div>
       <p class="hint">Stellt Schrift, Farbe und Layout passend ein. Alles lässt sich danach einzeln ändern.</p>
@@ -70,12 +70,12 @@
 
     <section class="tabpanel" id="tab-layout" role="tabpanel" hidden>
       <h2>Layout <small>– frei mit jedem Anlass kombinierbar</small></h2>
-      <div class="grid layouts" id="layoutGrid"></div><!-- Kacheln aus src/layouts/ -->
+      <div id="layoutGroups"></div><!-- Gruppen und Kacheln aus src/layouts/ -->
 
       <h2>Feinschliff</h2>
       <label class="check"><input type="checkbox" id="optOrnament"> Zierelement des Anlasses zeigen</label>
       <label class="check"><input type="checkbox" id="optFrame"> Feine Rahmenlinie</label>
-      <label class="check"><input type="checkbox" id="optDoodles"> Kleine Verzierungen (Striche und Kirchen-Symbol)</label>
+      <label class="check"><input type="checkbox" id="optDoodles"> Kleine Verzierungen (Striche, Herzen, Kirchen-Symbol)</label>
       <label class="check"><input type="checkbox" id="optSun"> Warmes Sonnenlicht im Foto</label>
       <p class="hint"><span id="warmLayoutsHint">Verzierungen und Sonnenlicht wirken in den Layouts „Einladung“ und „Pinnwand“.</span> Am Karfreitag und Ewigkeitssonntag bleiben sie weg.</p>
       <div class="range">
@@ -120,7 +120,7 @@
 
       <label class="f" for="t-people">Mitwirkende oder Programm</label>
       <textarea class="in" id="t-people" data-t="people" rows="3"></textarea>
-      <p class="hint">Eine Zeile pro Eintrag.</p>
+      <p class="hint">Eine Zeile pro Eintrag. Eine Erläuterung mit „ – “ anhängen, z. B. „Kuchenbuffet – bringt gern etwas mit“; manche Layouts setzen sie kleiner darunter.</p>
 
       <h2 style="margin-top:26px">Hervorgehobener Kasten</h2>
       <p class="hint" style="margin-top:-4px">Für das Wichtigste neben dem Termin, etwa „Für die ganze Familie!“.</p>
@@ -182,6 +182,7 @@
 
     <section class="tabpanel" id="tab-ki" role="tabpanel" hidden>
       <p class="hint" style="margin-top:16px">Lassen Sie ChatGPT, Claude oder eine andere KI einen ersten Entwurf schreiben. Sie bekommen Texte und Gestaltung zurück, das Foto laden Sie hier selbst hoch – so bleibt Ihre Kirche echt.</p>
+      <p class="hint">Das ist freiwillig – die Werkstatt funktioniert auch ganz ohne KI. Ihre Texte, Fotos und Plakate bleiben in diesem Browser. Zur KI gelangt nur, was Sie unter 1. eintragen und selbst hinüberkopieren; schreiben Sie dort nur, was ohnehin öffentlich auf dem Plakat stehen soll.</p>
 
       <h2>1. Infos zur Veranstaltung eingeben</h2>
       <textarea class="in" id="kiInfo" rows="7" placeholder="z. B. Erntedank-Gottesdienst in der Kirche Jabel, Sonntag 18.10.2026, 10 Uhr. Für die ganze Familie, Kinder gestalten mit. Kirchengemeinde Jabel"></textarea>

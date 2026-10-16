@@ -1,59 +1,110 @@
 # Plakatwerkstatt
 
-Plakate für Gottesdienste und Veranstaltungen der Gemeinde – im Browser gestalten, als PDF drucken
-oder als Bild teilen. Läuft komplett im Browser, Plakate werden lokal (IndexedDB) gespeichert.
+A poster workshop for church congregations. You design posters for services and events in the browser,
+then print them as a PDF or share them as an image. The user interface is in German, because the
+people who use it are; this documentation is in English.
 
-## Starten
+## Why this exists
+
+In our congregation's group chats, AI-generated posters have become the favourites: warm,
+hand-lettered, photo-heavy and a little playful. But image generators also bring the uncanny side:
+
+- misspelled or garbled text and invented dates
+- churches and people that don't exist
+- the same glossy light on everything
+- no way to fix one typo without re-rolling the whole picture
+
+Plakatwerkstatt keeps the look and drops the uncanny part:
+
+- **Real text.** Every letter is typeset by code in a real font, exactly as entered. Nothing is "painted".
+- **Real photos.** You upload your own picture of your church, your choir, your Erntekrone.
+- **The styles people like, done deliberately.** Paper notes, brush strokes, hand lettering, frosted panels
+  and watercolour washes are drawn on a canvas. The same input always gives the same poster.
+- **Everything stays editable.** Change the time, swap the photo, try another layout, all in one click.
+
+## Privacy: nothing leaves the browser
+
+Plakatwerkstatt runs entirely in the browser. There is no server, no account, no tracking and no built-in AI call.
+
+- Texts, photos, logos and saved posters stay on the device (IndexedDB); PDF and PNG are created locally.
+- The only network requests load the web fonts from Google Fonts. They carry no poster content,
+  but like on any website using Google Fonts, the visitor's IP address reaches Google. If that
+  matters for your congregation, host the font files yourself and replace the link in `index.html`.
+- Using an AI is **optional** and always a manual copy-and-paste step you control.
+  See **[docs/ai-guide.md](docs/ai-guide.md)** for how to use it with ChatGPT, Claude & co.,
+  what gets shared, and how to teach the workshop a new look.
+
+## Getting started
 
 ```sh
-npm install      # einmalig (nur esbuild für den Build)
+npm install      # once (only esbuild, for the build)
 npm run dev      # → http://localhost:8000
 npm run build    # → dist/plakatwerkstatt.html
 ```
 
-`index.html` lädt die Quellen als ES-Module und braucht deshalb einen Webserver (`npm run dev`,
-GitHub Pages o. Ä.); per Doppelklick über `file://` geht das nicht.
-`npm run build` bündelt alles in **eine** HTML-Datei, die per Doppelklick funktioniert und sich
-als Claude-Artefakt veröffentlichen lässt. Schriften (Google Fonts) und jsPDF kommen weiter aus dem Netz.
+`index.html` loads the sources as ES modules, so it needs a web server (`npm run dev`, GitHub Pages or similar);
+opening it via `file://` does not work. `npm run build` bundles everything into **one** HTML file that works
+on double-click and can be published as a Claude artifact.
 
-## Aufbau
+## Layouts
+
+Every layout works with every occasion, font and colour variant. In the "Layout" tab they are grouped
+from playful to quiet:
+
+| Group (UI name) | Layouts | For |
+|---|---|---|
+| **Herzlich und bunt** | Einladung, Pinnwand, Milchglas, Abriss, Aquarell | Festivals, families, summer events. These are the community favourites in the style of AI posters. |
+| **Freundlich und klar** | Farbfeld, Bogen, Vollbild | Concerts, baptisms, youth: clear shapes with some colour |
+| **Ruhig und edel** | Klassisch, Seitenspalte, Nur Schrift | Funerals, Good Friday, remembrance |
+
+- **Milchglas** is modelled on a summer-picnic poster from the group chat: a full-bleed photo,
+  hand-lettered title and frosted glass panels.
+- **Abriss** puts the photo above a torn paper edge, with the date as a round stamp.
+- **Aquarell** sets the photo in a painted shape on paper with watercolour washes.
+- **Farbfeld** has a bold colour field, a tilted photo print and a date stamp.
+- **Bogen** sets the photo in an arch inside colourful rainbow arches.
+
+Medaillon, Passepartout and Kirchenfenster were retired. Saved posters that used them open as "Klassisch".
+
+## Project structure
 
 ```
-index.html            Gerüst der Oberfläche (Tabs, Felder, Dialog)
-css/                  theme · layout · components · responsive (in dieser Reihenfolge)
+index.html            UI skeleton (tabs, fields, dialog)
+css/                  theme · layout · components · responsive (in this order)
 src/
-  main.js             Start: Oberfläche verdrahten, Entwurf und Schriften laden
-  layouts/            ein Layout pro Datei + index.js (Verzeichnis)   → README.md
-  occasions/          ein Anlass pro Datei: Farben, Beispieltexte, Zierelement   → README.md
+  main.js             start-up: wire up the UI, load the draft and fonts
+  layouts/            one layout per file + index.js (registry, groups)   → README.md
+  occasions/          one occasion per file: colours, sample texts, ornament   → README.md
   data/
-    fontsets.js       Schriftwahlen (Herzlich, Edel, …)
-    ki-prompt.js      Auftrag für ChatGPT/Claude im Tab „KI-Entwurf“
-  render/             Zeichnen auf dem Canvas
-    poster.js         renderPoster(): baut env und ruft das Layout auf
-    toolkit.js        Sammel-Export aller Zeichenhilfen für Layouts
-    blocks.js         klassischer Textsatz (Gruppen setzen, automatisch verkleinern)
-    warm.js           Herzlich-Baukasten (Papier, Pinsel, Handschrift)
-    parts.js          Foto, Fußzeile, Rahmen
+    fontsets.js       font choices (Herzlich, Edel, …)
+    ki-prompt.js      instruction for ChatGPT/Claude in the "KI-Entwurf" tab (German)
+  render/             drawing on the canvas
+    poster.js         renderPoster(): builds env and calls the layout
+    toolkit.js        single export of all drawing helpers for layouts
+    blocks.js         classic typesetting (groups, automatic shrinking)
+    warm.js           "Herzlich" kit (paper, brush strokes, handwriting)
+    decor.js          newer building blocks: frosted glass, torn paper, watercolour, date stamp, icons, list items
+    parts.js          photo, footer, frame
     text.js, shapes.js
-  core/               ohne Oberfläche: Zustand, Farbschema, Bilder, Speicher, Dateiformat
-  ui/                 ein Modul pro Tab (anlass, layout, texte, foto, ablage, ki) + preview, export, sync
-scripts/              build.mjs (Einzeldatei), serve.mjs (Entwicklungsserver)
+  core/               no UI: state, colour scheme, images, storage, file format, PDF writer
+  ui/                 one module per tab (anlass, layout, texte, foto, ablage, ki) + preview, export, sync
+scripts/              build.mjs (single file), serve.mjs (dev server)
+docs/ai-guide.md      using the workshop with AI (optional)
 ```
 
-## Erweitern
+## Extending
 
-- **Neues Layout:** [`src/layouts/README.md`](src/layouts/README.md) – eine Datei, eine Zeile im Verzeichnis.
-- **Neuer Anlass:** [`src/occasions/README.md`](src/occasions/README.md) – genauso.
-- **Neue Schrift:** Eintrag in `src/data/fontsets.js` und die Familie im Google-Fonts-Link in `index.html`.
+- **New layout:** [`src/layouts/README.md`](src/layouts/README.md). One file and one line in the registry.
+- **New occasion:** [`src/occasions/README.md`](src/occasions/README.md). Same idea.
+- **New font:** an entry in `src/data/fontsets.js` and the family in the Google Fonts link in `index.html`.
 
-Die Kennungen (`id` der Layouts und Anlässe, Schlüssel der Schriften) stehen in gespeicherten Plakaten
-und Dateien – nicht umbenennen.
+The identifiers (`id` of layouts and occasions, keys of font sets) are stored in saved posters and files,
+so never rename them. A layout that is removed gets an entry in `RETIRED` in `src/layouts/index.js`.
 
-## Datenfluss
+## Data flow
 
-Der Zustand des aktuellen Plakats (`st` in `src/core/state.js`) ist ein einfaches Objekt:
-Anlass, Layout, Schrift, Farbvariante, Optionen, Texte, Foto und Logo (als Data-URL).
-Die Oberfläche ändert `st` und ruft `changed()` auf (`src/ui/sync.js`); das zeichnet die Vorschau neu
-und sichert den Entwurf. `renderPoster(ctx, st, W)` zeichnet daraus das Plakat in beliebiger Auflösung –
-für Vorschau, Miniaturen und Export gleich. Gesicherte Dateien und KI-Antworten laufen durch
-`sanitize()`, unbekannte Werte fallen auf Standardwerte zurück.
+The state of the current poster (`st` in `src/core/state.js`) is a plain object: occasion, layout, font,
+colour variant, options, texts, photo and logo (as data URLs). The UI changes `st` and calls `changed()`
+(`src/ui/sync.js`), which redraws the preview and saves the draft. `renderPoster(ctx, st, W)` draws the poster
+at any resolution, the same way for preview, thumbnails and export. Saved files and AI answers go through
+`sanitize()`, so unknown values fall back to defaults.

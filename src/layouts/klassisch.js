@@ -4,6 +4,8 @@ import { rgba, drawPhoto, ornCols, blocks, fitDraw, footerH, drawFooter, drawFra
 export default {
   id: 'klassisch',
   name: 'Klassisch',
+  group: 'ruhig',
+  about: 'Foto in der oberen Hälfte, Zierelement auf der Kante, Text mittig darunter',
   photo: true,
   draw(env){
     const {ctx,W,H,u,th,st}=env, ph=H*0.5;

@@ -5,6 +5,8 @@ import { rgba, drawPhoto, warmCols, warmEls, warmCard, warmClosing, warmStack, w
 export default {
   id: 'einladung',
   name: 'Einladung',
+  group: 'herzlich',
+  about: 'Foto über die ganze Fläche, Titel auf einem Papierzettel, Ort und Schlusszeile auf Pinselstrichen',
   photo: true,
   warm: true,
   draw(env){

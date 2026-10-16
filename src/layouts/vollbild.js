@@ -4,6 +4,8 @@ import { rgba, drawPhoto, lightCols, blocks, fitDraw, footerH, drawFooter, drawF
 export default {
   id: 'vollbild',
   name: 'Vollbild',
+  group: 'freundlich',
+  about: 'Foto über die ganze Fläche, helle Schrift auf dunklem Verlauf – stimmungsvoll, gut für Konzerte',
   photo: true,
   draw(env){
     const {ctx,W,H,u,th,st}=env, L=lightCols(env);
