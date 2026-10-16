@@ -18,6 +18,9 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
 3. **Implement:** build the confirmed plan with the `ponytail` skill: the smallest change that does all of the
    plan. Anything new that comes up goes back to the user, not into the code.
 
+**Design work on the editor UI:** the `impeccable` skill (`/impeccable <command>`). Its product context is
+`docs/product-concept.md`, and the rules below win over its advice (no generated images, no network requests).
+
 ## Only read what the task needs
 
 - **New layout:** `src/layouts/README.md`, `src/render/toolkit.js` and a similar layout from the templates table
