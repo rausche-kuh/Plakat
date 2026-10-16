@@ -6,6 +6,18 @@ AI-generated posters, but with real text, real photos and nothing uncanny. See `
 **Languages:** the UI and everything that ends up on a poster are German. Code comments are German too,
 matching the existing code. Markdown docs are English.
 
+## Big changes: grill, plan, then ponytail
+
+A big change is a new feature or tab, a change across several modules, anything that touches the saved poster
+format, or a new dependency. Small fixes skip this. The skills live in `.claude/skills/`.
+
+1. **Grill:** start with a grill-me session (`/grill-me`, or the `grilling` skill when you start it yourself).
+   No code yet.
+2. **Plan:** the session ends in a short written plan: the decisions, the files to touch and how to check the
+   result (see "Trying it out"). The user confirms it before anything gets built.
+3. **Implement:** build the confirmed plan with the `ponytail` skill: the smallest change that does all of the
+   plan. Anything new that comes up goes back to the user, not into the code.
+
 ## Only read what the task needs
 
 - **New layout:** `src/layouts/README.md`, `src/render/toolkit.js` and a similar layout from the templates table
