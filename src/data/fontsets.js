@@ -9,7 +9,7 @@
    bs           Faktor für alle übrigen Textgrößen
    italicBoost  Faktor für Einladungszeile, Hinweis und Schlusszeile
    warmTitle/warmDate/warmCard  Größen für Titel, Datum und Kasten in den Herzlich-Layouts
-   css/cssW     Schrift und Gewicht der Musterkachel im Tab „Anlass“
+   css/cssW     Schrift und Gewicht der Musterkachel im Schritt „Gestaltung“
    Neue Schriftfamilien zusätzlich im Google-Fonts-Link in index.html eintragen. */
 export const FONTSETS = {
   herzlich:{name:'Herzlich',sub:'Pinsel und Handschrift',css:"'Caveat Brush'",cssW:400,

@@ -14,7 +14,7 @@ export function defaults(occ='advent', keep){
   const t = OCC[occ].texts;
   return {v:1,id:null,name:'',occasion:occ,layout:'einladung',fontStyle:'herzlich',variant:'kraeftig',accent:null,
     ornament:true,frame:false,doodles:true,sunlight:true,titleScale:1,textScale:1,
-    texts:{...t, place:keep?.place??PLACE, address:keep?.address??ADDRESS, parish:keep?.parish??PARISH},
+    texts:{...t, place:keep?.place??PLACE, address:keep?.address??ADDRESS, parish:keep?.parish??PARISH}, confirmed:[],
     photo:{src:null,zoom:1,x:0,y:0,filter:'original',brightness:0},
     logo:{src:keep?.logo??null}};
 }
@@ -34,10 +34,18 @@ export function sanitize(s){
   out.ornament = s.ornament!==false; out.frame = !!s.frame; out.doodles = s.doodles!==false; out.sunlight = s.sunlight!==false;
   out.titleScale = clamp(+s.titleScale||1,0.6,1.5); out.textScale = clamp(+s.textScale||1,0.8,1.3);
   out.texts = {...d.texts}; if (s.texts) for (const k in d.texts) if (typeof s.texts[k]==='string') out.texts[k]=s.texts[k];
+  out.confirmed = Array.isArray(s.confirmed) ? s.confirmed.filter(k=>Object.hasOwn(d.texts,k)) : [];
   const p = s.photo||{};
   out.photo = {src: typeof p.src==='string'&&p.src.startsWith('data:image/')?p.src:null, zoom:clamp(+p.zoom||1,1,3), x:clamp(+p.x||0,-1,1), y:clamp(+p.y||0,-1,1), filter:FILTERS.includes(p.filter)?p.filter:'original', brightness:clamp(+p.brightness||0,-30,30)};
   out.logo = {src: typeof s.logo?.src==='string'&&s.logo.src.startsWith('data:image/')?s.logo.src:null};
   return out;
+}
+
+/** Felder, die noch genau den Beispieltext des Anlasses (oder den Standard-Ort) zeigen und nicht mit „Passt so“ bestätigt sind.
+    Wird nicht gespeichert, sondern verglichen – so zeigen auch ältere Plakate ihre Beispieltexte. */
+export function sampleKeys(s){
+  const t={...OCC[s.occasion].texts, place:PLACE, address:ADDRESS, parish:PARISH};
+  return Object.keys(t).filter(k=>t[k] && s.texts[k]===t[k] && !s.confirmed.includes(k));
 }
 
 export let st = defaults();

@@ -20,8 +20,6 @@ label.f{display:block;font-weight:600;font-size:13.5px;margin:15px 0 5px}
 textarea.in{resize:vertical;min-height:42px}
 .in:focus{outline:2px solid var(--accent);outline-offset:-1px;background:var(--panel)}
 .hint{color:var(--muted);font-size:12.5px;margin:5px 0 0;line-height:1.4}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pair label.f{margin-top:15px}
 .datefield{display:flex;gap:6px}
 .datefield .in{flex:1}
 .datepick{position:relative;flex-shrink:0}
@@ -54,6 +52,26 @@ textarea.in{resize:vertical;min-height:42px}
 
 .note{background:var(--accent-soft);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:13.5px}
 .note p{margin:0 0 8px}
+.note p:last-child{margin-bottom:0}
+
+/* Schritte: „Weiter“ am Ende, „Weitere Einstellungen“ eingeklappt */
+.next{display:block;width:100%;margin-top:28px}
+details.more{margin-top:24px;border-top:1px solid var(--line)}
+details.more>summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px;padding:12px 0 2px}
+
+/* Beispieltexte des Anlasses */
+.in.is-sample{background:var(--sample);border-color:var(--sample-line)}
+label.f .tag{margin-left:8px;padding:0 7px;border-radius:999px;background:var(--sample);border:1px solid var(--sample-line);color:var(--sample-ink);font-size:11.5px;font-weight:600;vertical-align:1px}
+.fhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 8px;margin:15px 0 5px}
+.fhead label.f{margin:0}
+.sample-tools{display:flex;gap:4px}
+.sample-tools .btn{padding:2px 8px;font-size:12.5px}
+.sample-tools[hidden],.tag[hidden]{display:none}
+.sample-note{background:var(--sample);color:var(--sample-ink);border:1px solid var(--sample-line);margin-top:14px}
+.btn.sample-btn{background:var(--sample);border-color:var(--sample-line);color:var(--sample-ink)}
+.warn{border:1px solid var(--sample-line);border-radius:10px;padding:14px;background:var(--sample)}
+.warn h3{margin:0 0 6px;font-size:15.5px}
+.warn p{margin:0 0 10px;font-size:13.5px}
 
 .dropzone{border:1.5px dashed var(--line);border-radius:10px;padding:18px;text-align:center;background:var(--panel2);margin-top:12px}
 .dropzone p{margin:6px 0 0;color:var(--muted);font-size:13px}

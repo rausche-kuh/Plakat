@@ -7,7 +7,7 @@ import { requestRender } from './preview.js';
 import { activeTab } from './tabs.js';
 import { syncAnlass } from './anlass.js';
 import { syncLayoutTab, renderLayoutThumbs } from './layout.js';
-import { syncTexte } from './texte.js';
+import { syncTexte, syncSamples } from './texte.js';
 import { syncFoto } from './foto.js';
 import { syncAblage, scheduleDraft } from './ablage.js';
 
@@ -19,5 +19,6 @@ export function changed(){
   requestRender();
   if (activeTab==='layout') renderLayoutThumbs();
   $('#accentReset').hidden=!st.accent;
+  syncSamples();
   scheduleDraft();
 }

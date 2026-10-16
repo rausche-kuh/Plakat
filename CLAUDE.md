@@ -27,6 +27,7 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
   (elements of the newer layouts). Each affects several layouts, so check which ones use it.
 - **UI:** the tab's module in `src/ui/` plus its place in `index.html`. Styles in `css/components.css`.
 - **AI usage / instruction:** `docs/ai-guide.md`, `src/data/ki-prompt.js`.
+- **Product direction, UI structure, sample texts:** `docs/product-concept.md`.
 - Overview of all folders: `README.md`.
 
 ## Rules

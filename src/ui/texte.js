@@ -1,8 +1,11 @@
-/* ---------- Tab „Texte“: Textfelder (data-t), Datum aus dem Kalender, Logo ---------- */
-import { st } from '../core/state.js';
+/* ---------- Schritt 2 „Texte“: Textfelder (data-t), Beispieltexte markieren, Datum aus dem Kalender, Logo ---------- */
+import { st, sampleKeys } from '../core/state.js';
 import { ensureImages, fileToDataURL } from '../core/images.js';
 import { $, $$, toast } from './dom.js';
 import { changed } from './sync.js';
+import { showTab } from './tabs.js';
+
+let fields=[];   // {el,k,name,tag,tools} in der Reihenfolge des Formulars
 
 export function renderLogoBox(){
   const box=$('#logoBox');
@@ -14,8 +17,33 @@ export function renderLogoBox(){
   box.querySelector('[data-act=lchange]').addEventListener('click',()=>$('#logoFile').click());
 }
 
+/** Felder, die noch Beispieltexte zeigen (Formular-Reihenfolge) */
+export const openSamples = () => { const s=sampleKeys(st); return fields.filter(f=>s.includes(f.k)); };
+/** Springt zum ersten Beispieltext in Schritt 2 */
+export function goToSamples(){ showTab('texte'); openSamples()[0]?.el.focus(); }
+
+/** Markierung der Beispieltexte im Formular und Zähler über dem Formular und unter der Vorschau */
+export function syncSamples(){
+  const open=openSamples(), n=open.length, one=n===1;
+  fields.forEach(f=>{ const on=open.includes(f); f.el.classList.toggle('is-sample',on); f.tag.hidden=f.tools.hidden=!on; });
+  $('#sampleNote').hidden=$('#sampleBtn').hidden=!n;
+  $('#sampleNoteCount').textContent=`Noch ${n} ${one?'Beispieltext':'Beispieltexte'} – bitte prüfen`;
+  $('#sampleBtn').textContent=`${n} ${one?'Beispieltext':'Beispieltexte'} ungeprüft`;
+}
+
 export function initTexte(){
-  $$('[data-t]').forEach(el=>el.addEventListener('input',()=>{ st.texts[el.dataset.t]=el.value; changed(); }));
+  fields=[...$$('[data-t]')].map(el=>{
+    const k=el.dataset.t, lab=$(`label[for="${el.id}"]`), name=lab.textContent.trim();
+    const tag=document.createElement('span'); tag.className='tag'; tag.textContent='Beispiel'; lab.append(tag);
+    const tools=document.createElement('div'); tools.className='sample-tools';
+    tools.innerHTML=`<button class="btn small" data-act="ok">Passt so</button><button class="btn small ghost" data-act="clear">Leeren</button>`;
+    tools.querySelector('[data-act=ok]').addEventListener('click',()=>{ st.confirmed.push(k); changed(); });
+    tools.querySelector('[data-act=clear]').addEventListener('click',()=>{ st.texts[k]=el.value=''; el.focus(); changed(); });
+    const head=document.createElement('div'); head.className='fhead'; lab.before(head); head.append(lab,tools);
+    el.addEventListener('input',()=>{ st.texts[k]=el.value; changed(); });
+    return {el,k,name,tag,tools};
+  });
+  $('#sampleBtn').addEventListener('click',goToSamples);
   $('#datePick').addEventListener('change',e=>{
     if (!e.target.value) return;
     const [y,m,d]=e.target.value.split('-').map(Number);
@@ -30,6 +58,6 @@ export function initTexte(){
 }
 
 export function syncTexte(){
-  $$('[data-t]').forEach(el=>{ if (el.value!==st.texts[el.dataset.t]) el.value=st.texts[el.dataset.t]||''; });
-  renderLogoBox();
+  fields.forEach(({el,k})=>{ if (el.value!==st.texts[k]) el.value=st.texts[k]||''; });
+  renderLogoBox(); syncSamples();
 }
