@@ -1,0 +1,26 @@
+/* Seitenaufbau: Kopfzeile, Seitenleiste mit Tabs, Vorschau-Bühne */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:12px;min-width:0}
+.brand h1{margin:0;font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:27px;line-height:1.1;letter-spacing:.005em}
+.brand p{margin:0;color:var(--muted);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{display:flex;gap:8px;flex-shrink:0}
+
+.app{display:grid;grid-template-columns:minmax(330px,420px) minmax(0,1fr);min-height:calc(100vh - 62px)}
+.panel{background:var(--panel);border-right:1px solid var(--line);min-width:0}
+.tabs{display:flex;gap:2px;padding:6px 12px 0;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:0;background:var(--panel);z-index:3;scrollbar-width:none}
+.tab{appearance:none;border:0;background:none;font-weight:600;font-size:14px;color:var(--muted);padding:11px 8px 10px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabpanel{padding:6px 20px 48px}
+.tabpanel[hidden]{display:none}
+.tabpanel h2{font-size:14px;font-weight:600;margin:22px 0 10px;color:var(--ink)}
+.tabpanel h2 small{font-weight:400;color:var(--muted)}
+
+.stage{background:var(--stage);padding:28px 24px 36px;min-width:0}
+.stage-inner{position:sticky;top:20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.poster-wrap{position:relative;width:100%;max-width:calc((100vh - 150px)/1.4142);max-width:calc((100dvh - 150px)/1.4142)}
+#poster{display:block;width:100%;aspect-ratio:1/1.4142;background:#fff;box-shadow:var(--shadow);border-radius:1px}
+#poster.pan{touch-action:none;outline:2px dashed var(--accent);outline-offset:5px}
+.stage-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;color:var(--muted);font-size:13px;min-height:32px}
+.drop-hint{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(45,75,107,.18);border:2px dashed var(--accent);font-weight:600;color:var(--ink);font-size:16px}
+.stage.dragover .drop-hint{display:flex}

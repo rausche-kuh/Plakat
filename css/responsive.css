@@ -1,0 +1,16 @@
+/* Anpassungen für Tablet und Handy – zuletzt laden */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .stage{order:-1;padding:16px 14px 18px}
+  .stage-inner{position:static}
+  .poster-wrap{max-width:min(100%,calc(70svh/1.4142))}
+  .panel{border-right:0}
+  .brand p{display:none}
+}
+@media (max-width:520px){
+  .top{padding:10px 14px}
+  .brand h1{font-size:23px}
+  .top-actions .btn{padding:7px 11px}
+  .tabpanel{padding:4px 14px 40px}
+}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}

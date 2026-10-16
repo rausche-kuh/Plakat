@@ -1,0 +1,13 @@
+{
+  "name": "plakatwerkstatt",
+  "private": true,
+  "description": "Plakate für Gottesdienste und Veranstaltungen der Gemeinde",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
