@@ -1,4 +1,4 @@
-/* ---------- Tab „Foto“: Hochladen, Ablegen auf der Vorschau, Ausschnitt, Bildstimmung ---------- */
+/* ---------- Schritt 4 „Foto“: Hochladen, Ablegen auf der Vorschau, Ausschnitt, Bildstimmung ---------- */
 import { st } from '../core/state.js';
 import { ensureImages, fileToDataURL } from '../core/images.js';
 import { getLayout } from '../layouts/index.js';

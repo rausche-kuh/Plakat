@@ -21,8 +21,9 @@ make a poster now and then. What they know is a template they fill in and print.
 
 ## Principles
 
-1. **Fill in like a form.** The steps follow the order people think in: what is it for, what does it say,
-   which photo, how does it look.
+1. **Fill in like a form.** The steps follow the order people think in: what is it for, how does it look,
+   what does it say, which photo. The look comes before the texts because the layout decides where each piece of
+   information goes and how much room it gets.
 2. **The basics are enough.** Every step leads to a good poster without opening anything else.
 3. **More options are welcome, as long as the UI stays clean.** Everything beyond the basics sits in a folded
    section "Weitere Einstellungen" at the end of a step, closed by default. Nothing gets removed.
@@ -46,9 +47,9 @@ Two things are not steps and sit outside the tab bar, each in its own dialog:
 | Step | Basic | Weitere Einstellungen |
 |---|---|---|
 | **1 Anlass** | Occasion tiles | – |
-| **2 Texte** | All fields, grouped like a form: *Was?* · *Wann und wo?* · *Mehr dazu* · *Absender* | – (texts are content, folding them away would hide sample texts that still print) |
-| **3 Foto** | Upload, drag in the preview, zoom, Bildstimmung | Ausschnitt sliders, reset, brightness |
-| **4 Gestaltung** | Grundstimmung, Farbe, the layout thumbnails in their three groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, text sizes) |
+| **2 Gestaltung** | Grundstimmung, Farbe, the layout thumbnails in their three groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, text sizes) |
+| **3 Texte** | All fields, grouped like a form: *Was?* · *Wann und wo?* · *Mehr dazu* · *Absender* | – (texts are content, folding them away would hide sample texts that still print) |
+| **4 Foto** | Upload, drag in the preview, zoom, Bildstimmung | Ausschnitt sliders, reset, brightness |
 
 The last step's button "Weiter: Exportieren" opens the export dialog.
 
@@ -59,7 +60,7 @@ not facts: the dates are invented and "Ev. Kirche St. Johannis" does not exist.
 
 - **What counts as a sample:** a field that still holds exactly the occasion's sample text, or the default
   Ort/Adresse/Gemeinde, and that the user has not confirmed. Empty fields never count.
-- **Marking in step 2:** the field is amber, its label carries a "Beispiel" tag, and two buttons sit below it:
+- **Marking in step 3 (Texte):** the field is amber, its label carries a "Beispiel" tag, and two buttons sit below it:
   "Passt so" (keep it as it is) and "Leeren". Typing removes the marking at once. The top of the step says
   "Noch N Beispieltexte – bitte prüfen".
 - **Under the preview:** "N Beispieltexte ungeprüft"; a click jumps to the first one.

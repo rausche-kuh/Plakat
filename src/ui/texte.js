@@ -1,4 +1,4 @@
-/* ---------- Schritt 2 „Texte“: Textfelder (data-t), Beispieltexte markieren, Datum aus dem Kalender, Logo ---------- */
+/* ---------- Schritt 3 „Texte“: Textfelder (data-t), Beispieltexte markieren, Datum aus dem Kalender, Logo ---------- */
 import { st, sampleKeys } from '../core/state.js';
 import { ensureImages, fileToDataURL } from '../core/images.js';
 import { $, $$, toast } from './dom.js';
@@ -19,7 +19,7 @@ export function renderLogoBox(){
 
 /** Felder, die noch Beispieltexte zeigen (Formular-Reihenfolge) */
 export const openSamples = () => { const s=sampleKeys(st); return fields.filter(f=>s.includes(f.k)); };
-/** Springt zum ersten Beispieltext in Schritt 2 */
+/** Springt zum ersten Beispieltext im Schritt „Texte“ */
 export function goToSamples(){ showTab('texte'); openSamples()[0]?.el.focus(); }
 
 /** Markierung der Beispieltexte im Formular und Zähler über dem Formular und unter der Vorschau */

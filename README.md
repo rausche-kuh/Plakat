@@ -48,7 +48,7 @@ on double-click and can be published as a Claude artifact.
 
 ## Layouts
 
-Every layout works with every occasion, font and colour variant. In step 4, "Gestaltung", they are grouped
+Every layout works with every occasion, font and colour variant. In step 2, "Gestaltung", they are grouped
 from playful to quiet:
 
 | Group (UI name) | Layouts | For |

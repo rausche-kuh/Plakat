@@ -25,7 +25,7 @@ a small JSON file, and the workshop turns it into one or two finished drafts.
    - paste the answer into **„3. Antwort der KI einfügen“** and click **„Entwurf übernehmen“**, or
    - click **„Datei der KI öffnen“** and pick the file.
 4. The dialog closes and the draft shows in the preview. All drafts are also saved under **„Meine Plakate“** (header).
-5. Upload **your own photo** in step 3 **Foto**, read everything once, then export.
+5. Upload **your own photo** in step 4 **Foto**, read everything once, then export.
 
 ### What the AI gets, and what it doesn't
 
