@@ -7,7 +7,7 @@ export { mix, rgba } from '../core/color.js';
 // Formen: Pfade für Foto-Ausschnitte, Zufall mit festem Startwert, Drehen
 export { shapePath, rng, rot, flame, heart } from './shapes.js';
 // Textsatz auf unterster Ebene
-export { fontStr, measureW, drawSpaced, wrapLines, wrapBalanced, quote, tLines, maxLineW, fillLines, fitText } from './text.js';
+export { sz, fontStr, measureW, drawSpaced, wrapLines, wrapBalanced, quote, tLines, maxLineW, fillLines, fitText } from './text.js';
 // Bausteine: Foto, Fußzeile, Rahmen, Farbsätze
 export { drawPhoto, footerH, drawFooter, drawFrame, lightCols, ornCols } from './parts.js';
 // Klassischer Textsatz (Klassisch, Vollbild, Seitenspalte, Nur Schrift, Bogen, Farbfeld)

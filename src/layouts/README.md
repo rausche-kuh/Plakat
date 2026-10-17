@@ -50,7 +50,7 @@ preview, in the thumbnails and in the 300 dpi export.
 |---|---|
 | `ctx` | Canvas 2D context. The background `th.bg` is already filled. |
 | `W`, `H`, `u` | width, height in pixels, pixels per unit |
-| `st` | poster state: `st.texts.*`, `st.ornament`, `st.frame`, `st.doodles`, `st.sunlight`, `st.titleScale`, `st.textScale`, `st.variant`, `st.accent`, `st.photo` |
+| `st` | poster state: `st.texts.*`, `st.sizes` (size factor per text field, read it with `sz(st, key)`), `st.textScale`, `st.ornament`, `st.frame`, `st.doodles`, `st.sunlight`, `st.variant`, `st.accent`, `st.photo` |
 | `th` | colours from occasion + colour variant: `bg`, `ink`, `accent`, `soft`, `muted`, `line`, `deep`, `onDark`, `second` |
 | `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`; see `src/data/fontsets.js`) |
 | `occ` | the occasion (`colors`, `warm`, `quiet` …) |
@@ -92,6 +92,12 @@ form `{gap, measure(k) → height, draw(y), width()}` and can be stacked with `w
 
 **Text at the lowest level**: `fitText`, `fillLines`, `wrapLines`, `wrapBalanced`, `measureW`, `fontStr`, `quote`.
 
+**Text sizes:** every text field has its own size factor from step 3 "Texte" (50–200 %). `blocks`, the Herzlich kit and the
+footer apply it already. When a layout sets a size itself, multiply it by `sz(st, key)`: the title by `sz(st,'title')` alone,
+every other text also by `st.textScale` (e.g. `size: 38*st.textScale*sz(st,'subtitle')`). In `infoEl`, each row takes its
+factor as `f` (and `sf` for the line below). Where two fields share one element (place and address on one line), use the
+place factor, or the address factor when the place is empty.
+
 ## Templates
 
 | File | Good template for |
@@ -113,7 +119,7 @@ Run `npm run dev`, pick the tile in step 2 "Gestaltung" and try it out:
 - all fonts and colour variants
 - with and without photo and logo
 - very long and empty texts
-- title and text size at their limits
+- text sizes at their limits (50 and 200 % on single fields in step "Texte", the text slider in step "Gestaltung")
 - ornament and frame on and off
 
 Nothing may be cut off or overlap. For many combinations at once, render posters with

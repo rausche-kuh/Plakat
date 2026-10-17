@@ -34,7 +34,6 @@ FORMAT (genau so, nur die Werte ändern)
         "frame": false,
         "doodles": true,
         "sunlight": true,
-        "titleScale": 1,
         "textScale": 1,
         "texts": {
           "eyebrow": "",

@@ -1,6 +1,6 @@
 /* Layout „Farbfeld“ – kräftige Farbfläche oben mit großem Titel, Foto als schräg aufgelegter Abzug,
    Datum als runder Stempel, Uhrzeit und Ort mit Symbolen daneben, der Rest linksbündig darunter. */
-import { mix, rgba, rot, drawPhoto, blocks, fitDraw, footerH, drawFooter, rrect, dateParts, dateBadge, inkOn, infoEl, stackAt } from '../render/toolkit.js';
+import { mix, rgba, rot, drawPhoto, blocks, fitDraw, footerH, drawFooter, rrect, dateParts, dateBadge, inkOn, infoEl, stackAt, sz } from '../render/toolkit.js';
 
 export default {
   id: 'farbfeld',
@@ -19,7 +19,7 @@ export default {
     rot(ctx,px+pw/2,py+ph/2,2.5,()=>{
       ctx.save(); ctx.shadowColor='rgba(20,20,30,0.3)'; ctx.shadowBlur=26*u; ctx.shadowOffsetY=10*u; ctx.fillStyle='#FFFFFF'; rrect(ctx,px-14*u,py-14*u,pw+28*u,ph+28*u,30*u); ctx.fill(); ctx.restore();
       ctx.save(); rrect(ctx,px,py,pw,ph,20*u); ctx.clip(); drawPhoto(env,{x:px,y:py,w:pw,h:ph},'rect'); ctx.restore(); });
-    if (dp) dateBadge(env,px+12*u,py+34*u,104*u,dp,{fill:th.second,ink:inkOn(th.second),deg:-9,fonts:{small:fs.strong,big:fs.num}});
+    if (dp) dateBadge(env,px+12*u,py+34*u,104*u*Math.min(sz(st,'date'),1.5),dp,{fill:th.second,ink:inkOn(th.second),deg:-9,fonts:{small:fs.strong,big:fs.num}});
 
     /* Kopf auf der Farbfläche */
     const L={ink:onB,muted:rgba(onB,0.85),accent:onB,line:onB,second:th.second,ornBg:fb};
@@ -27,9 +27,9 @@ export default {
     const g=blocks(env);
 
     /* links neben dem Foto: Termin mit Symbolen */
-    const rows=[]; if (tr(T.date)&&!dp) rows.push({icon:'date',text:tr(T.date)});
-    if (tr(T.time)) rows.push({icon:'time',text:tr(T.time)});
-    if (tr(T.place)||tr(T.address)) rows.push({icon:'place',text:tr(T.place)||tr(T.address),sub:tr(T.place)?tr(T.address):''});
+    const rows=[]; if (tr(T.date)&&!dp) rows.push({icon:'date',text:tr(T.date),f:sz(st,'date')});
+    if (tr(T.time)) rows.push({icon:'time',text:tr(T.time),f:sz(st,'time')});
+    if (tr(T.place)||tr(T.address)) rows.push({icon:'place',text:tr(T.place)||tr(T.address),sub:tr(T.place)?tr(T.address):'',f:sz(st,tr(T.place)?'place':'address'),sf:sz(st,'address')});
     const sx=x, sw=px-x-60*u, sy=hb+46*u, pBottom=py+ph+40*u;
     if (rows.length) stackAt(env,[infoEl(env,{rows,x:sx,w:sw,font:fs.strong,size:28*ts*fs.bs,subFont:fs.body,subSize:21*ts*fs.bs,color:th.ink,subColor:th.muted,iconColor:th.accent})],sy,pBottom-sy-20*u);
 

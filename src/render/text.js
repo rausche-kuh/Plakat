@@ -2,6 +2,9 @@
    f ist immer eine Schrift-Rolle aus FONTSETS ({f,w,s}), px die Größe in Canvas-Pixeln,
    sp die Sperrung in Pixeln. */
 
+/** Größenfaktor des Textfelds k aus dem Schritt „Texte“ (1 = Größe des Layouts) */
+export const sz = (st,k) => st.sizes[k]||1;
+
 export const fontStr = (f,px) => `${f.s||'normal'} ${f.w||400} ${px.toFixed(2)}px "${f.f}", Georgia, serif`;
 
 export function measureW(ctx,text,sp){ if(!sp) return ctx.measureText(text).width; let w=0,n=0; for(const ch of text){ w+=ctx.measureText(ch).width; n++; } return w+sp*Math.max(0,n-1); }

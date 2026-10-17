@@ -23,9 +23,22 @@ textarea.in{resize:vertical;min-height:42px}
 .in:focus{outline:2px solid var(--accent);outline-offset:-1px;background:var(--panel)}
 .hint{color:var(--muted);font-size:12.5px;margin:5px 0 0;line-height:1.4}
 .datefield{display:flex;gap:6px}
-.datefield .in{flex:1}
+.datefield .sized{flex:1}
 .datepick{position:relative;flex-shrink:0}
 .datepick input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+/* Schriftgröße je Feld: kleines und großes A oben rechts im Feld, dazwischen der geänderte Wert */
+.sized{position:relative}
+.sized .in{padding-right:64px}
+.sized:has(.val:not([hidden])) .in{padding-right:112px}
+.fsize{position:absolute;top:5px;right:5px;display:flex;align-items:center;gap:2px}
+.fsize button{appearance:none;border:0;background:none;color:var(--muted);height:29px;min-width:27px;padding:0 5px 7px;border-radius:5px;display:inline-flex;align-items:flex-end;justify-content:center;font-weight:600;line-height:1;cursor:pointer}
+.fsize .dn{font-size:12px}
+.fsize .up{font-size:17px}
+.fsize button:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.fsize button[aria-disabled="true"]{opacity:.35;cursor:default;background:none}
+.fsize .val{align-items:center;padding:0 7px;height:23px;margin:0 1px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fsize .val:hover{background:var(--accent-soft);color:var(--ink)}
+.fsize .val[hidden]{display:none}
 
 .btn{appearance:none;border:1px solid var(--line);background:var(--panel);padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;line-height:1.25;white-space:nowrap}
 .btn:hover{border-color:var(--muted)}

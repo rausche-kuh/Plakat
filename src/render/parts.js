@@ -1,7 +1,7 @@
 /* ---------- Bausteine der Layouts: Foto, Fußzeile, Rahmen, Farbsätze ---------- */
 import { mix } from '../core/color.js';
 import { shapePath } from './shapes.js';
-import { fontStr, measureW, drawSpaced } from './text.js';
+import { sz, fontStr, measureW, drawSpaced } from './text.js';
 
 /** Farben für ein Zierelement aus einem Farbsatz {accent, line|ink, ornBg?, second?} */
 export function ornCols(env,col){ return {a:col.accent,b:col.line||col.ink,bg:col.ornBg||env.th.bg,c:col.second||env.th.second}; }
@@ -32,7 +32,7 @@ export function drawPhoto(env,r,shape,ph={}){
 }
 
 /** Höhe der Fußzeile (Logo und Gemeindename) in Pixeln, 0 wenn beides fehlt */
-export function footerH(env){ const {u,st}=env; let h=0; if ((st.texts.parish||'').trim()) h+=20*u*st.textScale; if (env.logo) h+=62*u+(h?16*u:0); return h; }
+export function footerH(env){ const {u,st}=env; let h=0; if ((st.texts.parish||'').trim()) h+=20*u*st.textScale*sz(st,'parish'); if (env.logo) h+=62*u+(h?16*u:0); return h; }
 /** Fußzeile über der Unterkante bottom zeichnen */
 export function drawFooter(env,x,w,bottom,align,color){
   const {ctx,u,fs,st}=env, name=(st.texts.parish||'').trim(), fh=footerH(env);
@@ -45,9 +45,9 @@ export function drawFooter(env,x,w,bottom,align,color){
     ctx.drawImage(L,lx,y+(62*u-lh)/2,lw,lh); y+=62*u+16*u;
   }
   if (name){
-    let px=14*u*st.textScale*fs.bs; ctx.font=fontStr(fs.body,px); const txt=name.toUpperCase();
+    const f=st.textScale*sz(st,'parish'); let px=14*u*f*fs.bs; ctx.font=fontStr(fs.body,px); const txt=name.toUpperCase();
     while (measureW(ctx,txt,px*0.14)>w && px>4){ px*=0.94; ctx.font=fontStr(fs.body,px); }
-    ctx.fillStyle=color; drawSpaced(ctx,txt,align==='center'?x+w/2:x,y+15*u*st.textScale,px*0.14,align);
+    ctx.fillStyle=color; drawSpaced(ctx,txt,align==='center'?x+w/2:x,y+15*u*f,px*0.14,align);
   }
 }
 /** Feine Rahmenlinie im Abstand inset vom Rand */

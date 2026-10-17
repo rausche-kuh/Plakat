@@ -3,7 +3,7 @@
    haben die Form {gap, measure(k) → Höhe, draw(y[,x])} und werden mit warmStack gestapelt. */
 import { mix } from '../core/color.js';
 import { rng, rot } from './shapes.js';
-import { fontStr, measureW, drawSpaced, quote, maxLineW, fillLines, fitText } from './text.js';
+import { sz, fontStr, measureW, drawSpaced, quote, maxLineW, fillLines, fitText } from './text.js';
 import { drawPhoto } from './parts.js';
 
 /** Verzierungen nur, wenn eingeschaltet und der Anlass nicht still ist (z. B. Karfreitag) */
@@ -71,11 +71,12 @@ export function warmCols(env){
 /** Hauptelemente in Lesereihenfolge.
     o: {x, w, align:'left'|'center', label: Titel auf Papierzettel, polaroid: Foto als Sofortbild, wc: warmCols(env)} */
 export function warmEls(env,o){
-  const {ctx,u,fs,th,st}=env, T=st.texts, ts=st.textScale, wc=o.wc, tr=s=>(s||'').trim(), C=o.align==='center', ax=C?o.x+o.w/2:o.x;
+  const {ctx,u,fs,th,st}=env, T=st.texts, ts=st.textScale, wc=o.wc, tr=s=>(s||'').trim(), C=o.align==='center', ax=C?o.x+o.w/2:o.x, f=k=>ts*sz(st,k);
   const doodle=canDoodle(env), ink=th.ink, els=[];
-  const placeTxt=[tr(T.place),tr(T.address)].filter(Boolean).join(', ');
+  // Ort und Adresse in einer Zeile: Größe von „Ort“ (ohne Ort die der Adresse)
+  const placeTxt=[tr(T.place),tr(T.address)].filter(Boolean).join(', '), pf=f(tr(T.place)?'place':'address');
   if (tr(T.eyebrow)){ let m; els.push({gap:0,
-    measure(k){ m=fitText(ctx,fs.handB,40*ts*k*u,tr(T.eyebrow),o.w*0.88,true); m.lh=m.px*1.22; return m.lines.length*m.lh; },
+    measure(k){ m=fitText(ctx,fs.handB,40*f('eyebrow')*k*u,tr(T.eyebrow),o.w*0.88,true); m.lh=m.px*1.22; return m.lines.length*m.lh; },
     draw(y){ rot(ctx,ax,y,-2,()=>{ fillLines(ctx,fs.handB,m.px,m.lines,ax,y,m.lh,o.align,ink);
       if (doodle){ ctx.font=fontStr(fs.handB,m.px); const w=measureW(ctx,m.lines[0]), cy=y+m.lh*0.5;
         if (C){ sparkles(ctx,ax-w/2-m.px*0.25,cy,m.px*0.6,th.accent,-1); sparkles(ctx,ax+w/2+m.px*0.25,cy,m.px*0.6,th.accent,1); }
@@ -83,8 +84,8 @@ export function warmEls(env,o){
   if (tr(T.title)||tr(T.subtitle)){ let m; els.push({gap:16,
     measure(k){
       const pad=o.label?34*k*u:0, orn=o.label&&st.ornament?54*k*u:0, innerW=o.w-2*pad-orn;
-      const t=tr(T.title)? fitText(ctx,fs.title,(fs.warmTitle||fs.title.size*1.15)*st.titleScale*k*u,tr(T.title),innerW,true):null;
-      const s=tr(T.subtitle)? fitText(ctx,fs.handB,40*ts*k*u,tr(T.subtitle),innerW,true):null;
+      const t=tr(T.title)? fitText(ctx,fs.title,(fs.warmTitle||fs.title.size*1.15)*sz(st,'title')*k*u,tr(T.title),innerW,true):null;
+      const s=tr(T.subtitle)? fitText(ctx,fs.handB,40*f('subtitle')*k*u,tr(T.subtitle),innerW,true):null;
       const tlh=t?t.px*fs.title.lh:0, slh=s?s.px*1.2:0;
       let tw=0, sw=0; if(t){ ctx.font=fontStr(fs.title,t.px); tw=maxLineW(ctx,t.lines); } if(s){ ctx.font=fontStr(fs.handB,s.px); sw=maxLineW(ctx,s.lines); }
       const textH=(t?t.lines.length*tlh:0)+(s?s.lines.length*slh+(t?4*k*u:0):0);
@@ -100,13 +101,14 @@ export function warmEls(env,o){
           O.draw(ctx,bx+m.boxW-s*O.wf*0.42,y+h-s*0.38,s,{a:wc.pAccent,b:mix(wc.pInk,wc.paper,0.25),bg:wc.paper,c:th.second}); ctx.restore(); } });
       else inner(); } }); }
   if (placeTxt && !o.polaroid){ let m; els.push({gap:8,
-    measure(k){ const padX=30*k*u, padY=13*k*u, f=fitText(ctx,fs.handB,34*ts*k*u,placeTxt,o.w-2*padX-30*k*u,true); ctx.font=fontStr(fs.handB,f.px);
-      m={...f,padX,padY,lh:f.px*1.2}; m.bw=maxLineW(ctx,f.lines)+2*padX; m.bh=f.lines.length*m.lh+2*padY; return m.bh; },
+    measure(k){ const padX=30*k*u, padY=13*k*u, t=fitText(ctx,fs.handB,34*pf*k*u,placeTxt,o.w-2*padX-30*k*u,true); ctx.font=fontStr(fs.handB,t.px);
+      m={...t,padX,padY,lh:t.px*1.2}; m.bw=maxLineW(ctx,t.lines)+2*padX; m.bh=t.lines.length*m.lh+2*padY; return m.bh; },
     draw(y){ const bx=C?ax-m.bw/2:o.x+(o.label?24*u:0); rot(ctx,bx+m.bw/2,y+m.bh/2,-1,()=>{ drawBrush(env,bx,y,m.bw,m.bh,wc.band,202);
       fillLines(ctx,fs.handB,m.px,m.lines,bx+m.bw/2,y+m.padY,m.lh,'center',wc.onBand); }); } }); }
   if (o.polaroid){ let m; els.push({gap:26,
-    measure(k){ const pw=Math.min(o.w,620*k*u), f=22*k*u, phw=pw-2*f, phh=phw*0.7, cap=placeTxt?90*k*u:f*2.6;
-      const cf=placeTxt? fitText(ctx,fs.handB,32*ts*k*u,placeTxt,phw*0.92,true):null; m={pw,f,phw,phh,cap,cf,k,ph:f+phh+cap}; return m.ph+12*k*u; },
+    measure(k){ const pw=Math.min(o.w,620*k*u), f=22*k*u, phw=pw-2*f, phh=phw*0.7;
+      const cf=placeTxt? fitText(ctx,fs.handB,32*pf*k*u,placeTxt,phw*0.92,true):null, cap=cf?Math.max(90*k*u,cf.lines.length*cf.px*1.15+16*k*u):f*2.6;
+      m={pw,f,phw,phh,cap,cf,k,ph:f+phh+cap}; return m.ph+12*k*u; },
     draw(y){ const bx=ax-m.pw/2;
       rot(ctx,ax,y+m.ph/2,-2,()=>{
         ctx.save(); ctx.shadowColor='rgba(50,35,20,0.3)'; ctx.shadowBlur=24*u; ctx.shadowOffsetY=8*u; ctx.fillStyle='#FFFEFB'; ctx.fillRect(bx,y,m.pw,m.ph); ctx.restore();
@@ -121,9 +123,9 @@ export function warmEls(env,o){
   if (tr(T.date)||tr(T.time)){ let m; els.push({gap:30,
     measure(k){ const d=tr(T.date); let wd='',main=d; const ci=d.indexOf(','); if (ci>0&&ci<22){ wd=d.slice(0,ci+1); main=d.slice(ci+1).trim(); }
       const sw=doodle?(C?120:70)*k*u:0;
-      const a=wd? fitText(ctx,fs.handB,44*ts*k*u,wd,o.w,false):null;
-      const b=main? fitText(ctx,fs.num,(fs.warmDate||90)*ts*k*u,main,o.w-sw,true):null;
-      const c=tr(T.time)? fitText(ctx,fs.strong,42*ts*k*u,tr(T.time),o.w,false):null;
+      const a=wd? fitText(ctx,fs.handB,44*f('date')*k*u,wd,o.w,false):null;
+      const b=main? fitText(ctx,fs.num,(fs.warmDate||90)*f('date')*k*u,main,o.w-sw,true):null;
+      const c=tr(T.time)? fitText(ctx,fs.strong,42*f('time')*k*u,tr(T.time),o.w,false):null;
       m={a,b,c,k}; let h=0; if(a) h+=a.lines.length*a.px*1.15; if(b) h+=b.lines.length*b.px*1.04+(a?2*k*u:0); if(c) h+=c.lines.length*c.px*1.25+(h?6*k*u:0); return h; },
     draw(y){ let yy=y;
       if (m.a){ fillLines(ctx,fs.handB,m.a.px,m.a.lines,ax,yy,m.a.px*1.15,o.align,ink); yy+=m.a.lines.length*m.a.px*1.15+2*m.k*u; }
@@ -134,16 +136,16 @@ export function warmEls(env,o){
         yy+=m.b.lines.length*lh; }
       if (m.c){ yy+=(m.a||m.b)?6*m.k*u:0; fillLines(ctx,fs.strong,m.c.px,m.c.lines,ax,yy,m.c.px*1.25,o.align,th.accent); } } }); }
   if (tr(T.verse)){ let m; els.push({gap:28,
-    measure(k){ m=fitText(ctx,fs.verse,(fs.warmTitle?fs.verse.size:30)*ts*k*u,quote(tr(T.verse)),o.w*0.94,true); m.lh=m.px*1.32;
-      m.r=tr(T.ref)? fitText(ctx,fs.body,15*ts*k*u,tr(T.ref).toUpperCase(),o.w*0.85,false):null; m.k=k;
+    measure(k){ m=fitText(ctx,fs.verse,(fs.warmTitle?fs.verse.size:30)*f('verse')*k*u,quote(tr(T.verse)),o.w*0.94,true); m.lh=m.px*1.32;
+      m.r=tr(T.ref)? fitText(ctx,fs.body,15*f('ref')*k*u,tr(T.ref).toUpperCase(),o.w*0.85,false):null; m.k=k;
       return m.lines.length*m.lh+(m.r?m.r.px*1.6+6*k*u:0); },
     draw(y){ fillLines(ctx,fs.verse,m.px,m.lines,ax,y,m.lh,o.align,ink);
       if (m.r) fillLines(ctx,fs.body,m.r.px,m.r.lines,ax,y+m.lines.length*m.lh+6*m.k*u,m.r.px*1.6,o.align,th.muted,m.r.px*0.14); } }); }
   if (tr(T.people)){ let m; els.push({gap:22,
-    measure(k){ m=fitText(ctx,fs.body,23*ts*k*u,tr(T.people),o.w,false); m.lh=m.px*1.42; return m.lines.length*m.lh; },
+    measure(k){ m=fitText(ctx,fs.body,23*f('people')*k*u,tr(T.people),o.w,false); m.lh=m.px*1.42; return m.lines.length*m.lh; },
     draw(y){ fillLines(ctx,fs.body,m.px,m.lines,ax,y,m.lh,o.align,ink); } }); }
   if (tr(T.note)){ let m; els.push({gap:20,
-    measure(k){ m=fitText(ctx,fs.handB,30*ts*k*u,tr(T.note),o.w,true); m.lh=m.px*1.25; return m.lines.length*m.lh; },
+    measure(k){ m=fitText(ctx,fs.handB,30*f('note')*k*u,tr(T.note),o.w,true); m.lh=m.px*1.25; return m.lines.length*m.lh; },
     draw(y){ fillLines(ctx,fs.handB,m.px,m.lines,ax,y,m.lh,o.align,th.accent); } }); }
   return els;
 }
@@ -153,8 +155,8 @@ export function warmCard(env,wc,cardW){
   if (!bt && !bx) return null; let m;
   return {gap:30,
     measure(k){ const pad=30*k*u, hs=0; m={pad,k};
-      m.t=bt? fitText(ctx,fs.title,(fs.warmCard||44)*ts*k*u,bt,cardW-2*pad-hs,true):null;
-      m.b=bx? fitText(ctx,fs.hand,27*ts*k*u,bx,cardW-2*pad,true):null;
+      m.t=bt? fitText(ctx,fs.title,(fs.warmCard||44)*ts*sz(st,'boxTitle')*k*u,bt,cardW-2*pad-hs,true):null;
+      m.b=bx? fitText(ctx,fs.hand,27*ts*sz(st,'boxText')*k*u,bx,cardW-2*pad,true):null;
       m.tlh=m.t?m.t.px*1.05:0; m.blh=m.b?m.b.px*1.34:0;
       m.h=2*pad+(m.t?m.t.lines.length*m.tlh:0)+(m.b?m.b.lines.length*m.blh+(m.t?8*k*u:0):0); return m.h; },
     draw(y,x){ const cx=x+cardW/2;
@@ -168,7 +170,7 @@ export function warmClosing(env,wc,maxW){
   const {ctx,u,fs,st}=env, t=(st.texts.closing||'').trim(), doodle=canDoodle(env); if (!t) return null; let m;
   return {gap:30,
     measure(k){ const padX=40*k*u, padY=15*k*u, hs=doodle?60*k*u:0; m={padX,padY,hs,k};
-      m.f=fitText(ctx,fs.handB,40*st.textScale*k*u,t,maxW-2*padX-hs,true); ctx.font=fontStr(fs.handB,m.f.px);
+      m.f=fitText(ctx,fs.handB,40*st.textScale*sz(st,'closing')*k*u,t,maxW-2*padX-hs,true); ctx.font=fontStr(fs.handB,m.f.px);
       m.lh=m.f.px*1.2; m.bw=maxLineW(ctx,m.f.lines)+2*padX+hs; m.bh=m.f.lines.length*m.lh+2*padY; return m.bh; },
     draw(y,cx){ const bx=cx-m.bw/2;
       rot(ctx,cx,y+m.bh/2,-1,()=>{ drawBrush(env,bx,y,m.bw,m.bh,wc.band2,404);
@@ -179,7 +181,7 @@ export function warmClosing(env,wc,maxW){
     mode: 'top' (oben beginnen) oder 'center'. Gibt die Unterkante zurück. */
 export function warmStack(env,els,r,mode){
   const {u}=env; if (!els.length) return; let hs,total,gaps;
-  for (let k=1;k>=0.4;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); total=hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0); if (total<=r.h) break; }
+  for (let k=1;k>=0.25;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); total=hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0); if (total<=r.h) break; }
   const gsum=gaps.reduce((a,b)=>a+b,0), extra=Math.max(0,r.h-total), add=Math.min(extra,gsum*(mode==='top'?0.7:1.5)), f=gsum?add/gsum:0;
   let y=mode==='top'?r.y:r.y+(r.h-total-add)/2;
   els.forEach((e,i)=>{ y+=gaps[i]*(1+f); e.draw(y); y+=hs[i]; });
@@ -193,7 +195,7 @@ export function drawWarmFooter(env,wc){
   let x0=0;
   if (env.logo){ const L=env.logo; let lh=h*0.64, lw=lh*L.naturalWidth/L.naturalHeight; if (lw>220*u){ lw=220*u; lh=lw*L.naturalHeight/L.naturalWidth; } ctx.drawImage(L,40*u,y+(h-lh)/2,lw,lh); x0=lw+56*u; }
   const name=(st.texts.parish||'').trim();
-  if (name){ let px=19*u*st.textScale; ctx.font=fontStr(fs.strong,px); const maxW=W-2*Math.max(x0,44*u);
+  if (name){ let px=19*u*st.textScale*sz(st,'parish'); ctx.font=fontStr(fs.strong,px); const maxW=W-2*Math.max(x0,44*u);
     while (measureW(ctx,name,px*0.03)>maxW && px>5){ px*=0.94; ctx.font=fontStr(fs.strong,px); }
     ctx.fillStyle=wc.pInk; drawSpaced(ctx,name,W/2,y+h/2+px*0.35,px*0.03,'center'); }
 }

@@ -169,18 +169,18 @@ export function textEl(env,o){
         if (o.shadow) ctx.restore(); };
       if (o.deg) rot(ctx,x,y+h/2,o.deg,go); else go(); } };
 }
-/** Termin-Zeilen mit Symbol. o: {rows:[{icon:'date'|'time'|'place', text, sub}], x, w, align, font, size, subFont, subSize, color, subColor, iconColor, gap} */
+/** Termin-Zeilen mit Symbol. o: {rows:[{icon:'date'|'time'|'place', text, sub, f, sf}] (f/sf: Größenfaktor von text/sub), x, w, align, font, size, subFont, subSize, color, subColor, iconColor, gap} */
 export function infoEl(env,o){
   const {ctx,u}=env; let m;
   return {gap:o.gap||0,
-    measure(k){ const px=o.size*k*u, is=px*1.0, ig=px*0.5, tw=o.w-is-ig; let h=0;
-      m={is,ig,rows:o.rows.map((r,i)=>{ const a=fitText(ctx,o.font,px,r.text,tw,false), b=r.sub? fitText(ctx,o.subFont,o.subSize*k*u,r.sub,tw,false):null;
+    measure(k){ const px=o.size*k*u, is=px*Math.max(...o.rows.map(r=>r.f||1)), ig=px*0.5, tw=o.w-is-ig; let h=0;
+      m={is,ig,rows:o.rows.map((r,i)=>{ const a=fitText(ctx,o.font,px*(r.f||1),r.text,tw,false), b=r.sub? fitText(ctx,o.subFont,o.subSize*(r.sf||1)*k*u,r.sub,tw,false):null;
         const lh=a.px*1.2, slh=b?b.px*1.3:0; ctx.font=fontStr(o.font,a.px); let w=maxLineW(ctx,a.lines); if (b){ ctx.font=fontStr(o.subFont,b.px); w=Math.max(w,maxLineW(ctx,b.lines)); }
-        const row={...r,a,b,lh,slh,rh:a.lines.length*lh+(b?b.lines.length*slh:0),w,gb:i?px*0.42:0}; h+=row.gb+row.rh; return row; })};
+        const row={...r,a,b,lh,slh,rh:a.lines.length*lh+(b?b.lines.length*slh:0),w,gb:i?px*0.42:0,is:px*(r.f||1)}; h+=row.gb+row.rh; return row; })};
       m.w=Math.max(...m.rows.map(r=>r.w))+is+ig; return h; },
     width:()=>m.w,
     draw(y){ for (const r of m.rows){ y+=r.gb; const bw=m.is+m.ig+r.w, x0=o.align==='center'? o.x+(o.w-bw)/2 : o.x, tx=x0+m.is+m.ig;
-      icon(ctx,r.icon,x0+m.is/2,y+r.lh*0.5,m.is*0.92,o.iconColor);
+      icon(ctx,r.icon,x0+m.is/2,y+r.lh*0.5,r.is*0.92,o.iconColor);
       fillLines(ctx,o.font,r.a.px,r.a.lines,tx,y,r.lh,'left',o.color);
       if (r.b) fillLines(ctx,o.subFont,r.b.px,r.b.lines,tx,y+r.a.lines.length*r.lh,r.slh,'left',o.subColor);
       y+=r.rh; } } };
@@ -222,7 +222,7 @@ export function panelEl(env,els,o){
 /** Stapelt Elemente kompakt ab y; verkleinert nur, wenn maxH nicht reicht. Gibt die Unterkante zurück. */
 export function stackAt(env,els,y,maxH){
   const {u}=env; if (!els.length) return y; let hs,gaps;
-  for (let k=1;k>=0.4;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); if (hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0)<=maxH) break; }
+  for (let k=1;k>=0.25;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); if (hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0)<=maxH) break; }
   els.forEach((e,i)=>{ y+=gaps[i]; e.draw(y); y+=hs[i]; }); return y;
 }
 /** Höhe eines Stapels bei Faktor 1 (zum Planen der Flächen) */

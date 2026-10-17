@@ -1,11 +1,12 @@
-/* ---------- Schritt 3 „Texte“: Textfelder (data-t), Beispieltexte markieren, Datum aus dem Kalender, Logo ---------- */
-import { st, sampleKeys } from '../core/state.js';
+/* ---------- Schritt 3 „Texte“: Textfelder (data-t), Schriftgröße je Feld, Beispieltexte markieren, Datum aus dem Kalender, Logo ---------- */
+import { st, sampleKeys, SIZE_MIN, SIZE_MAX } from '../core/state.js';
+import { clamp } from '../core/util.js';
 import { ensureImages, fileToDataURL } from '../core/images.js';
 import { $, $$, toast } from './dom.js';
 import { changed } from './sync.js';
 import { showTab } from './tabs.js';
 
-let fields=[];   // {el,k,name,tag,tools} in der Reihenfolge des Formulars
+let fields=[];   // {el,k,name,tag,tools,size} in der Reihenfolge des Formulars
 
 export function renderLogoBox(){
   const box=$('#logoBox');
@@ -15,6 +16,24 @@ export function renderLogoBox(){
     box.querySelector('[data-act=lremove]').addEventListener('click',async()=>{ st.logo.src=null; await ensureImages(st); renderLogoBox(); changed(); });
   } else box.innerHTML=`<button class="btn small" data-act="lchange">Logo hochladen</button>`;
   box.querySelector('[data-act=lchange]').addEventListener('click',()=>$('#logoFile').click());
+}
+
+/** Schriftgröße im Feld: kleines und großes A in 10-%-Schritten, dazwischen der Wert, solange er nicht 100 % ist (Klick setzt zurück).
+    Gibt eine Funktion zurück, die die Anzeige aus st.sizes aktualisiert. */
+function sizeTool(el,k,name){
+  const wrap=document.createElement('div'); wrap.className='sized'; el.before(wrap);
+  const box=document.createElement('div'); box.className='fsize'; box.setAttribute('role','group'); box.setAttribute('aria-label',`Schriftgröße ${name}`);
+  box.innerHTML=`<button type="button" class="dn" title="Schrift kleiner" aria-label="Schrift kleiner">A</button><button type="button" class="val" title="Zurück auf 100 %"></button><button type="button" class="up" title="Schrift größer" aria-label="Schrift größer">A</button>`;
+  wrap.append(el,box);
+  const [dn,val,up]=box.children, cur=()=>st.sizes[k]||1;
+  const set=v=>{ v=clamp(v,SIZE_MIN,SIZE_MAX); if (v===cur()) return; if (v===1) delete st.sizes[k]; else st.sizes[k]=v; sync(); changed(); };
+  const step=d=>set((Math.round(cur()*10)+d)/10);
+  dn.addEventListener('click',()=>step(-1)); up.addEventListener('click',()=>step(1));
+  val.addEventListener('click',()=>{ const kb=document.activeElement===val; set(1); if (kb) up.focus(); });
+  // aria-disabled statt disabled: der Fokus bleibt auf dem Knopf, wenn die Grenze erreicht ist
+  function sync(){ const v=cur(); val.hidden=v===1; val.textContent=Math.round(v*100)+' %'; val.setAttribute('aria-label',`Schriftgröße ${val.textContent}, zurück auf 100 %`);
+    dn.setAttribute('aria-disabled',v<=SIZE_MIN); up.setAttribute('aria-disabled',v>=SIZE_MAX); }
+  sync(); return sync;
 }
 
 /** Felder, die noch Beispieltexte zeigen (Formular-Reihenfolge) */
@@ -41,7 +60,7 @@ export function initTexte(){
     tools.querySelector('[data-act=clear]').addEventListener('click',()=>{ st.texts[k]=el.value=''; el.focus(); changed(); });
     const head=document.createElement('div'); head.className='fhead'; lab.before(head); head.append(lab,tools);
     el.addEventListener('input',()=>{ st.texts[k]=el.value; changed(); });
-    return {el,k,name,tag,tools};
+    return {el,k,name,tag,tools,size:sizeTool(el,k,name)};
   });
   $('#sampleBtn').addEventListener('click',goToSamples);
   $('#datePick').addEventListener('change',e=>{
@@ -58,6 +77,6 @@ export function initTexte(){
 }
 
 export function syncTexte(){
-  fields.forEach(({el,k})=>{ if (el.value!==st.texts[k]) el.value=st.texts[k]||''; });
+  fields.forEach(({el,k,size})=>{ if (el.value!==st.texts[k]) el.value=st.texts[k]||''; size(); });
   renderLogoBox(); syncSamples();
 }
