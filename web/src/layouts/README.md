@@ -1,11 +1,11 @@
 # Layouts
 
 Each layout is a file of its own in this folder. To write a new one you only need this page,
-`src/render/toolkit.js` and a similar existing layout as a template (see the table below).
+`web/src/render/toolkit.js` and a similar existing layout as a template (see the table below).
 
 ## A new layout in two steps
 
-1. Create the file, e.g. `src/layouts/banner.js` (code comments and UI strings are German, like the rest of the code):
+1. Create the file, e.g. `web/src/layouts/banner.js` (code comments and UI strings are German, like the rest of the code):
 
    ```js
    /* Layout „Banner“ – kurze Beschreibung, was es ausmacht. */
@@ -52,7 +52,7 @@ preview, in the thumbnails and in the 300 dpi export.
 | `W`, `H`, `u` | width, height in pixels, pixels per unit |
 | `st` | poster state: `st.texts.*`, `st.sizes` (size factor per text field, read it with `sz(st, key)`), `st.textScale`, `st.ornament`, `st.frame`, `st.doodles`, `st.sunlight`, `st.variant`, `st.accent`, `st.photo` |
 | `th` | colours from occasion + colour variant: `bg`, `ink`, `accent`, `soft`, `muted`, `line`, `deep`, `onDark`, `second` |
-| `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`; see `src/data/fontsets.js`) |
+| `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`; see `web/src/data/fontsets.js`) |
 | `occ` | the occasion (`colors`, `warm`, `quiet` …) |
 | `orn` | the occasion's ornament: `orn.draw(ctx, x, y, size, {a, b, bg, c})`, centred on (x,y), width `size*orn.wf` |
 | `photo`, `logo` | photo (processed) and logo, or `null`. Without an own photo, `photo` is the example photo (`example` holds its focus point). Always draw the photo via `drawPhoto`. |
@@ -60,7 +60,7 @@ preview, in the thumbnails and in the 300 dpi export.
 
 Read the state only through `env.st`, never the global one, because the thumbnails draw the same poster with a different layout.
 
-## Toolkit (`src/render/toolkit.js`)
+## Toolkit (`web/src/render/toolkit.js`)
 
 **Classic typesetting** is the simplest route for most layouts:
 

@@ -89,7 +89,7 @@ new layout. The layout "Milchglas" was made this way from a summer-picnic poster
    where everything is and which rules apply.
 2. Give it the poster image and ask, for example: *"Build a new layout in the style of this poster."*
 3. Let it check the result with screenshots, as described in
-   [`src/layouts/README.md`](../src/layouts/README.md#checking). Look at several occasions, all colour variants
+   [`web/src/layouts/README.md`](../web/src/layouts/README.md#checking). Look at several occasions, all colour variants
    and fonts, with and without a photo, and with very long and empty texts.
 4. Review the diff and the screenshots like any other contribution.
 
@@ -106,6 +106,6 @@ allowed to share, and crop or blur people, especially children.
 
 ## 3. Where the instruction lives
 
-The German instruction for chatbots is `src/data/ki-prompt.js`. The lists of occasions, layouts (with their
+The German instruction for chatbots is `web/src/data/ki-prompt.js`. The lists of occasions, layouts (with their
 `about` descriptions, grouped), fonts and colour variants are inserted automatically from the registries,
 so a new layout or occasion is known to the AI without touching the prompt.
