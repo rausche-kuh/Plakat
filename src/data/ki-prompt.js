@@ -34,7 +34,6 @@ FORMAT (genau so, nur die Werte ändern)
         "frame": false,
         "doodles": true,
         "sunlight": true,
-        "titleScale": 1,
         "textScale": 1,
         "texts": {
           "eyebrow": "",
@@ -68,7 +67,7 @@ ERLAUBTE WERTE
 - variant: ${VARIANTS.join(', ')}
 - photo.filter: ${FILTERS.join(', ')}
 - accent: null (Farbe des Anlasses) oder eine Farbe als "#RRGGBB"
-- titleScale zwischen 0.6 und 1.5, textScale zwischen 0.8 und 1.3
+- textScale zwischen 0.8 und 1.3
 - photo.src und logo.src IMMER null lassen (Fotos lade ich selbst hoch)
 
 LAYOUTS

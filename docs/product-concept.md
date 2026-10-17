@@ -47,11 +47,28 @@ Two things are not steps and sit outside the tab bar, each in its own dialog:
 | Step | Basic | Weitere Einstellungen |
 |---|---|---|
 | **1 Anlass** | Occasion tiles | – |
-| **2 Gestaltung** | Grundstimmung, Farbe, the layout thumbnails in their three groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, text sizes) |
-| **3 Texte** | All fields, grouped like a form: *Was?* · *Wann und wo?* · *Mehr dazu* · *Absender* | – (texts are content, folding them away would hide sample texts that still print) |
+| **2 Gestaltung** | Grundstimmung, Farbe, the layout thumbnails in their three groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, size of all texts except the title) |
+| **3 Texte** | All fields, grouped like a form: *Was?* · *Wann und wo?* · *Mehr dazu* · *Absender*. Each field has a quiet size control inside it | – (texts are content, folding them away would hide sample texts that still print) |
 | **4 Foto** | Upload (until then an example photo, or "Ohne Foto"), drag in the preview, zoom, Bildstimmung | Ausschnitt sliders, reset, brightness |
 
 The last step's button "Weiter: Exportieren" opens the export dialog.
+
+## Text sizes
+
+Each layout sets its own sizes, and the workshop shrinks everything together when a poster gets too full. On top of
+that, every text field in step 3 has a size control inside the field, at its right edge: a small and a large "A" change
+the size in 10 % steps from 50 to 200 % of what the layout would use. Once a field is not at 100 %, the value shows
+between the two letters, in the accent colour, so changed fields stand out; clicking it goes back to 100 %.
+
+- **Why percent, not points:** the same text is drawn at different sizes in each layout, in the preview and in the
+  300 dpi export, and the automatic shrinking applies on top. A percentage stays true across all of them, also when
+  the layout changes.
+- **Gestaltung:** the slider "Größe der Texte (außer Titel)" still scales all texts except the title at once. The
+  former slider for the title is gone; its value lives on as the title field's size.
+- **Shared elements:** where a layout puts place and address on one line, the line follows the place size. The round
+  date stamp grows with the date size, up to 150 %.
+- **Storage:** one field, `sizes`, with a factor per text field; only changed fields are stored. Posters saved with the
+  old `titleScale` open with that value as the title size. AI drafts don't set sizes.
 
 ## Sample texts
 

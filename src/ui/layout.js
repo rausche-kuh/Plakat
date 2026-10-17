@@ -74,7 +74,6 @@ export function initLayoutTab(){
   $('#optFrame').addEventListener('change',e=>{ st.frame=e.target.checked; changed(); });
   $('#optDoodles').addEventListener('change',e=>{ st.doodles=e.target.checked; changed(); });
   $('#optSun').addEventListener('change',e=>{ st.sunlight=e.target.checked; changed(); });
-  $('#titleScale').addEventListener('input',e=>{ st.titleScale=e.target.value/100; $('#titleScaleOut').textContent=e.target.value+' %'; changed(); });
   $('#textScale').addEventListener('input',e=>{ st.textScale=e.target.value/100; $('#textScaleOut').textContent=e.target.value+' %'; changed(); });
 }
 
@@ -85,6 +84,5 @@ export function syncLayoutTab(){
   $$('#moodGrid .tile').forEach(t=>{ const m=MOODS[t.dataset.mood]; t.setAttribute('aria-pressed', st.fontStyle===m.fontStyle&&st.variant===m.variant); });
   $$('#layoutGroups .tile').forEach(t=>t.setAttribute('aria-pressed',t.dataset.layout===st.layout));
   $('#optOrnament').checked=st.ornament; $('#optFrame').checked=st.frame; $('#optDoodles').checked=st.doodles; $('#optSun').checked=st.sunlight;
-  $('#titleScale').value=Math.round(st.titleScale*100); $('#titleScaleOut').textContent=Math.round(st.titleScale*100)+' %';
   $('#textScale').value=Math.round(st.textScale*100); $('#textScaleOut').textContent=Math.round(st.textScale*100)+' %';
 }
