@@ -4,7 +4,7 @@ export const $$ = s => document.querySelectorAll(s);
 
 let toastTimer;
 // Steht ein Dialog offen, kommt der Hinweis hinein, sonst läge er unter dessen abgedunkeltem Hintergrund
-export function toast(t){ const el=$('#toast'); (document.querySelector('dialog[open]')||document.body).append(el); el.textContent=t; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3200); }
+export function toast(t,ms=3200){ const el=$('#toast'); (document.querySelector('dialog[open]')||document.body).append(el); el.textContent=t; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),ms); }
 /** Dialog: „Schließen“ und ein Klick daneben schließen ihn. Gibt die Funktion zum Öffnen zurück. */
 export function initDialog(sel){
   const dlg=$(sel);
