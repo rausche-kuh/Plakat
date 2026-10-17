@@ -99,7 +99,7 @@ Konzert: organ pipes …), so the preview and the layout thumbnails show how the
 examples only preview the design: they are small, heavily compressed and not meant to be printed.
 
 - **Photos:** seven real photos, CC0 or public domain only, so an exported poster needs no credit line. Sources,
-  licences and the occasion mapping: `assets/beispielfotos/README.md`. No generated images.
+  licences and the occasion mapping: `web/assets/beispielfotos/README.md`. No generated images.
 - **Crop:** each photo has a fixed focus point that every layout crops around. Zoom, dragging and the Ausschnitt
   sliders are hidden while an example shows; Bildstimmung and Helligkeit apply.
 - **Marking:** the Foto step shows a "Beispiel" tag and says which example is showing; under the preview a button

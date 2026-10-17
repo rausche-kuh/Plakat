@@ -4,7 +4,7 @@ Real photos that a poster shows until the user uploads their own. They only prev
 small and heavily compressed (WebP, at most 960 px, about 340 KB for all seven). The editor marks them, and the
 export warns while one is still on the poster.
 
-`src/data/beispielfotos.js` maps occasions to photos and holds each photo's focus point. `scripts/build.mjs`
+`web/src/data/beispielfotos.js` maps occasions to photos and holds each photo's focus point. `scripts/build.mjs`
 embeds the files in the single-file build.
 
 All seven are CC0 or public domain, so an exported poster needs no credit line. Only CC0 or public-domain

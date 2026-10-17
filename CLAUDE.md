@@ -23,13 +23,13 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
 
 ## Only read what the task needs
 
-- **New layout:** `src/layouts/README.md`, `src/render/toolkit.js` and a similar layout from the templates table
-  in that README. Then the line in `src/layouts/index.js` (with `group` and `about`). Nothing else.
-- **New occasion:** `src/occasions/README.md` and an existing occasion as a template, then `src/occasions/index.js`.
-- **Typesetting:** `src/render/blocks.js` (classic), `src/render/warm.js` (Herzlich) or `src/render/decor.js`
+- **New layout:** `web/src/layouts/README.md`, `web/src/render/toolkit.js` and a similar layout from the templates table
+  in that README. Then the line in `web/src/layouts/index.js` (with `group` and `about`). Nothing else.
+- **New occasion:** `web/src/occasions/README.md` and an existing occasion as a template, then `web/src/occasions/index.js`.
+- **Typesetting:** `web/src/render/blocks.js` (classic), `web/src/render/warm.js` (Herzlich) or `web/src/render/decor.js`
   (elements of the newer layouts). Each affects several layouts, so check which ones use it.
-- **UI:** the tab's module in `src/ui/` plus its place in `index.html`. Styles in `css/components.css`.
-- **AI usage / instruction:** `docs/ai-guide.md`, `src/data/ki-prompt.js`.
+- **UI:** the tab's module in `web/src/ui/` plus its place in `web/index.html`. Styles in `web/css/components.css`.
+- **AI usage / instruction:** `docs/ai-guide.md`, `web/src/data/ki-prompt.js`.
 - **Product direction, UI structure, sample texts and photos:** `docs/product-concept.md`.
 - Overview of all folders: `README.md`.
 
@@ -41,11 +41,15 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
 - Layouts and drawing helpers read the state only through `env.st`, never the global `st` (thumbnails render with a different layout).
 - Measures in poster units times `u` (width = 1000 units).
 - Never rename `id`s of layouts/occasions or font-set keys, because they are stored in saved posters.
-  A removed layout goes into `RETIRED` in `src/layouts/index.js`.
-- UI modules have no side effects on load; everything happens in `init…()`, called from `src/main.js`.
+  A removed layout goes into `RETIRED` in `web/src/layouts/index.js`.
+- UI modules have no side effects on load; everything happens in `init…()`, called from `web/src/main.js`.
 - Compact style like the existing code (dense drawing lines), no build step needed for development.
+- `web/` is the website as deployed, and everything in it is public. Docs, notes and scripts go outside it
+  (only the READMEs next to the layouts, occasions and example photos stay in `web/`).
+- No `?v=…` on imports, script tags or stylesheets. The server sends `Cache-Control: no-cache` (README, "Deploying"),
+  so browsers always fetch changed files. A `?v=` on only some imports loads a module twice (two separate `st`).
 - Draw decorations in code (shapes, textures). Don't add generated images. The only bundled images are the real example
-  photos in `assets/beispielfotos/` (CC0 or public domain only, see its README).
+  photos in `web/assets/beispielfotos/` (CC0 or public domain only, see its README).
 
 ## Trying it out
 

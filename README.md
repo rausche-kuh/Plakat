@@ -32,7 +32,7 @@ Plakatwerkstatt runs entirely in the browser. There is no server, no account, no
   This needs the app on a web address; it is hidden in the Claude artifact and in the file opened from disk.
 - The only network requests load the web fonts from Google Fonts. They carry no poster content,
   but like on any website using Google Fonts, the visitor's IP address reaches Google. If that
-  matters for your congregation, host the font files yourself and replace the link in `index.html`.
+  matters for your congregation, host the font files yourself and replace the link in `web/index.html`.
 - Using an AI is **optional** and always a manual copy-and-paste step you control.
   See **[docs/ai-guide.md](docs/ai-guide.md)** for how to use it with ChatGPT, Claude & co.,
   what gets shared, and how to teach the workshop a new look.
@@ -45,9 +45,23 @@ npm run dev      # → http://localhost:8000
 npm run build    # → dist/plakatwerkstatt.html
 ```
 
-`index.html` loads the sources as ES modules, so it needs a web server (`npm run dev`, GitHub Pages or similar);
+`web/index.html` loads the sources as ES modules, so it needs a web server (`npm run dev`, GitHub Pages or similar);
 opening it via `file://` does not work. `npm run build` bundles everything into **one** HTML file that works
 on double-click and can be published as a Claude artifact.
+
+## Deploying
+
+Upload the folder `web/` and point the web server at it. Nothing else in the repository is needed online.
+
+Send `Cache-Control: no-cache`, so browsers check every file on each visit. Without it they may keep old
+JavaScript modules after an update and mix them with new ones, and the app stops at start-up. Unchanged files
+only cost a short "304 Not Modified". For nginx, put this in the `server` block (not in a `location`, where
+nginx would drop the server's other `add_header` lines, e.g. HSTS):
+
+```nginx
+root /path/to/Plakat/web;
+add_header Cache-Control "no-cache";
+```
 
 ## Layouts
 
@@ -72,27 +86,28 @@ Medaillon, Passepartout and Kirchenfenster were retired. Saved posters that used
 ## Project structure
 
 ```
-index.html            UI skeleton (tabs, fields, dialog)
-css/                  theme · layout · components · responsive (in this order)
-src/
-  main.js             start-up: wire up the UI, load the draft and fonts
-  layouts/            one layout per file + index.js (registry, groups)   → README.md
-  occasions/          one occasion per file: colours, sample texts, ornament   → README.md
-  data/
-    fontsets.js       font choices (Herzlich, Edel, …)
-    beispielfotos.js  example photos: which occasion shows which, focus point
-    ki-prompt.js      instruction for ChatGPT/Claude in the "KI-Entwurf" dialog (German)
-  render/             drawing on the canvas
-    poster.js         renderPoster(): builds env and calls the layout
-    toolkit.js        single export of all drawing helpers for layouts
-    blocks.js         classic typesetting (groups, automatic shrinking)
-    warm.js           "Herzlich" kit (paper, brush strokes, handwriting)
-    decor.js          newer building blocks: frosted glass, torn paper, watercolour, date stamp, icons, list items
-    parts.js          photo, footer, frame
-    text.js, shapes.js
-  core/               no UI: state, colour scheme, images, storage, file format, PDF writer
-  ui/                 one module per step (anlass, texte, foto, layout = step "Gestaltung") and dialog (ablage = "Meine Plakate", ki, export) + preview, sync
-assets/beispielfotos/ example photos (WebP) with source and licence   → README.md
+web/                  the website: everything nginx serves (see "Deploying")
+  index.html          UI skeleton (tabs, fields, dialog)
+  css/                theme · layout · components · responsive (in this order)
+  src/
+    main.js           start-up: wire up the UI, load the draft and fonts
+    layouts/          one layout per file + index.js (registry, groups)   → README.md
+    occasions/        one occasion per file: colours, sample texts, ornament   → README.md
+    data/
+      fontsets.js     font choices (Herzlich, Edel, …)
+      beispielfotos.js  example photos: which occasion shows which, focus point
+      ki-prompt.js    instruction for ChatGPT/Claude in the "KI-Entwurf" dialog (German)
+    render/           drawing on the canvas
+      poster.js       renderPoster(): builds env and calls the layout
+      toolkit.js      single export of all drawing helpers for layouts
+      blocks.js       classic typesetting (groups, automatic shrinking)
+      warm.js         "Herzlich" kit (paper, brush strokes, handwriting)
+      decor.js        newer building blocks: frosted glass, torn paper, watercolour, date stamp, icons, list items
+      parts.js        photo, footer, frame
+      text.js, shapes.js
+    core/             no UI: state, colour scheme, images, storage, file format, PDF writer
+    ui/               one module per step (anlass, texte, foto, layout = step "Gestaltung") and dialog (ablage = "Meine Plakate", ki, export) + preview, sync
+  assets/beispielfotos/ example photos (WebP) with source and licence   → README.md
 scripts/              build.mjs (single file), serve.mjs (dev server)
 docs/product-concept.md  users, principles, step structure, sample texts and photos
 docs/ai-guide.md      using the workshop with AI (optional)
@@ -100,18 +115,18 @@ docs/ai-guide.md      using the workshop with AI (optional)
 
 ## Extending
 
-- **New layout:** [`src/layouts/README.md`](src/layouts/README.md). One file and one line in the registry.
-- **New occasion:** [`src/occasions/README.md`](src/occasions/README.md). Same idea.
-- **New font:** an entry in `src/data/fontsets.js` and the family in the Google Fonts link in `index.html`.
+- **New layout:** [`web/src/layouts/README.md`](web/src/layouts/README.md). One file and one line in the registry.
+- **New occasion:** [`web/src/occasions/README.md`](web/src/occasions/README.md). Same idea.
+- **New font:** an entry in `web/src/data/fontsets.js` and the family in the Google Fonts link in `web/index.html`.
 
 The identifiers (`id` of layouts and occasions, keys of font sets) are stored in saved posters and files,
-so never rename them. A layout that is removed gets an entry in `RETIRED` in `src/layouts/index.js`.
+so never rename them. A layout that is removed gets an entry in `RETIRED` in `web/src/layouts/index.js`.
 
 ## Data flow
 
-The state of the current poster (`st` in `src/core/state.js`) is a plain object: occasion, layout, font,
+The state of the current poster (`st` in `web/src/core/state.js`) is a plain object: occasion, layout, font,
 colour variant, options, texts, `confirmed` (sample texts kept with „Passt so“), photo and logo (as data URLs).
 Whether a text is still a sample is not stored: `sampleKeys()` compares it with the occasion's sample text. The UI changes `st` and calls `changed()`
-(`src/ui/sync.js`), which redraws the preview and saves the draft. `renderPoster(ctx, st, W)` draws the poster
+(`web/src/ui/sync.js`), which redraws the preview and saves the draft. `renderPoster(ctx, st, W)` draws the poster
 at any resolution, the same way for preview, thumbnails and export. Saved files and AI answers go through
 `sanitize()`, so unknown values fall back to defaults.

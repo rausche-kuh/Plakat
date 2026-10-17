@@ -1,11 +1,11 @@
 // Kleiner Webserver für die Entwicklung: node scripts/serve.mjs [port]
-// ES-Module funktionieren nicht über file://, deshalb index.html über http://localhost öffnen.
+// Liefert den Ordner web/ aus. ES-Module funktionieren nicht über file://, deshalb index.html über http://localhost öffnen.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('..', import.meta.url));
+const root = fileURLToPath(new URL('../web/', import.meta.url));
 const port = +(process.argv[2] || process.env.PORT || 8000);
 const types = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.mjs':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.webp':'image/webp', '.md':'text/plain; charset=utf-8' };
