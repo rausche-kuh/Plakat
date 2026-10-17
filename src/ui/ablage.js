@@ -3,7 +3,7 @@ import { st, setState, defaults, sanitize } from '../core/state.js';
 import { clone, uid, firstLine, slug } from '../core/util.js';
 import { ensureImages } from '../core/images.js';
 import { store } from '../core/store.js';
-import { packFile, posterList } from '../core/files.js';
+import { packFile, posterList, readLink } from '../core/files.js';
 import { OCC, occLabel } from '../occasions/index.js';
 import { renderPoster } from '../render/poster.js';
 import { $, toast, setStatus, initDialog } from './dom.js';
@@ -82,7 +82,18 @@ export async function importData(data,keepMedia,fromKI){
   return n;
 }
 
+/** Öffnet ein Plakat aus einem Link (#plakat=…) wie eine Datei und nimmt den Teil nach # aus der Adresse. */
+export async function openLink(){
+  if (!location.hash.startsWith('#plakat=')) return;
+  let data=null; try{ data=await readLink(location.hash); }catch{}
+  history.replaceState(null,'',location.pathname+location.search);
+  if (!window.DecompressionStream) toast('Dieser Browser ist zu alt, um Plakat-Links zu öffnen. Bitte aktualisieren Sie ihn.',6000);
+  else if (!data || !await importData(data)) toast('Der Link ist unvollständig oder beschädigt.');
+  else toast('Plakat aus dem Link geöffnet und unter „Meine Plakate“ gespeichert. Foto und Logo sind nicht im Link – Sie können sie unter „Foto“ und „Texte“ einsetzen.',8000);
+}
+
 export function initAblage(){
+  addEventListener('hashchange',openLink);
   const show=initDialog('#ablageDlg');
   $('#openAblage').addEventListener('click',()=>{ refreshList(); show(); });
   $('#saveBtn').addEventListener('click',()=>savePoster(false));

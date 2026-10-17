@@ -12,7 +12,7 @@ import { initAnlass } from './ui/anlass.js';
 import { initLayoutTab } from './ui/layout.js';
 import { initTexte } from './ui/texte.js';
 import { initFoto } from './ui/foto.js';
-import { initAblage, refreshList } from './ui/ablage.js';
+import { initAblage, refreshList, openLink } from './ui/ablage.js';
 import { getDownloads } from './ui/download.js';
 import { initKI } from './ui/ki.js';
 import { initExport } from './ui/export.js';
@@ -31,6 +31,7 @@ initPreview(); initTabs(); initAnlass(); initLayoutTab(); initTexte(); initFoto(
   try{ const d=await store.get('meta','draft'); if (d) setState(sanitize(d)); }catch{}
   await ensureImages(st); syncUI();
   await loadFonts(); requestRender();
+  await openLink();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(()=>requestRender());
   refreshList();
 })();

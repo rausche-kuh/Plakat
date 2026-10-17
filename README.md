@@ -27,6 +27,9 @@ Plakatwerkstatt keeps the look and drops the uncanny part:
 Plakatwerkstatt runs entirely in the browser. There is no server, no account, no tracking and no built-in AI call.
 
 - Texts, photos, logos and saved posters stay on the device (IndexedDB); PDF and PNG are created locally.
+- "Als Link weitergeben" packs texts and design (no photo, no logo) into the link itself, after the `#`.
+  Browsers never send that part to the server, so the poster only travels where you send the link.
+  This needs the app on a web address; it is hidden in the Claude artifact and in the file opened from disk.
 - The only network requests load the web fonts from Google Fonts. They carry no poster content,
   but like on any website using Google Fonts, the visitor's IP address reaches Google. If that
   matters for your congregation, host the font files yourself and replace the link in `index.html`.
