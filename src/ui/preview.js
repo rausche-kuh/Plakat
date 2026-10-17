@@ -3,6 +3,7 @@ import { st } from '../core/state.js';
 import { clamp } from '../core/util.js';
 import { renderPoster } from '../render/poster.js';
 import { getLayout } from '../layouts/index.js';
+import { exampleFor } from '../data/beispielfotos.js';
 import { $ } from './dom.js';
 import { changed } from './sync.js';
 import { syncPhotoUI } from './foto.js';
@@ -18,7 +19,9 @@ export function requestRender(){ cancelAnimationFrame(rafId); rafId=requestAnima
 
 export function updateStageBar(){
   const layout=getLayout(st.layout), usesPhoto=layout.photo;
-  $('#noPhotoBtn').hidden = !(usesPhoto && !st.photo.src);
+  const ex=usesPhoto && exampleFor(st), up=$('#noPhotoBtn');
+  up.hidden = !(usesPhoto && !st.photo.src);
+  up.textContent = ex ? 'Beispielfoto – eigenes hochladen' : 'Foto hochladen'; up.classList.toggle('sample-btn',!!ex);
   $('#panToggle').hidden = !(coarse && usesPhoto && st.photo.src);
   $('#noPhotoLayoutHint').hidden = usesPhoto;
   if (!usesPhoto) $('#noPhotoLayoutName').textContent = layout.name;

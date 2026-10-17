@@ -29,9 +29,9 @@
   <aside class="panel">
     <nav class="tabs" role="tablist" aria-label="Schritte">
       <button class="tab" role="tab" data-tab="anlass" aria-selected="true"><span class="num">1</span>Anlass</button>
-      <button class="tab" role="tab" data-tab="texte" aria-selected="false"><span class="num">2</span>Texte</button>
-      <button class="tab" role="tab" data-tab="foto" aria-selected="false"><span class="num">3</span>Foto</button>
-      <button class="tab" role="tab" data-tab="layout" aria-selected="false"><span class="num">4</span>Gestaltung</button>
+      <button class="tab" role="tab" data-tab="layout" aria-selected="false"><span class="num">2</span>Gestaltung</button>
+      <button class="tab" role="tab" data-tab="texte" aria-selected="false"><span class="num">3</span>Texte</button>
+      <button class="tab" role="tab" data-tab="foto" aria-selected="false"><span class="num">4</span>Foto</button>
     </nav>
 
     <section class="tabpanel" id="tab-anlass" role="tabpanel">
@@ -41,13 +41,63 @@
         <p>Ihre eigenen Texte wurden behalten.</p>
         <button class="btn small" id="tplApply">Beispieltexte einsetzen</button>
       </div>
-      <p class="hint">Der Anlass bringt Farben, ein Zierelement und Beispieltexte mit. Die Beispieltexte prüfen Sie im nächsten Schritt.</p>
-      <button class="btn primary next" data-next="texte">Weiter: Texte</button>
+      <p class="hint">Der Anlass bringt Farben, ein Zierelement und Beispieltexte mit. Die Beispieltexte prüfen Sie im Schritt „Texte“.</p>
+      <button class="btn primary next" data-next="layout">Weiter: Gestaltung</button>
       <div class="ki-offer">
         <p><strong>Lieber mit einem KI-Entwurf beginnen?</strong></p>
         <p class="hint">ChatGPT, Claude oder eine andere KI schreibt die Texte und wählt die Gestaltung. Sie kopieren nur hin und her.</p>
         <button class="btn small" id="openKI">KI-Entwurf öffnen</button>
       </div>
+    </section>
+
+    <section class="tabpanel" id="tab-layout" role="tabpanel" hidden>
+      <h2>Grundstimmung</h2>
+      <div class="grid three" id="moodGrid">
+        <button class="tile" data-mood="herzlich"><span class="sample" style="font-family:'Caveat Brush',cursive;color:#CF5F1B;font-size:21px">Willkommen</span><span class="lbl">Herzlich und bunt</span><span class="sub">für Feste und Familien</span></button>
+        <button class="tile" data-mood="freundlich"><span class="sample" style="font-family:Fraunces,Georgia,serif;font-weight:600;color:#3E6F8E;font-size:15px">Willkommen</span><span class="lbl">Freundlich und klar</span><span class="sub">für Konzerte, Taufe, Jugend</span></button>
+        <button class="tile" data-mood="ruhig"><span class="sample" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600">Willkommen</span><span class="lbl">Ruhig und edel</span><span class="sub">für stille Anlässe</span></button>
+      </div>
+      <p class="hint">Stellt Schrift, Farbe und Layout passend ein. Alles lässt sich danach einzeln ändern.</p>
+
+      <h2>Farbe</h2>
+      <div class="seg" id="variantSeg">
+        <button data-v="hell" aria-pressed="true">Hell</button>
+        <button data-v="getoent" aria-pressed="false">Getönt</button>
+        <button data-v="kraeftig" aria-pressed="false">Kräftig</button>
+        <button data-v="dunkel" aria-pressed="false">Dunkel</button>
+      </div>
+
+      <h2>Layout <small>– frei mit jedem Anlass kombinierbar</small></h2>
+      <div id="layoutGroups"></div><!-- Gruppen und Kacheln aus src/layouts/ -->
+
+      <details class="more">
+        <summary>Weitere Einstellungen</summary>
+        <div class="colorrow">
+          <input type="color" id="accentPick" aria-label="Akzentfarbe">
+          <span>Akzentfarbe</span>
+          <button class="btn small ghost" id="accentReset">Farbe des Anlasses</button>
+        </div>
+
+        <h2>Schrift</h2>
+        <div class="grid two" id="fontGrid"></div><!-- Kacheln aus src/data/fontsets.js -->
+
+        <h2>Feinschliff</h2>
+        <label class="check"><input type="checkbox" id="optOrnament"> Zierelement des Anlasses zeigen</label>
+        <label class="check"><input type="checkbox" id="optFrame"> Feine Rahmenlinie</label>
+        <label class="check"><input type="checkbox" id="optDoodles"> Kleine Verzierungen (Striche, Herzen, Kirchen-Symbol)</label>
+        <label class="check"><input type="checkbox" id="optSun"> Warmes Sonnenlicht im Foto</label>
+        <p class="hint"><span id="warmLayoutsHint">Verzierungen und Sonnenlicht wirken in den Layouts „Einladung“ und „Pinnwand“.</span> Am Karfreitag und Ewigkeitssonntag bleiben sie weg.</p>
+        <div class="range">
+          <div class="head"><label for="titleScale">Größe des Titels</label><output id="titleScaleOut">100 %</output></div>
+          <input type="range" id="titleScale" min="60" max="150" step="5">
+        </div>
+        <div class="range">
+          <div class="head"><label for="textScale">Größe der übrigen Texte</label><output id="textScaleOut">100 %</output></div>
+          <input type="range" id="textScale" min="80" max="130" step="5">
+        </div>
+        <p class="hint">Wird es zu voll, verkleinert die Werkstatt alle Texte automatisch, damit nichts abgeschnitten wird.</p>
+      </details>
+      <button class="btn primary next" data-next="texte">Weiter: Texte</button>
     </section>
 
     <section class="tabpanel" id="tab-texte" role="tabpanel" hidden>
@@ -114,15 +164,15 @@
     </section>
 
     <section class="tabpanel" id="tab-foto" role="tabpanel" hidden>
-      <h2>Foto</h2>
+      <h2>Foto <span class="tag" id="photoTag" hidden>Beispiel</span></h2>
       <div id="photoBox"></div>
       <input type="file" id="photoFile" accept="image/*" class="sr">
       <div id="photoControls">
-        <div class="range">
+        <div class="range own-photo">
           <div class="head"><label for="pZoom">Vergrößern</label><output id="pZoomOut">100 %</output></div>
           <input type="range" id="pZoom" min="100" max="300" step="1">
         </div>
-        <p class="hint" id="panHint">Tipp: Ziehen Sie das Foto in der Vorschau mit der Maus, um den Ausschnitt zu verschieben.</p>
+        <p class="hint own-photo" id="panHint">Tipp: Ziehen Sie das Foto in der Vorschau mit der Maus, um den Ausschnitt zu verschieben.</p>
 
         <h2>Bildstimmung</h2>
         <div class="chips" id="filterChips">
@@ -136,72 +186,24 @@
 
         <details class="more">
           <summary>Weitere Einstellungen</summary>
-          <div class="range">
-            <div class="head"><label for="pX">Ausschnitt waagerecht</label></div>
-            <input type="range" id="pX" min="-100" max="100" step="1">
+          <div class="own-photo">
+            <div class="range">
+              <div class="head"><label for="pX">Ausschnitt waagerecht</label></div>
+              <input type="range" id="pX" min="-100" max="100" step="1">
+            </div>
+            <div class="range">
+              <div class="head"><label for="pY">Ausschnitt senkrecht</label></div>
+              <input type="range" id="pY" min="-100" max="100" step="1">
+            </div>
+            <button class="btn small" id="pCenter" style="margin-top:8px">Ausschnitt zurücksetzen</button>
           </div>
-          <div class="range">
-            <div class="head"><label for="pY">Ausschnitt senkrecht</label></div>
-            <input type="range" id="pY" min="-100" max="100" step="1">
-          </div>
-          <button class="btn small" id="pCenter" style="margin-top:8px">Ausschnitt zurücksetzen</button>
           <div class="range">
             <div class="head"><label for="pBright">Helligkeit</label><output id="pBrightOut">0</output></div>
             <input type="range" id="pBright" min="-30" max="30" step="1">
           </div>
         </details>
       </div>
-      <p class="hint" id="noPhotoLayoutHint" hidden>Das Layout „<span id="noPhotoLayoutName">Nur Schrift</span>“ zeigt kein Foto. Wählen Sie unter „Gestaltung“ ein anderes Layout, um Ihr Foto zu sehen.</p>
-      <button class="btn primary next" data-next="layout">Weiter: Gestaltung</button>
-    </section>
-
-    <section class="tabpanel" id="tab-layout" role="tabpanel" hidden>
-      <h2>Grundstimmung</h2>
-      <div class="grid three" id="moodGrid">
-        <button class="tile" data-mood="herzlich"><span class="sample" style="font-family:'Caveat Brush',cursive;color:#CF5F1B;font-size:21px">Willkommen</span><span class="lbl">Herzlich und bunt</span><span class="sub">für Feste und Familien</span></button>
-        <button class="tile" data-mood="freundlich"><span class="sample" style="font-family:Fraunces,Georgia,serif;font-weight:600;color:#3E6F8E;font-size:15px">Willkommen</span><span class="lbl">Freundlich und klar</span><span class="sub">für Konzerte, Taufe, Jugend</span></button>
-        <button class="tile" data-mood="ruhig"><span class="sample" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:600">Willkommen</span><span class="lbl">Ruhig und edel</span><span class="sub">für stille Anlässe</span></button>
-      </div>
-      <p class="hint">Stellt Schrift, Farbe und Layout passend ein. Alles lässt sich danach einzeln ändern.</p>
-
-      <h2>Farbe</h2>
-      <div class="seg" id="variantSeg">
-        <button data-v="hell" aria-pressed="true">Hell</button>
-        <button data-v="getoent" aria-pressed="false">Getönt</button>
-        <button data-v="kraeftig" aria-pressed="false">Kräftig</button>
-        <button data-v="dunkel" aria-pressed="false">Dunkel</button>
-      </div>
-
-      <h2>Layout <small>– frei mit jedem Anlass kombinierbar</small></h2>
-      <div id="layoutGroups"></div><!-- Gruppen und Kacheln aus src/layouts/ -->
-
-      <details class="more">
-        <summary>Weitere Einstellungen</summary>
-        <div class="colorrow">
-          <input type="color" id="accentPick" aria-label="Akzentfarbe">
-          <span>Akzentfarbe</span>
-          <button class="btn small ghost" id="accentReset">Farbe des Anlasses</button>
-        </div>
-
-        <h2>Schrift</h2>
-        <div class="grid two" id="fontGrid"></div><!-- Kacheln aus src/data/fontsets.js -->
-
-        <h2>Feinschliff</h2>
-        <label class="check"><input type="checkbox" id="optOrnament"> Zierelement des Anlasses zeigen</label>
-        <label class="check"><input type="checkbox" id="optFrame"> Feine Rahmenlinie</label>
-        <label class="check"><input type="checkbox" id="optDoodles"> Kleine Verzierungen (Striche, Herzen, Kirchen-Symbol)</label>
-        <label class="check"><input type="checkbox" id="optSun"> Warmes Sonnenlicht im Foto</label>
-        <p class="hint"><span id="warmLayoutsHint">Verzierungen und Sonnenlicht wirken in den Layouts „Einladung“ und „Pinnwand“.</span> Am Karfreitag und Ewigkeitssonntag bleiben sie weg.</p>
-        <div class="range">
-          <div class="head"><label for="titleScale">Größe des Titels</label><output id="titleScaleOut">100 %</output></div>
-          <input type="range" id="titleScale" min="60" max="150" step="5">
-        </div>
-        <div class="range">
-          <div class="head"><label for="textScale">Größe der übrigen Texte</label><output id="textScaleOut">100 %</output></div>
-          <input type="range" id="textScale" min="80" max="130" step="5">
-        </div>
-        <p class="hint">Wird es zu voll, verkleinert die Werkstatt alle Texte automatisch, damit nichts abgeschnitten wird.</p>
-      </details>
+      <p class="hint" id="noPhotoLayoutHint" hidden>Das Layout „<span id="noPhotoLayoutName">Nur Schrift</span>“ zeigt kein Foto. Wählen Sie im Schritt „Gestaltung“ ein anderes Layout, um Ihr Foto zu sehen.</p>
       <button class="btn primary next" id="nextExport">Weiter: Exportieren</button>
     </section>
 
@@ -278,7 +280,7 @@
   <div class="dlg-head"><h2 id="expTitle">Plakat exportieren</h2><button class="btn small ghost dlg-close">Schließen</button></div>
   <div class="dlg-body">
     <div class="warn" id="expWarn" hidden>
-      <h3>Noch nicht alle Texte bearbeitet</h3>
+      <h3>Noch Beispiele auf dem Plakat</h3>
       <p id="expWarnText"></p>
       <p>Möchten Sie trotzdem exportieren?</p>
       <div class="row">

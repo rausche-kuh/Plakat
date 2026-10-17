@@ -30,7 +30,7 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
   (elements of the newer layouts). Each affects several layouts, so check which ones use it.
 - **UI:** the tab's module in `src/ui/` plus its place in `index.html`. Styles in `css/components.css`.
 - **AI usage / instruction:** `docs/ai-guide.md`, `src/data/ki-prompt.js`.
-- **Product direction, UI structure, sample texts:** `docs/product-concept.md`.
+- **Product direction, UI structure, sample texts and photos:** `docs/product-concept.md`.
 - Overview of all folders: `README.md`.
 
 ## Rules
@@ -44,7 +44,8 @@ format, or a new dependency. Small fixes skip this. The skills live in `.claude/
   A removed layout goes into `RETIRED` in `src/layouts/index.js`.
 - UI modules have no side effects on load; everything happens in `init…()`, called from `src/main.js`.
 - Compact style like the existing code (dense drawing lines), no build step needed for development.
-- Draw decorations in code (shapes, textures). Don't add generated images.
+- Draw decorations in code (shapes, textures). Don't add generated images. The only bundled images are the real example
+  photos in `assets/beispielfotos/` (CC0 or public domain only, see its README).
 
 ## Trying it out
 

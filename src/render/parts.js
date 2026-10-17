@@ -16,10 +16,12 @@ export function drawPhoto(env,r,shape,ph={}){
   const {ctx,th,st}=env;
   ctx.save(); shapePath(ctx,r,shape); ctx.clip();
   if (env.photo){
-    const p=env.photo, sc=Math.max(r.w/p.width,r.h/p.height)*st.photo.zoom, dw=p.width*sc, dh=p.height*sc;
-    ctx.drawImage(p, r.x-(dw-r.w)*(st.photo.x+1)/2, r.y-(dh-r.h)*(st.photo.y+1)/2, dw, dh);
+    // Beispielfoto: ohne Zoom, Ausschnitt so nah wie möglich um seinen Fokuspunkt
+    const p=env.photo, ex=env.example, sc=Math.max(r.w/p.width,r.h/p.height)*(ex?1:st.photo.zoom), dw=p.width*sc, dh=p.height*sc;
+    const at=(o,len,d,a,f)=>ex ? Math.min(o,Math.max(o+len-d,o+len/2-f*d)) : o-(d-len)*(a+1)/2;
+    ctx.drawImage(p, at(r.x,r.w,dw,st.photo.x,ex?.focus[0]), at(r.y,r.h,dh,st.photo.y,ex?.focus[1]), dw, dh);
     if (env.warmGrade){ ctx.globalCompositeOperation='soft-light'; ctx.fillStyle='rgba(255,168,80,0.38)'; ctx.fillRect(r.x,r.y,r.w,r.h); ctx.globalCompositeOperation='source-over'; }
-    env.photoRect={...r,dw,dh};
+    env.photoRect={...r,dw,dh,empty:!!ex};
   } else {
     ctx.fillStyle=ph.fill||th.soft; ctx.fillRect(r.x,r.y,r.w,r.h);
     const o=env.orn, s=Math.min(r.w/o.wf,r.h)*0.34;

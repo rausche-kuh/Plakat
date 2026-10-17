@@ -1,11 +1,14 @@
 /* ---------- Bilder: Foto und Logo laden, Bildstimmung anwenden ---------- */
+import { exampleFor } from '../data/beispielfotos.js';
 let photoImg=null, photoSrc=null, logoImg=null, logoSrc=null;
 const procCache = new Map();
 export const loadImage = src => new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
 
-/** Lädt Foto und Logo des Zustands, falls sie sich geändert haben. */
+/** Lädt Foto (sonst das Beispielfoto) und Logo des Zustands, falls sie sich geändert haben.
+    Nach Anlasswechsel und „Ohne Foto“ aufrufen, weil sich damit das Beispielfoto ändert. */
 export async function ensureImages(st){
-  if (st.photo.src!==photoSrc){ photoSrc=st.photo.src; procCache.clear(); photoImg = photoSrc ? await loadImage(photoSrc).catch(()=>null) : null; }
+  const src=st.photo.src||exampleFor(st)?.src||null;
+  if (src!==photoSrc){ photoSrc=src; procCache.clear(); photoImg = src ? await loadImage(src).catch(()=>null) : null; }
   if (st.logo.src!==logoSrc){ logoSrc=st.logo.src; logoImg = logoSrc ? await loadImage(logoSrc).catch(()=>null) : null; }
 }
 export const logoImage = () => logoImg;

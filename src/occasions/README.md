@@ -36,5 +36,8 @@ export default {
 
 Place, address and parish are not sample texts of the occasion; they apply to all occasions (`src/core/state.js`).
 
+The example photo the poster shows until the user uploads one is set in `src/data/beispielfotos.js` (`BY_OCC`).
+Without an entry the occasion shows "Kirche außen".
+
 For a quiet occasion, also adjust the fixed hint in `index.html` („Am Karfreitag und Ewigkeitssonntag
 bleiben sie weg.“) and the exception rule in the AI instruction (`src/data/ki-prompt.js`).

@@ -1,4 +1,4 @@
-/* ---------- Schritt 4 „Gestaltung“: Grundstimmung, Farbe, Layout-Kacheln mit Live-Miniaturen (nach Gruppen);
+/* ---------- Schritt 2 „Gestaltung“: Grundstimmung, Farbe, Layout-Kacheln mit Live-Miniaturen (nach Gruppen);
    unter „Weitere Einstellungen“ Akzentfarbe, Schrift und Feinschliff ---------- */
 import { st } from '../core/state.js';
 import { theme } from '../core/theme.js';

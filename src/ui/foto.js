@@ -1,21 +1,28 @@
-/* ---------- Tab „Foto“: Hochladen, Ablegen auf der Vorschau, Ausschnitt, Bildstimmung ---------- */
+/* ---------- Schritt 4 „Foto“: Hochladen, Ablegen auf der Vorschau, Beispielfoto oder „Ohne Foto“, Ausschnitt, Bildstimmung ---------- */
 import { st } from '../core/state.js';
 import { ensureImages, fileToDataURL } from '../core/images.js';
 import { getLayout } from '../layouts/index.js';
+import { exampleFor } from '../data/beispielfotos.js';
 import { $, $$, toast, setStatus } from './dom.js';
 import { syncUI, changed } from './sync.js';
 
 function renderPhotoBox(){
-  const box=$('#photoBox');
+  const box=$('#photoBox'), ex=exampleFor(st);
   if (st.photo.src){
     box.innerHTML=`<div class="photo-current"><img alt="Gewähltes Foto"><div class="row"><button class="btn small" data-act="change">Anderes Foto</button><button class="btn small danger" data-act="remove">Foto entfernen</button></div></div>`;
     box.querySelector('img').src=st.photo.src;
   } else {
-    box.innerHTML=`<div class="dropzone"><button class="btn primary" data-act="change">Foto hochladen</button><p>oder ein Bild auf die Vorschau ziehen. JPG, PNG oder HEIC vom Handy.</p></div>`;
+    box.innerHTML=(ex?`<div class="note sample-note"><p>Sie sehen ein Beispielfoto („${ex.name}“). Laden Sie ein eigenes hoch, dann ersetzt es das Beispiel.</p></div>`:'')
+      +`<div class="dropzone"><button class="btn primary" data-act="change">Foto hochladen</button><p>oder ein Bild auf die Vorschau ziehen. JPG, PNG oder HEIC vom Handy.</p></div>`
+      +`<label class="check"><input type="checkbox" data-act="none"> Ohne Foto (Fläche mit Schmuck)</label>`;
+    const none=box.querySelector('[data-act=none]'); none.checked=!st.photo.example;
+    none.addEventListener('change',async()=>{ st.photo.example=!none.checked; await ensureImages(st); syncUI(); changed(); });
   }
   box.querySelectorAll('[data-act=change]').forEach(b=>b.addEventListener('click',()=>$('#photoFile').click()));
   const rm=box.querySelector('[data-act=remove]'); if (rm) rm.addEventListener('click',async()=>{ st.photo.src=null; await ensureImages(st); syncUI(); changed(); });
-  $('#photoControls').hidden=!st.photo.src;
+  // Beim Beispielfoto wirken nur Bildstimmung und Helligkeit, den Ausschnitt gibt sein Fokuspunkt vor
+  $('#photoControls').hidden=!st.photo.src && !ex; $('#photoTag').hidden=!ex;
+  $$('.own-photo').forEach(e=>e.hidden=!st.photo.src);
 }
 async function takePhoto(file){
   if (!file || !file.type.startsWith('image/')) { toast('Bitte eine Bilddatei wählen.'); return; }

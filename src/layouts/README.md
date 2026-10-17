@@ -31,7 +31,7 @@ Each layout is a file of its own in this folder. To write a new one you only nee
 
 2. Import it in `index.js` and add it to `LAYOUTS` at the desired position (order within a group = order of the tiles).
 
-Everything else follows automatically: the tile with a live thumbnail under its group in step 4 "Gestaltung",
+Everything else follows automatically: the tile with a live thumbnail under its group in step 2 "Gestaltung",
 validity when loading posters and files, the grouped layout list with descriptions in the AI instruction,
 and the hints "zeigt kein Foto" (`photo: false`) and "Verzierungen wirken in …" (`warm: true`).
 
@@ -55,7 +55,7 @@ preview, in the thumbnails and in the 300 dpi export.
 | `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`; see `src/data/fontsets.js`) |
 | `occ` | the occasion (`colors`, `warm`, `quiet` …) |
 | `orn` | the occasion's ornament: `orn.draw(ctx, x, y, size, {a, b, bg, c})`, centred on (x,y), width `size*orn.wf` |
-| `photo`, `logo` | photo (processed) and logo, or `null`. Always draw the photo via `drawPhoto`. |
+| `photo`, `logo` | photo (processed) and logo, or `null`. Without an own photo, `photo` is the example photo (`example` holds its focus point). Always draw the photo via `drawPhoto`. |
 | `warmGrade` | set to `true` so `drawPhoto` lays a warm tint over the photo |
 
 Read the state only through `env.st`, never the global one, because the thumbnails draw the same poster with a different layout.
@@ -107,7 +107,7 @@ form `{gap, measure(k) → height, draw(y), width()}` and can be stacked with `w
 
 ## Checking
 
-Run `npm run dev`, pick the tile in step 4 "Gestaltung" and try it out:
+Run `npm run dev`, pick the tile in step 2 "Gestaltung" and try it out:
 
 - several occasions, including Karfreitag
 - all fonts and colour variants
