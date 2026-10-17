@@ -11,7 +11,7 @@ import { syncUI, changed } from './sync.js';
 import { requestRender } from './preview.js';
 import { showTab } from './tabs.js';
 import { saveFile } from './download.js';
-import { kiDone } from './ki.js';
+import { kiApply } from './ki.js';
 
 /* Entwurf: wird nach jeder Änderung kurz verzögert im Browser gesichert */
 let draftTimer;
@@ -116,11 +116,10 @@ export function initAblage(){
   $('#impBtn').addEventListener('click',()=>$('#impFile').click());
   $('#impFile').addEventListener('change',async e=>{
     const f=e.target.files[0]; e.target.value=''; if (!f) return;
+    if ($('#kiDlg').open) return kiApply(await f.text());
     let data; try{ data=JSON.parse(await f.text()); }catch{ toast('Die Datei konnte nicht gelesen werden.'); return; }
-    const fromKI=$('#kiDlg').open, n=await importData(data,fromKI&&$('#kiKeepMedia').checked,fromKI);
-    if (!n){ toast('Diese Datei ist keine Plakatwerkstatt-Datei.'); return; }
-    $(fromKI?'#kiDlg':'#ablageDlg').close();
-    if (fromKI) kiDone(n);
+    if (!await importData(data)){ toast('Diese Datei ist keine Plakatwerkstatt-Datei.'); return; }
+    $('#ablageDlg').close();
   });
 }
 

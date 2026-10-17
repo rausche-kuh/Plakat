@@ -21,9 +21,9 @@ a small JSON file, and the workshop turns it into one or two finished drafts.
    *"Sommerpicknick, Sa 4.7.2026, 14 Uhr, Freifläche Gemeindehaus Vollrathsruhe, bei Regen Mehrzweckhalle.
    Jeder bringt Geschirr und Essen mit, Federball, Wikingerschach, Public Viewing."*
 2. Click **„Auftrag kopieren“** and paste it into a **new** chat with the AI.
-3. Copy the AI's **complete** answer, or download its `plakat.json`, then:
-   - paste the answer into **„3. Antwort der KI einfügen“** and click **„Entwurf übernehmen“**, or
-   - click **„Datei der KI öffnen“** and pick the file.
+3. Copy the AI's **complete** answer (the copy button under the answer or on the code block works best) and paste
+   it into **„3. Antwort der KI einfügen“**, then click **„Entwurf übernehmen“**. The instruction asks for one JSON
+   code block in the chat. If the AI made a file anyway, download it and click **„Datei der KI öffnen“**.
 4. The dialog closes and the draft shows in the preview. All drafts are also saved under **„Meine Plakate“** (header).
 5. Upload **your own photo** in step 4 **Foto**, read everything once, then export.
 
@@ -66,8 +66,16 @@ text and your real photo.
 
 ### If something goes wrong
 
-- *„In der Antwort wurde kein gültiger Entwurf gefunden“*: copy the **whole** answer including all `{ }` braces.
-- *„Die Antwort hat nicht das erwartete Format“*: ask the AI to stick exactly to the format in the instruction.
+When the answer can't be read, the dialog says why, shows the affected spot and what to do. Usually the
+quickest fix is to paste that message into the chat and ask for a corrected JSON. Typical causes:
+
+- *No JSON in the answer*: the AI put it into a file or a side window (Canvas, Artifact). Copy it from there,
+  open the file with „Datei der KI öffnen“, or ask: *„Bitte gib das JSON als Codeblock hier im Chat aus.“*
+- *Incomplete*: not all of the answer was copied, or the AI stopped in the middle. Ask it to send the whole JSON again.
+- *A mistake at a certain spot*: a straight quote `"` inside a text, a real line break inside a text, a missing or
+  extra comma, curly quotes `„ “` around a field, a comment, an omission like `...`, or several JSON blocks.
+  These are slips of the AI; the message names the spot so you can also fix small ones yourself.
+- *No poster in the JSON*: the AI ignored the format. Ask it to stick exactly to the format in the instruction.
 - A field has sample text you didn't want: the AI left the field out. Clear it in the **Texte** tab.
 
 ---
