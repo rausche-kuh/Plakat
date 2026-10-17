@@ -2,16 +2,24 @@
 import { kiPrompt } from '../data/ki-prompt.js';
 import { $, toast, initDialog } from './dom.js';
 import { importData } from './ablage.js';
+import { readAnswer } from '../core/files.js';
 
 let kiInfo;
 function kiMsg(t){ $('#kiMsg').textContent=t; }
 /** Nach dem Übernehmen: Dialog zu, damit man den Entwurf in der Vorschau sieht */
-export function kiDone(n){
+function kiDone(n){
   kiMsg(''); $('#kiDlg').close();
   toast(n===1?'Entwurf übernommen. Er liegt auch unter „Meine Plakate“.':`${n} Entwürfe übernommen. Der erste ist geöffnet, alle liegen unter „Meine Plakate“.`);
 }
 function kiFull(){ return kiPrompt()+(kiInfo.value.trim()||'[hier die Infos zur Veranstaltung einfügen]'); }
 function kiSync(){ $('#kiPrompt').value=kiFull(); }
+/** Übernimmt die Antwort der KI (eingefügt oder aus ihrer Datei); sonst erklärt kiMsg, was daran nicht stimmt. */
+export async function kiApply(raw){
+  const r=readAnswer(raw); if (r.why){ kiMsg(r.why); return false; }
+  const n=await importData(r.data,$('#kiKeepMedia').checked,true);
+  if (!n){ kiMsg('Die Entwürfe ließen sich nicht übernehmen. Bitten Sie die KI, sich genau an das Format im Auftrag zu halten.'); return false; }
+  kiDone(n); return true;
+}
 
 export function initKI(){
   kiInfo=$('#kiInfo');
@@ -31,12 +39,7 @@ export function initKI(){
   $('#kiApply').addEventListener('click',async()=>{
     const raw=$('#kiAnswer').value.trim();
     if (!raw){ kiMsg('Fügen Sie zuerst die Antwort der KI ein.'); $('#kiAnswer').focus(); return; }
-    let data=null;
-    try{ const t=raw.replace(/```(?:json)?/gi,''), a=t.indexOf('{'), b=t.lastIndexOf('}'); if (a>=0&&b>a) data=JSON.parse(t.slice(a,b+1)); }catch{}
-    if (!data){ kiMsg('In der Antwort wurde kein gültiger Entwurf gefunden. Kopieren Sie die komplette Antwort der KI, einschließlich aller geschweiften Klammern { }.'); return; }
-    const n=await importData(data,$('#kiKeepMedia').checked,true);
-    if (!n){ kiMsg('Die Antwort hat nicht das erwartete Format. Bitten Sie die KI, sich genau an das Format im Auftrag zu halten.'); return; }
-    $('#kiAnswer').value=''; kiDone(n);
+    if (await kiApply(raw)) $('#kiAnswer').value='';
   });
   $('#kiFile').addEventListener('click',()=>$('#impFile').click());
 }

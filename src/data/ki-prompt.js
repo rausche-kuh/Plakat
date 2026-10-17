@@ -9,10 +9,10 @@ import { VARIANTS, FILTERS } from '../core/state.js';
 
 const layoutList = () => LAYOUT_GROUPS.map(g=>`${g.name}:\n`+LAYOUTS.filter(l=>l.group===g.id).map(l=>`- ${l.id}: ${l.about||l.name}`).join('\n')).join('\n');
 
-export const kiPrompt = () => String.raw`Du erstellst Entwürfe für Plakate einer evangelischen Kirchengemeinde. Das Ergebnis ist eine JSON-Datei, die ich in mein Programm „Plakatwerkstatt“ importiere. Halte dich exakt an das folgende Format, sonst lässt sich die Datei nicht öffnen.
+export const kiPrompt = () => String.raw`Du erstellst Entwürfe für Plakate einer evangelischen Kirchengemeinde. Das Ergebnis ist JSON, das ich in mein Programm „Plakatwerkstatt“ einfüge. Halte dich exakt an das folgende Format, sonst lässt es sich nicht öffnen.
 
 AUFGABE
-Lies die Infos am Ende dieser Nachricht und erstelle daraus ZWEI Plakatentwürfe in einer Datei:
+Lies die Infos am Ende dieser Nachricht und erstelle daraus ZWEI Plakatentwürfe in einem JSON:
 1. Entwurf „herzlich“: fontStyle "herzlich", variant "kraeftig", layout "einladung"
 2. Entwurf „Alternative“: dieselben Texte mit dem Layout aus der Gruppe „Herzlich und bunt“, das am besten passt (siehe LAYOUTS), z. B. "milchglas" für Feste im Freien, "aquarell" für Taufe und Familien.
 Ausnahme: Bei Karfreitag, Ewigkeitssonntag, Trauer- oder Gedenkanlässen nimm stattdessen fontStyle "edel", variant "hell", layout "klassisch" (Entwurf 1) und layout "typografie" (Entwurf 2).
@@ -53,12 +53,12 @@ FORMAT (genau so, nur die Werte ändern)
           "closing": "",
           "parish": ""
         },
-        "photo": { "src": null, "zoom": 1, "x": 0, "y": 0, "filter": "sonnig", "brightness": 0 },
-        "logo": { "src": null }
+        "photo": { "filter": "sonnig" }
       }
     }
   ]
 }
+Der zweite Entwurf folgt in derselben Liste "posters": nach der } des ersten ein Komma, dann sein vollständiges { "name": …, "state": … }.
 
 ERLAUBTE WERTE
 - occasion: ${OCC_KEYS.join(', ')}
@@ -69,7 +69,7 @@ ERLAUBTE WERTE
 - photo.filter: ${FILTERS.join(', ')}
 - accent: null (Farbe des Anlasses) oder eine Farbe als "#RRGGBB"
 - titleScale zwischen 0.6 und 1.5, textScale zwischen 0.8 und 1.3
-- photo.src und logo.src IMMER null lassen (Fotos lade ich selbst hoch)
+- Keine Fotos, Logos oder Bildadressen ins JSON (die lade ich selbst hoch)
 
 LAYOUTS
 ${layoutList()}
@@ -90,13 +90,22 @@ DIE TEXTFELDER
 
 WICHTIGE REGELN
 - Jedes Feld in "texts" muss vorhanden sein. Was du nicht füllst, setzt du auf "" (leerer Text). Lässt du ein Feld weg, setzt das Programm einen Beispieltext ein.
-- Erfinde keine Namen, Uhrzeiten, Orte, Adressen oder Programmpunkte. Nutze nur, was in meinen Infos steht. Fehlt etwas, lass das Feld leer.
+- Erfinde keine Namen, Uhrzeiten, Orte, Adressen oder Programmpunkte. Nutze nur, was in meinen Infos steht. Fehlt etwas, lass das Feld leer – stelle keine Rückfragen.
 - Lieber wenig Text als viel. Ein Plakat wird im Vorbeigehen gelesen.
 - Ansprache: herzlich und persönlich („euch“), ohne Übertreibungen und ohne Ausrufezeichen in jeder Zeile.
 - Bei stillen Anlässen: "doodles": false, "sunlight": false, "filter": "original".
 
 AUSGABE
-Wenn du Dateien erstellen kannst, gib das Ergebnis als Datei „plakat.json“ zum Herunterladen aus. Sonst gib ausschließlich EINEN JSON-Codeblock aus, ohne Text davor oder danach und ohne Kommentare im JSON. Prüfe vor der Ausgabe, dass das JSON gültig ist: Anführungszeichen, Kommas, keine überzähligen Kommas.
+Gib das Ergebnis als EINEN JSON-Codeblock direkt hier im Chat aus, ohne Text davor oder danach. Keine Datei, kein Download-Link, kein eigenes Fenster (Canvas, Artefakt) – ich kopiere die Antwort aus dem Chat. Beide Entwürfe stehen vollständig in diesem einen Block.
+
+JSON-REGELN (ein einziger Fehler, und der Entwurf lässt sich nicht öffnen)
+- Feldnamen und Texte stehen in geraden Anführungszeichen: "title": "Erntedankfest"
+- Innerhalb eines Textes nie gerade Anführungszeichen " – für Zitate „ “ nehmen.
+- Zeilenumbrüche in einem Text nur als \n schreiben, nie als echte neue Zeile.
+- Zwischen zwei Einträgen steht ein Komma, nach dem letzten Eintrag vor } oder ] keins.
+- true, false, null und Zahlen ohne Anführungszeichen.
+- Keine Kommentare, keine Auslassungen wie „…“ oder „wie oben“ – alles ausschreiben.
+Prüfe das JSON vor der Ausgabe Zeile für Zeile gegen diese Regeln.
 
 MEINE INFOS:
 `;
