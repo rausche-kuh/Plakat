@@ -63,14 +63,14 @@ export async function refreshList(){
 
 /** Übernimmt Plakate aus einer Datei oder KI-Antwort in die Ablage und öffnet das erste.
     keepMedia: aktuelles Foto und Logo einsetzen, wo die Datei keins hat.
-    fromKI: Texte der KI gelten als eigene, nicht als Beispieltexte. Gibt die Anzahl zurück. */
+    fromKI: Texte der KI gelten als eigene, nicht als Beispieltexte; der Entwurf zeigt wie ein neues Plakat das Beispielfoto. Gibt die Anzahl zurück. */
 export async function importData(data,keepMedia,fromKI){
   const list=posterList(data); if (!list.length) return 0;
   setStatus('Plakate werden übernommen …');
   const saved=clone(st); let first=null, n=0;
   for (const p of list){
     try{
-      const s=p.state||{}; setState(sanitize(fromKI?{...s,confirmed:Object.keys(s.texts||{})}:s)); st.id=uid(); st.name=typeof p.name==='string'&&p.name?p.name:(firstLine(st.texts.title)||'Plakat');
+      const s=p.state||{}; setState(sanitize(fromKI?{...s,confirmed:Object.keys(s.texts||{}),photo:{...s.photo,example:true}}:s)); st.id=uid(); st.name=typeof p.name==='string'&&p.name?p.name:(firstLine(st.texts.title)||'Plakat');
       if (keepMedia){ if (!st.photo.src && saved.photo.src) st.photo.src=saved.photo.src; if (!st.logo.src && saved.logo.src) st.logo.src=saved.logo.src; }
       await ensureImages(st);
       await store.put('posters',{id:st.id,name:st.name,updated:Date.now()+n,state:clone(st),thumb:makeThumb()});

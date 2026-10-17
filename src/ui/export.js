@@ -4,6 +4,9 @@ import { firstLine, slug } from '../core/util.js';
 import { renderPoster } from '../render/poster.js';
 import { $, $$, toast, listDe, initDialog } from './dom.js';
 import { openSamples, goToSamples } from './texte.js';
+import { showTab } from './tabs.js';
+import { getLayout } from '../layouts/index.js';
+import { exampleFor } from '../data/beispielfotos.js';
 import { saveFile } from './download.js';
 import { jpegToPdf } from '../core/pdf.js';
 
@@ -12,16 +15,18 @@ async function busy(btn,label,fn){ const old=btn.textContent; btn.disabled=true;
 
 export function initExport(){
   const dlg=$('#exportDlg'), show=initDialog('#exportDlg');
-  // Stehen noch Beispieltexte darin, zeigt der Dialog zuerst eine Warnung
+  // Stehen noch Beispieltexte oder das Beispielfoto darin, zeigt der Dialog zuerst eine Warnung
   const step=warn=>{ $('#expWarn').hidden=!warn; $$('#exportDlg .exp').forEach(e=>e.hidden=warn); };
   const open=()=>{
-    const names=openSamples().map(f=>`„${f.name}“`);
-    $('#expWarnText').textContent=`Diese Beispieltexte des Anlasses haben Sie nicht bearbeitet: ${listDe(names)}. Sie stehen so auf dem Plakat.`;
-    step(names.length>0); show();
+    const names=openSamples().map(f=>`„${f.name}“`), ex=getLayout(st.layout).photo && exampleFor(st);
+    $('#expWarnText').textContent=[names.length && `Diese Beispieltexte des Anlasses haben Sie nicht bearbeitet: ${listDe(names)}. Sie stehen so auf dem Plakat.`,
+      ex && `Das Foto ist ein Beispielfoto („${ex.name}“), nicht Ihr eigenes.`].filter(Boolean).join(' ');
+    $('#expToTexts').textContent=names.length?'Zu den Texten':'Zum Foto';
+    step(names.length>0||!!ex); show();
   };
   $('#openExport').addEventListener('click',open);
   $('#nextExport').addEventListener('click',open);
-  $('#expToTexts').addEventListener('click',()=>{ dlg.close(); goToSamples(); });
+  $('#expToTexts').addEventListener('click',()=>{ dlg.close(); if (openSamples().length) goToSamples(); else { showTab('foto'); $('#photoBox [data-act=change]')?.focus(); } });
   $('#expAnyway').addEventListener('click',()=>step(false));
   $('#doPdf').addEventListener('click',e=>busy(e.currentTarget,'Wird erstellt …',async()=>{
     const W=+$('#pdfQ').value, c=renderHi(W);

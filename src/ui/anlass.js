@@ -1,12 +1,13 @@
 /* ---------- Schritt 1 „Anlass“: Kacheln der Anlässe ---------- */
 import { st, sampleKeys } from '../core/state.js';
 import { mix } from '../core/color.js';
+import { ensureImages } from '../core/images.js';
 import { OCCASIONS, OCC, TPL_KEYS, occLabel } from '../occasions/index.js';
 import { $, $$, toast } from './dom.js';
 import { syncUI, changed } from './sync.js';
 
 /** Wechselt den Anlass Feld für Feld: Beispieltexte werden ersetzt, eigene, bestätigte und geleerte Felder bleiben. */
-function setOccasion(key){
+async function setOccasion(key){
   if (key===st.occasion) return;
   const old=OCC[st.occasion].texts, open=sampleKeys(st), next=OCC[key].texts;
   const kept=TPL_KEYS.filter(k=>!open.includes(k) && (old[k] || st.texts[k]));
@@ -14,7 +15,7 @@ function setOccasion(key){
   TPL_KEYS.forEach(k=>{ if (!kept.includes(k)) st.texts[k]=next[k]; });
   if (kept.some(k=>st.texts[k]!==next[k])){ $('#tplApply').textContent=`Beispieltexte für ${occLabel(OCC[key])} einsetzen`; $('#tplHint').hidden=false; }
   else $('#tplHint').hidden=true;
-  syncUI(); changed();
+  await ensureImages(st); syncUI(); changed();
 }
 
 export function initAnlass(){

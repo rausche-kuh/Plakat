@@ -28,7 +28,7 @@ make a poster now and then. What they know is a template they fill in and print.
 3. **More options are welcome, as long as the UI stays clean.** Everything beyond the basics sits in a folded
    section "Weitere Einstellungen" at the end of a step, closed by default. Nothing gets removed.
 4. **Nothing made-up leaves unnoticed.** Sample texts are clearly marked until the user edits or confirms them,
-   and the export warns about the ones that are left.
+   example photos until the user uploads their own, and the export warns about what is left.
 5. Unchanged from the prototype: real text, real photos, everything stays in the browser.
 
 ## Structure
@@ -49,7 +49,7 @@ Two things are not steps and sit outside the tab bar, each in its own dialog:
 | **1 Anlass** | Occasion tiles | – |
 | **2 Gestaltung** | Grundstimmung, Farbe, the layout thumbnails in their three groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, text sizes) |
 | **3 Texte** | All fields, grouped like a form: *Was?* · *Wann und wo?* · *Mehr dazu* · *Absender* | – (texts are content, folding them away would hide sample texts that still print) |
-| **4 Foto** | Upload, drag in the preview, zoom, Bildstimmung | Ausschnitt sliders, reset, brightness |
+| **4 Foto** | Upload (until then an example photo, or "Ohne Foto"), drag in the preview, zoom, Bildstimmung | Ausschnitt sliders, reset, brightness |
 
 The last step's button "Weiter: Exportieren" opens the export dialog.
 
@@ -74,6 +74,26 @@ not facts: the dates are invented and "Ev. Kirche St. Johannis" does not exist.
   files show their samples marked without any conversion.
 - **AI drafts:** texts that come from an AI answer count as the user's own; the AI only rewrites what the user
   typed in.
+
+## Example photos
+
+Until the user uploads a photo, the poster shows a real example photo picked by occasion (Ostern: an Easter fire,
+Konzert: organ pipes …), so the preview and the layout thumbnails show how the design works with a photo. The
+examples only preview the design: they are small, heavily compressed and not meant to be printed.
+
+- **Photos:** seven real photos, CC0 or public domain only, so an exported poster needs no credit line. Sources,
+  licences and the occasion mapping: `assets/beispielfotos/README.md`. No generated images.
+- **Crop:** each photo has a fixed focus point that every layout crops around. Zoom, dragging and the Ausschnitt
+  sliders are hidden while an example shows; Bildstimmung and Helligkeit apply.
+- **Marking:** the Foto step shows a "Beispiel" tag and says which example is showing; under the preview a button
+  "Beispielfoto – eigenes hochladen" opens the file picker. There is no "Passt so": the example is never the
+  user's own church, so it stays marked until they upload a photo.
+- **"Ohne Foto":** a checkbox in the Foto step (while no own photo is in) brings back the coloured area with the
+  occasion's ornament. Removing an own photo brings the example back, unless "Ohne Foto" is ticked.
+- **Export:** the warning lists the example photo along with any unchecked sample texts. The first button is
+  "Zu den Texten", or "Zum Foto" when only the photo is left. Layouts without a photo never warn about it.
+- **Storage:** one field, `photo.example`. New posters and applied AI drafts start with `true`; "Ohne Foto" sets
+  it to `false`. Posters saved before example photos existed have no field and open as before, without one.
 
 ## Decided against
 

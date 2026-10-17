@@ -68,7 +68,7 @@ details.more>summary{cursor:pointer;color:var(--accent);font-weight:600;font-siz
 
 /* Beispieltexte des Anlasses */
 .in.is-sample{background:var(--sample);border-color:var(--sample-line)}
-label.f .tag{margin-left:8px;padding:0 7px;border-radius:999px;background:var(--sample);border:1px solid var(--sample-line);color:var(--sample-ink);font-size:11.5px;font-weight:600;vertical-align:1px}
+label.f .tag,h2 .tag{margin-left:8px;padding:0 7px;border-radius:999px;background:var(--sample);border:1px solid var(--sample-line);color:var(--sample-ink);font-size:11.5px;font-weight:600;vertical-align:1px}
 .fhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 8px;margin:15px 0 5px}
 .fhead label.f{margin:0}
 .sample-tools{display:flex;gap:4px}

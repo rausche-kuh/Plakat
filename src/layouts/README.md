@@ -55,7 +55,7 @@ preview, in the thumbnails and in the 300 dpi export.
 | `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`; see `src/data/fontsets.js`) |
 | `occ` | the occasion (`colors`, `warm`, `quiet` …) |
 | `orn` | the occasion's ornament: `orn.draw(ctx, x, y, size, {a, b, bg, c})`, centred on (x,y), width `size*orn.wf` |
-| `photo`, `logo` | photo (processed) and logo, or `null`. Always draw the photo via `drawPhoto`. |
+| `photo`, `logo` | photo (processed) and logo, or `null`. Without an own photo, `photo` is the example photo (`example` holds its focus point). Always draw the photo via `drawPhoto`. |
 | `warmGrade` | set to `true` so `drawPhoto` lays a warm tint over the photo |
 
 Read the state only through `env.st`, never the global one, because the thumbnails draw the same poster with a different layout.

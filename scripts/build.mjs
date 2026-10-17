@@ -8,10 +8,15 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const out = root + 'dist/plakatwerkstatt.html';
 
-const js = (await build({
+let js = (await build({
   entryPoints: [root + 'src/main.js'], bundle: true, format: 'iife', target: 'es2020',
   minify: true, charset: 'utf8', legalComments: 'none', write: false,
 })).outputFiles[0].text;
+// Beispielfotos einbetten: jeder Pfad assets/beispielfotos/….webp im Skript wird zur data:-URL (fehlt die Datei, bricht der Bau ab)
+const fotos = {};
+for (const [p] of js.matchAll(/assets\/beispielfotos\/[\w-]+\.webp/g)) fotos[p] ??= 'data:image/webp;base64,' + (await readFile(root + p)).toString('base64');
+if (!Object.keys(fotos).length) throw new Error('Keine Beispielfotos im Skript gefunden.');
+js = js.replace(/assets\/beispielfotos\/[\w-]+\.webp/g, p => fotos[p]);
 if (/<\/script/i.test(js)) throw new Error('Das gebündelte Skript enthält „</script“ – bitte im Quelltext umschreiben.');
 
 let html = await readFile(root + 'index.html', 'utf8');

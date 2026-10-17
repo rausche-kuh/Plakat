@@ -15,7 +15,7 @@ export function defaults(occ='advent', keep){
   return {v:1,id:null,name:'',occasion:occ,layout:'einladung',fontStyle:'herzlich',variant:'kraeftig',accent:null,
     ornament:true,frame:false,doodles:true,sunlight:true,titleScale:1,textScale:1,
     texts:{...t, place:keep?.place??PLACE, address:keep?.address??ADDRESS, parish:keep?.parish??PARISH}, confirmed:[],
-    photo:{src:null,zoom:1,x:0,y:0,filter:'original',brightness:0},
+    photo:{src:null,example:true,zoom:1,x:0,y:0,filter:'original',brightness:0},
     logo:{src:keep?.logo??null}};
 }
 
@@ -36,7 +36,7 @@ export function sanitize(s){
   out.texts = {...d.texts}; if (s.texts) for (const k in d.texts) if (typeof s.texts[k]==='string') out.texts[k]=s.texts[k];
   out.confirmed = Array.isArray(s.confirmed) ? s.confirmed.filter(k=>Object.hasOwn(d.texts,k)) : [];
   const p = s.photo||{};
-  out.photo = {src: typeof p.src==='string'&&p.src.startsWith('data:image/')?p.src:null, zoom:clamp(+p.zoom||1,1,3), x:clamp(+p.x||0,-1,1), y:clamp(+p.y||0,-1,1), filter:FILTERS.includes(p.filter)?p.filter:'original', brightness:clamp(+p.brightness||0,-30,30)};
+  out.photo = {src: typeof p.src==='string'&&p.src.startsWith('data:image/')?p.src:null, example:p.example===true, zoom:clamp(+p.zoom||1,1,3), x:clamp(+p.x||0,-1,1), y:clamp(+p.y||0,-1,1), filter:FILTERS.includes(p.filter)?p.filter:'original', brightness:clamp(+p.brightness||0,-30,30)};
   out.logo = {src: typeof s.logo?.src==='string'&&s.logo.src.startsWith('data:image/')?s.logo.src:null};
   return out;
 }

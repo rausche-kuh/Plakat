@@ -164,15 +164,15 @@
     </section>
 
     <section class="tabpanel" id="tab-foto" role="tabpanel" hidden>
-      <h2>Foto</h2>
+      <h2>Foto <span class="tag" id="photoTag" hidden>Beispiel</span></h2>
       <div id="photoBox"></div>
       <input type="file" id="photoFile" accept="image/*" class="sr">
       <div id="photoControls">
-        <div class="range">
+        <div class="range own-photo">
           <div class="head"><label for="pZoom">Vergrößern</label><output id="pZoomOut">100 %</output></div>
           <input type="range" id="pZoom" min="100" max="300" step="1">
         </div>
-        <p class="hint" id="panHint">Tipp: Ziehen Sie das Foto in der Vorschau mit der Maus, um den Ausschnitt zu verschieben.</p>
+        <p class="hint own-photo" id="panHint">Tipp: Ziehen Sie das Foto in der Vorschau mit der Maus, um den Ausschnitt zu verschieben.</p>
 
         <h2>Bildstimmung</h2>
         <div class="chips" id="filterChips">
@@ -186,15 +186,17 @@
 
         <details class="more">
           <summary>Weitere Einstellungen</summary>
-          <div class="range">
-            <div class="head"><label for="pX">Ausschnitt waagerecht</label></div>
-            <input type="range" id="pX" min="-100" max="100" step="1">
+          <div class="own-photo">
+            <div class="range">
+              <div class="head"><label for="pX">Ausschnitt waagerecht</label></div>
+              <input type="range" id="pX" min="-100" max="100" step="1">
+            </div>
+            <div class="range">
+              <div class="head"><label for="pY">Ausschnitt senkrecht</label></div>
+              <input type="range" id="pY" min="-100" max="100" step="1">
+            </div>
+            <button class="btn small" id="pCenter" style="margin-top:8px">Ausschnitt zurücksetzen</button>
           </div>
-          <div class="range">
-            <div class="head"><label for="pY">Ausschnitt senkrecht</label></div>
-            <input type="range" id="pY" min="-100" max="100" step="1">
-          </div>
-          <button class="btn small" id="pCenter" style="margin-top:8px">Ausschnitt zurücksetzen</button>
           <div class="range">
             <div class="head"><label for="pBright">Helligkeit</label><output id="pBrightOut">0</output></div>
             <input type="range" id="pBright" min="-30" max="30" step="1">
@@ -278,7 +280,7 @@
   <div class="dlg-head"><h2 id="expTitle">Plakat exportieren</h2><button class="btn small ghost dlg-close">Schließen</button></div>
   <div class="dlg-body">
     <div class="warn" id="expWarn" hidden>
-      <h3>Noch nicht alle Texte bearbeitet</h3>
+      <h3>Noch Beispiele auf dem Plakat</h3>
       <p id="expWarnText"></p>
       <p>Möchten Sie trotzdem exportieren?</p>
       <div class="row">
