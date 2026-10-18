@@ -15,10 +15,8 @@ import doppelbogen from './doppelbogen.js';
 import seitenspalte from './seitenspalte.js';
 import typografie from './typografie.js';
 import holzschnitt from './holzschnitt.js';
-import scherenschnitt from './scherenschnitt.js';
 import raster from './raster.js';
 import flugblatt from './flugblatt.js';
-import kupferstich from './kupferstich.js';
 import kontur from './kontur.js';
 
 /** Gruppen im Schritt „Gestaltung“ – von verspielt bis still. Jedes Layout nennt seine Gruppe in `group`. */
@@ -30,7 +28,7 @@ export const LAYOUT_GROUPS = [
 ];
 
 /** Reihenfolge innerhalb der Gruppen = Reihenfolge der Kacheln im Schritt „Gestaltung“ und in der KI-Anleitung. */
-export const LAYOUTS = [einladung, pinnwand, milchglas, abriss, aquarell, farbfeld, bogen, vollbild, abendlicht, doppelbogen, klassisch, seitenspalte, typografie, holzschnitt, scherenschnitt, raster, flugblatt, kupferstich, kontur];
+export const LAYOUTS = [einladung, pinnwand, milchglas, abriss, aquarell, farbfeld, bogen, vollbild, abendlicht, doppelbogen, klassisch, seitenspalte, typografie, holzschnitt, raster, flugblatt, kontur];
 
 /** Frühere Layouts, die es nicht mehr gibt: gespeicherte Plakate öffnen sich mit dem Ersatz. */
 const RETIRED = {medaillon:'klassisch', passepartout:'klassisch', kirchenfenster:'klassisch'};
