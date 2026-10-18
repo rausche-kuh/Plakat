@@ -66,13 +66,14 @@ add_header Cache-Control "no-cache";
 ## Layouts
 
 Every layout works with every occasion, font and colour variant. In step 2, "Gestaltung", they are grouped
-from playful to quiet:
+from playful to quiet, plus a group for black-and-white printing:
 
 | Group (UI name) | Layouts | For |
 |---|---|---|
 | **Herzlich und bunt** | Einladung, Pinnwand, Milchglas, Abriss, Aquarell | Festivals, families, summer events. These are the community favourites in the style of AI posters. |
 | **Freundlich und klar** | Farbfeld, Bogen, Vollbild, Abendlicht, Doppelbogen | Concerts, baptisms, youth: clear shapes with some colour |
 | **Ruhig und edel** | Klassisch, Seitenspalte, Nur Schrift | Funerals, Good Friday, remembrance |
+| **Klar in Schwarz-Weiß** | Holzschnitt, Raster, Flugblatt, Kontur | Posters printed or copied in black and white: line work on white paper, little ink |
 
 - **Milchglas** is modelled on a summer-picnic poster from the group chat: a full-bleed photo,
   hand-lettered title and frosted glass panels.
@@ -85,9 +86,18 @@ from playful to quiet:
 - **Doppelbogen** sets the photo in a two-lobed shape, with a large stacked date and a very large title.
   It is modelled on a concert poster template. Both look like their models with the colour "Dunkel"
   and the font "Plakativ" (heavy grotesque), which works with every other layout too.
+- **Holzschnitt** looks like an old woodcut: a carved frame, the ornament in a ray burst, banners. No photo.
+- **Raster** turns the photo into a coarse dot screen in a circle, so it stays sharp on a copier.
+- **Flugblatt** is set like a newspaper page: masthead, big headline, captioned photo, columns.
+- **Kontur** sets the title and the day in huge outline letters. No photo.
+
+The colour "Schwarz-Weiß" (step 2, next to "Dunkel") turns any layout grey, including photo and logo; the
+Schwarz-Weiß layouts are made for it and need about 3–10 % ink, plus whatever the photo takes. The tile
+"Schwarz-Weiß" under "Grundstimmung" picks it with Raster and Plakativ, and the export dialog can make a
+black-and-white PDF of a colour poster without changing it.
 
 Under the preview, „Anordnung ändern“ lets you drag the large parts of a layout (photo, text …) and resize them;
-the text re-fits inside. It works in all layouts except Pinnwand, Abriss, Doppelbogen and Milchglas.
+the text re-fits inside. It works in all layouts except Pinnwand, Abriss, Doppelbogen, Milchglas and Flugblatt.
 
 Medaillon, Passepartout and Kirchenfenster were retired. Saved posters that used them open as "Klassisch".
 

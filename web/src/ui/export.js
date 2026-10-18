@@ -11,7 +11,7 @@ import { saveFile } from './download.js';
 import { jpegToPdf } from '../core/pdf.js';
 import { posterLink } from '../core/files.js';
 
-function renderHi(W){ const c=document.createElement('canvas'); c.width=W; c.height=Math.round(W*Math.SQRT2); renderPoster(c.getContext('2d'),st,W,3200); return c; }
+function renderHi(W,bw){ const c=document.createElement('canvas'); c.width=W; c.height=Math.round(W*Math.SQRT2); renderPoster(c.getContext('2d'),bw?{...st,variant:'schwarzweiss'}:st,W,3200); return c; }
 async function busy(btn,label,fn){ const old=btn.textContent; btn.disabled=true; btn.textContent=label; await new Promise(r=>setTimeout(r,30)); try{ await fn(); } finally { btn.disabled=false; btn.textContent=old; } }
 
 export function initExport(){
@@ -37,7 +37,7 @@ export function initExport(){
   $('#expToTexts').addEventListener('click',()=>{ dlg.close(); if (openSamples().length) goToSamples(); else { showTab('foto'); $('#photoBox [data-act=change]')?.focus(); } });
   $('#expAnyway').addEventListener('click',()=>step(false));
   $('#doPdf').addEventListener('click',e=>busy(e.currentTarget,'Wird erstellt …',async()=>{
-    const W=+$('#pdfQ').value, c=renderHi(W);
+    const W=+$('#pdfQ').value, c=renderHi(W,$('#pdfBw').checked);
     const jpg=await new Promise(r=>c.toBlob(r,'image/jpeg',0.93));
     if (!jpg){ toast('Das PDF konnte nicht erstellt werden.'); return; }
     const pdf=jpegToPdf(new Uint8Array(await jpg.arrayBuffer()),c.width,c.height,firstLine(st.texts.title)||'Plakat');

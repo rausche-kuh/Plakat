@@ -15,6 +15,11 @@ export function renderPoster(ctx,st,W,maxPhoto){
   ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,W,H);
   ctx.fillStyle=th.bg; ctx.fillRect(0,0,W,H); ctx.textBaseline='alphabetic'; ctx.lineJoin='round';
   getLayout(st.layout).draw(env);
+  if (st.variant==='schwarzweiss') grey(ctx,W,H);
   ctx.restore();
   return env;
 }
+/** Schwarz-Weiß: alles in Graustufen, auch Foto, Logo und feste Farben einzelner Layouts */
+function grey(ctx,W,H){ const im=ctx.getImageData(0,0,W,H), d=im.data;
+  for (let i=0;i<d.length;i+=4) d[i]=d[i+1]=d[i+2]=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+  ctx.putImageData(im,0,0); }

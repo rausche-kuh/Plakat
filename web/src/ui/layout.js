@@ -15,7 +15,8 @@ const layoutCanvases={}; let thumbTimer;
 const MOODS = {
   herzlich:{fontStyle:'herzlich',variant:'kraeftig',layout:'einladung',doodles:true,sunlight:true},
   freundlich:{fontStyle:'freundlich',variant:'getoent',layout:'farbfeld'},
-  ruhig:{fontStyle:'edel',variant:'hell',layout:'klassisch'}
+  ruhig:{fontStyle:'edel',variant:'hell',layout:'klassisch'},
+  schwarzweiss:{fontStyle:'plakativ',variant:'schwarzweiss',layout:'raster'}
 };
 
 /** Zeichnet alle Miniaturen mit dem aktuellen Plakat neu (leicht verzögert) */
@@ -80,7 +81,7 @@ export function initLayoutTab(){
 export function syncLayoutTab(){
   $$('#fontGrid .tile').forEach(t=>t.setAttribute('aria-pressed',t.dataset.font===st.fontStyle));
   $$('#variantSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===st.variant));
-  $('#accentPick').value=theme(st).accent; $('#accentReset').hidden=!st.accent;
+  $('#accentPick').value=theme(st).accent; $('#accentReset').hidden=!st.accent; $('.colorrow').hidden=st.variant==='schwarzweiss';  // Schwarz-Weiß kennt keine Akzentfarbe
   $$('#moodGrid .tile').forEach(t=>{ const m=MOODS[t.dataset.mood]; t.setAttribute('aria-pressed', st.fontStyle===m.fontStyle&&st.variant===m.variant); });
   $$('#layoutGroups .tile').forEach(t=>t.setAttribute('aria-pressed',t.dataset.layout===st.layout));
   $('#optOrnament').checked=st.ornament; $('#optFrame').checked=st.frame; $('#optDoodles').checked=st.doodles; $('#optSun').checked=st.sunlight;
