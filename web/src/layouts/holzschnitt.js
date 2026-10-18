@@ -41,11 +41,11 @@ function ribbonEl(env,o){
       m.pad=m.px*0.36; m.bh=m.lines.length*m.lh+2*m.pad; m.bw=maxLineW(ctx,m.lines)+m.px*1.6; m.t=Math.min(m.bh*1.1,70*k*u); m.d=m.bh*0.32; return m.bh+m.d; },
     draw(y){ const cx=o.x+o.w/2, x0=cx-m.bw/2, x1=cx+m.bw/2, h=m.bh, d=m.d, t=m.t, nv=h*0.32;
       ctx.save(); ctx.lineWidth=Math.max(1,1.8*u); ctx.strokeStyle=th.ink; ctx.fillStyle=th.bg; ctx.lineJoin='round';
-      for (const s of [-1,1]){ const xe=s<0?x0:x1, xo=xe-s*t;
-        ctx.beginPath(); ctx.moveTo(xe+s*d,y+d); ctx.lineTo(xo,y+d); ctx.lineTo(xo+s*nv,y+d+h/2); ctx.lineTo(xo,y+d+h); ctx.lineTo(xe+s*d,y+d+h); ctx.closePath(); ctx.fill(); ctx.stroke();
-        // Schraffur am Ende, wie mit dem Messer gestochen
-        ctx.beginPath(); for (let q=1;q<=3;q++){ const yy=y+d+h*q/4, xa=xo+s*nv*(1-Math.abs(q-2)/2)+s*5*u; ctx.moveTo(xa,yy); ctx.lineTo(xa+s*Math.min(t*0.28,14*u),yy); } ctx.stroke();
-        ctx.fillStyle=th.ink; ctx.beginPath(); ctx.moveTo(xe,y+h); ctx.lineTo(xe+s*d,y+h); ctx.lineTo(xe+s*d,y+h+d); ctx.closePath(); ctx.fill(); ctx.fillStyle=th.bg; }
+      for (const s of [-1,1]){ const xe=s<0?x0:x1, xo=xe+s*t;
+        ctx.beginPath(); ctx.moveTo(xe,y+d); ctx.lineTo(xo,y+d); ctx.lineTo(xo-s*nv,y+d+h/2); ctx.lineTo(xo,y+d+h); ctx.lineTo(xe,y+d+h); ctx.closePath(); ctx.fill(); ctx.stroke();
+        // Schraffur im Schatten neben dem Band, wie mit dem Messer gestochen
+        ctx.beginPath(); for (let q=0;q<3;q++){ const xx=xe+s*(5+q*5)*u; ctx.moveTo(xx,y+h+3*u); ctx.lineTo(xx,y+d+h-4*u-q*0.12*h); } ctx.stroke();
+        ctx.fillStyle=th.ink; ctx.beginPath(); ctx.moveTo(xe,y+h); ctx.lineTo(xe-s*d,y+h); ctx.lineTo(xe,y+h+d); ctx.closePath(); ctx.fill(); ctx.fillStyle=th.bg; }
       ctx.beginPath(); ctx.rect(x0,y,m.bw,h); ctx.fill(); ctx.stroke();
       ctx.lineWidth=Math.max(1,0.8*u); ctx.beginPath(); ctx.moveTo(x0+4*u,y+4*u); ctx.lineTo(x1-4*u,y+4*u); ctx.moveTo(x0+4*u,y+h-4*u); ctx.lineTo(x1-4*u,y+h-4*u); ctx.stroke();
       ctx.restore(); fillLines(ctx,o.font,m.px,m.lines,cx,y+m.pad,m.lh,'center',o.color); } };
@@ -86,7 +86,9 @@ export default {
     const fh=footerH(env), bottom=H-fi-34*u, t=arranged(env,'text',{x:fi+50*u,y:top,w:W-2*fi-100*u,h:bottom-fh-(fh?34*u:0)-top}), x=t.x, w=t.w, els=[];
     const tx=(k,font,size,lh,color,gap,more={})=>{ if (tr(T[k])) els.push(textEl(env,{text:tr(T[k]),font,size,lh,color,x,w,align:'center',gap,...more})); };
     if (tr(T.eyebrow)) els.push(ribbonEl(env,{text:tr(T.eyebrow),font:fs.title,size:30*bs*f('eyebrow'),x,w,color:th.ink}));
-    tx('title',fs.title,fs.title.size*1.22*sz(st,'title'),fs.title.lh,th.ink,els.length?26:0,{sp:fs.title.sp||0});
+    if (tr(T.title)){ const ts0=fs.title.size*1.22*sz(st,'title'), e=textEl(env,{text:tr(T.title),font:fs.title,size:ts0,lh:fs.title.lh,sp:fs.title.sp||0,color:th.ink,x,w,align:'center'});
+      // lange Titel werden allein kleiner, bis sie höchstens etwa drei Zeilen brauchen – sonst bliebe für den Rest nur Kleingedrucktes
+      els.push({gap:els.length?26:0,width:()=>e.width(),measure(k){ let q=k, h=e.measure(q); while (h>3.3*ts0*q*u*fs.title.lh && q>0.45*k){ q*=0.93; h=e.measure(q); } return h; },draw:y=>e.draw(y)}); }
     tx('subtitle',fs.body,26*bs*f('subtitle'),1.35,th.muted,14);
     if (tr(T.verse)) els.push(textEl(env,{text:quote(tr(T.verse)),font:fs.verse,size:fs.verse.size*ts*sz(st,'verse'),lh:fs.verse.lh,color:th.ink,x:x+w*0.06,w:w*0.88,align:'center',gap:30}));
     tx('ref',fs.body,15*bs*f('ref'),1.3,th.muted,10,{upper:true,sp:0.16,balance:false});
