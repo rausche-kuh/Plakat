@@ -10,6 +10,8 @@ import farbfeld from './farbfeld.js';
 import bogen from './bogen.js';
 import klassisch from './klassisch.js';
 import vollbild from './vollbild.js';
+import abendlicht from './abendlicht.js';
+import doppelbogen from './doppelbogen.js';
 import seitenspalte from './seitenspalte.js';
 import typografie from './typografie.js';
 
@@ -21,7 +23,7 @@ export const LAYOUT_GROUPS = [
 ];
 
 /** Reihenfolge innerhalb der Gruppen = Reihenfolge der Kacheln im Schritt „Gestaltung“ und in der KI-Anleitung. */
-export const LAYOUTS = [einladung, pinnwand, milchglas, abriss, aquarell, farbfeld, bogen, vollbild, klassisch, seitenspalte, typografie];
+export const LAYOUTS = [einladung, pinnwand, milchglas, abriss, aquarell, farbfeld, bogen, vollbild, abendlicht, doppelbogen, klassisch, seitenspalte, typografie];
 
 /** Frühere Layouts, die es nicht mehr gibt: gespeicherte Plakate öffnen sich mit dem Ersatz. */
 const RETIRED = {medaillon:'klassisch', passepartout:'klassisch', kirchenfenster:'klassisch'};

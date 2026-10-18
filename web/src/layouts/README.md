@@ -52,7 +52,7 @@ preview, in the thumbnails and in the 300 dpi export.
 | `W`, `H`, `u` | width, height in pixels, pixels per unit |
 | `st` | poster state: `st.texts.*`, `st.sizes` (size factor per text field, read it with `sz(st, key)`), `st.textScale`, `st.ornament`, `st.frame`, `st.doodles`, `st.sunlight`, `st.variant`, `st.accent`, `st.photo` |
 | `th` | colours from occasion + colour variant: `bg`, `ink`, `accent`, `soft`, `muted`, `line`, `deep`, `onDark`, `second` |
-| `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`; see `web/src/data/fontsets.js`) |
+| `fs` | font set (roles `title`, `verse`, `body`, `strong`, `italic`, `hand`, `handB`, `num`, and optionally `script` for single decorative words, so fall back to `handB`; see `web/src/data/fontsets.js`) |
 | `occ` | the occasion (`colors`, `warm`, `quiet` …) |
 | `orn` | the occasion's ornament: `orn.draw(ctx, x, y, size, {a, b, bg, c})`, centred on (x,y), width `size*orn.wf` |
 | `photo`, `logo` | photo (processed) and logo, or `null`. Without an own photo, `photo` is the example photo (`example` holds its focus point). Always draw the photo via `drawPhoto`. |
@@ -110,6 +110,8 @@ place factor, or the address factor when the place is empty.
 | `einladung.js`, `pinnwand.js` | Herzlich style with paper and brush strokes |
 | `milchglas.js` | text panels on a full-bleed photo, regions shrink together |
 | `abriss.js`, `aquarell.js` | Herzlich style with element stacks and adaptive photo size |
+| `abendlicht.js` | photo fading into the background, text column that shrinks as a whole |
+| `doppelbogen.js` | photo in a custom clip shape, text on the photo with a soft background glow |
 
 ## Checking
 
