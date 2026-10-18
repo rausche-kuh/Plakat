@@ -1,8 +1,7 @@
 /* Bedienelemente: Kacheln, Felder, Knöpfe, Regler, Listen, Dialog, Hinweise */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
 .grid.two{grid-template-columns:1fr 1fr}
-.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.grid.three .sample{font-size:17px}
+#moodGrid .sample{font-size:17px}
 .grid.layouts{grid-template-columns:repeat(auto-fill,minmax(98px,1fr))}
 .lgroup+.lgroup{margin-top:18px}
 .lgroup h3{font-size:13.5px;font-weight:600;margin:0}
@@ -52,7 +51,7 @@ textarea.in{resize:vertical;min-height:42px}
 .row .btn.ghost{padding-left:6px;padding-right:6px}/* bricht er um, steht er trotzdem bündig links */
 
 .seg{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--panel2)}
-.seg button{flex:1;appearance:none;border:0;background:none;padding:8px 6px;font-weight:600;font-size:13.5px;cursor:pointer;color:var(--muted)}
+.seg button{flex:auto;white-space:nowrap;appearance:none;border:0;background:none;padding:8px 6px;font-weight:600;font-size:13.5px;cursor:pointer;color:var(--muted)}
 .seg button+button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink)}
 
@@ -64,6 +63,7 @@ textarea.in{resize:vertical;min-height:42px}
 .range input{width:100%;accent-color:var(--accent);margin:6px 0 0}
 
 .colorrow{display:flex;gap:10px;align-items:center;margin-top:10px}
+.colorrow[hidden]{display:none}
 .colorrow input[type=color]{width:44px;height:34px;padding:2px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);cursor:pointer}
 
 .note{background:var(--accent-soft);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:13.5px}

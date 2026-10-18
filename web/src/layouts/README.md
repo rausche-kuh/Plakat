@@ -14,7 +14,7 @@ Each layout is a file of its own in this folder. To write a new one you only nee
    export default {
      id: 'banner',        // stored in saved posters and files – never rename later
      name: 'Banner',      // name on the tile (German)
-     group: 'freundlich', // 'herzlich' | 'freundlich' | 'ruhig' – group in the Layout tab (LAYOUT_GROUPS in index.js)
+     group: 'freundlich', // 'herzlich' | 'freundlich' | 'ruhig' | 'schwarzweiss' – group in the Layout tab (LAYOUT_GROUPS in index.js)
      about: 'Foto oben als breites Band, Text mittig darunter',  // German one-liner: tile tooltip and AI instruction
      photo: true,         // does the layout show a photo?
      // warm: true,       // only if it uses the "Herzlich" extras (decorations, sunlight)
@@ -126,7 +126,7 @@ draw(env){
   Anything drawn at `W/2` stays behind otherwise (see the box in `aquarell.js`).
 - Only parts the user touched are stored (`st.arrange[layout][id]`, poster units). Untouched parts keep adapting to the
   content as before, and a poster nobody rearranged looks exactly as without the feature.
-- Without `parts`, the button is hidden. Pinnwand, Abriss, Doppelbogen and Milchglas have none: their photo size follows
+- Without `parts`, the button is hidden. Pinnwand, Abriss, Doppelbogen, Milchglas and Flugblatt have none: their photo size follows
   the amount of text, or all their text is fitted as one.
 
 ## Templates
@@ -143,6 +143,9 @@ draw(env){
 | `abriss.js`, `aquarell.js` | Herzlich style with element stacks and adaptive photo size |
 | `abendlicht.js` | photo fading into the background, text column that shrinks as a whole |
 | `doppelbogen.js` | photo in a custom clip shape, text on the photo with a soft background glow |
+| `holzschnitt.js`, `kontur.js` | little ink: line work, rays and banners, or outline type (Schwarz-Weiß group) |
+| `raster.js` | photo redrawn as ink marks (dot screen): draw it, read the pixels back, paint over |
+| `flugblatt.js` | newspaper page: rules, captioned photo, two columns, fitted as a whole |
 
 ## Checking
 

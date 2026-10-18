@@ -47,19 +47,20 @@ Two things are not steps and sit outside the tab bar, each in its own dialog:
 | Step | Basic | Weitere Einstellungen |
 |---|---|---|
 | **1 Anlass** | Occasion tiles | – |
-| **2 Gestaltung** | Grundstimmung, Farbe, the layout thumbnails in their three groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, size of all texts except the title) |
+| **2 Gestaltung** | Grundstimmung (four tiles, the last one "Schwarz-Weiß" for printing), Farbe (including "Schwarz-Weiß"), the layout thumbnails in their four groups | Akzentfarbe, Schrift, Feinschliff (decorations, frame, sunlight, size of all texts except the title) |
 | **3 Texte** | All fields, grouped like a form: *Was?* · *Wann und wo?* · *Mehr dazu* · *Absender*. Each field has a quiet size control inside it | – (texts are content, folding them away would hide sample texts that still print) |
 | **4 Foto** | Upload (until then an example photo, or "Ohne Foto"), drag in the preview, zoom, Bildstimmung | Ausschnitt sliders, reset, brightness |
 
-The last step's button "Weiter: Exportieren" opens the export dialog.
+The last step's button "Weiter: Exportieren" opens the export dialog. Its PDF part has a checkbox "In Schwarz-Weiß", so a
+colour poster for WhatsApp can also go to the copier without switching the colour back and forth.
 
 **Anordnung ändern** sits under the preview, not in a step: it acts on the preview, and people notice "this should
 go a little higher" after typing the texts as often as after picking the layout. In the mode, the large parts of the layout
 (photo, text, date rows …) show an outline and a handle. Dragging moves a part, the handle resizes it (its text grows
 and shrinks with it, half to double), and parts snap to the centre line. Parts move on their own and never push each other.
 Changes are kept per layout inside the poster, so switching layouts never asks anything. "Zurücksetzen" restores the
-layout, with the same two-step confirmation as deleting a poster. Pinnwand, Abriss, Doppelbogen and Milchglas keep a
-fixed arrangement; the button is hidden there.
+layout, with the same two-step confirmation as deleting a poster. Pinnwand, Abriss, Doppelbogen, Milchglas and
+Flugblatt keep a fixed arrangement; the button is hidden there.
 
 ## Text sizes
 

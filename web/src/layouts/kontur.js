@@ -1,5 +1,5 @@
 /* Layout „Kontur“ – ein riesiger Titel in Umrissbuchstaben über die ganze Breite, darunter der Tag als große
-   Umrissziffern mit Monat daneben, unten auf einer kräftigen Linie zwei Spalten mit den Angaben in kleiner Schrift.
+   Umrissziffern mit Monat daneben (lässt sich das Datum nicht zerlegen, steht es ganz groß da), unten auf einer kräftigen Linie zwei Spalten mit den Angaben in kleiner Schrift.
    Passermarken in den Ecken. Wirkt laut und braucht fast keine Tinte. */
 import { sz, quote, fontStr, wrapLines, maxLineW, measureW, drawSpaced, dateParts, textEl, footerH, drawFooter, drawFrame, arranged } from '../render/toolkit.js';
 
@@ -10,7 +10,7 @@ const SP=0.025;  // Sperrung der Umrissschrift (Anteil der Schriftgröße), dami
 /** Zeilen als Umriss (oder voll) zeichnen; y = Oberkante, lh = Zeilenhöhe in Pixeln.
     lwMax begrenzt die Strichstärke bei sehr großer Schrift. Umriss: doppelt so breit zeichnen und innen mit dem Grund füllen – so verschwinden überlappende Konturen variabler Schriften. */
 function outlineLines(ctx,f,px,lines,x,y,lh,color,bg,solid,lwMax){
-  ctx.font=fontStr(f,px); ctx.textAlign='left'; ctx.lineJoin='round'; ctx.strokeStyle=color; ctx.lineWidth=Math.max(2,Math.min(px*0.046,lwMax));
+  ctx.font=fontStr(f,px); ctx.textAlign='left'; ctx.lineJoin='round'; ctx.strokeStyle=color; ctx.lineWidth=Math.max(1,Math.min(px*0.046,lwMax));
   const sp=solid?0:px*SP, each=(l,by,fn)=>{ let cx=x; for (const ch of l){ fn(ch,cx,by); cx+=ctx.measureText(ch).width+sp; } };
   lines.forEach((l,i)=>{ const by=y+i*lh+lh/2+px*0.33;
     if (solid){ ctx.fillStyle=color; ctx.fillText(l,x,by); return; }
@@ -56,12 +56,11 @@ export default {
     const rest=['subtitle','verse','ref','date','time','place','address','people','boxTitle','boxText','note','closing'].some(has);
 
     /* unten zwei Spalten auf einer kräftigen Linie: links Termin und Ort, rechts alles Weitere (Elemente für Breite x…x+w) */
-    const twoCol=[...(!dp?['date']:[]),'time','place','address'].some(has)&&['subtitle','verse','ref','people','boxTitle','boxText','note','closing'].some(has);
+    const twoCol=['time','place','address'].some(has)&&['subtitle','verse','ref','people','boxTitle','boxText','note','closing'].some(has);
     function columns(x0,w0){
       const L=[], Rt=[], lw=twoCol? w0*0.36 : w0, rx=twoCol? x0+lw+44*u : x0, rw=x0+w0-rx, R0=twoCol?Rt:L;
       const add=(list,x,w)=>(k,font,size,lh,color,gap,more={})=>{ if (has(k)) list.push(textEl(env,{text:tr(T[k]),font,size,lh,color,x,w,balance:false,gap:list.length?gap:0,...more})); };
       const lt=add(L,x0,lw), rt=add(R0,rx,rw), rule=()=>{ if (R0.length) R0.push(ruleEl(env,rx,rw,20)); };
-      if (!dp) lt('date',fs.strong,30*bs*f('date'),1.2,th.ink,0);
       lt('time',fs.strong,30*bs*f('time'),1.2,th.accent,4);
       lt('place',fs.strong,23*bs*f('place'),1.25,th.ink,14);
       lt('address',fs.body,20*bs*f('address'),1.3,th.muted,2);
@@ -76,19 +75,19 @@ export default {
       while (R0.length && R0[R0.length-1].rule) R0.pop();
       return [L,Rt];
     }
-    const R=30*u, dMin=dp&&!moved.date? 170*u : 0, colH=(cs,k)=>Math.max(...cs.map(c=>stackH(env,c,k)));
+    const R=30*u, dMin=has('date')&&!moved.date? 170*u : 0, colH=(cs,k)=>Math.max(...cs.map(c=>stackH(env,c,k)));
 
-    /* Titel in Umrissen: so groß, wie die Breite erlaubt – höchstens knapp die halbe Höhe und so, dass die Spalten in voller Größe Platz haben */
-    const title=tr(T.title).toUpperCase(), tlh=1, tpx=330*u*sz(st,'title');
-    const tMax=rest? Math.max(200*u,Math.min((low-y)*0.46,low-y-44*u-colH(columns(m,cw),1)-R-dMin-(dMin?40*u:0))) : low-y;
+    /* Titel in Umrissen: so groß, wie die Breite erlaubt – höchstens gut die halbe Höhe und so, dass die Spalten in voller Größe Platz haben */
+    const title=tr(T.title).toUpperCase(), tlh=1.06, tpx=330*u*sz(st,'title');
+    const tMax=rest? Math.max(200*u,Math.min((low-y)*0.56,low-y-44*u-colH(columns(m,cw),1)-R-dMin-(dMin?40*u:0))) : low-y;
     const tFit=title? fitBox(ctx,tf,tpx,title,cw,tMax,tlh,solid) : {px:0,lines:[]}, tH=tFit.lines.length*tFit.px*tlh;
     if (title){ const ty=rest? y : y+(low-y-tH)/2, p=arranged(env,'title',{x:m,y:ty,w:cw,h:Math.max(tH,40*u)}), q=moved.title? fitBox(ctx,tf,tpx*p.k,title,p.w,p.h,tlh,solid) : tFit;
-      outlineLines(ctx,tf,q.px,q.lines,p.x,p.y,q.px*tlh,th.ink,th.bg,solid,11*u); }
+      outlineLines(ctx,tf,q.px,q.lines,p.x,p.y,q.px*tlh,th.ink,th.bg,solid||q.px<64*u,11*u); }   // kleine Umrisse laufen zu, dann voll
     if (!rest){ drawFooter(env,m,cw,bottom,'left',th.muted); return; }
     const gy=y+(title?tH+44*u:0), t=arranged(env,'text',{x:m,y:gy,w:cw,h:low-gy}), [L,Rt]=columns(t.x,t.w);
 
     // gemeinsame Größe für beide Spalten; über ihnen bleibt Platz für die Datumsziffern
-    let k=t.k*(dp||moved.text?1:1.2), hc;   // ohne Datumsziffern dürfen die Spalten etwas größer werden
+    let k=t.k*(has('date')||moved.text?1:1.2), hc;   // ohne großes Datum dürfen die Spalten etwas größer werden
     for (;k>=0.25;k-=0.03){ hc=colH([L,Rt],k); if (hc+R<=t.h-dMin-(dMin?40*u:0)) break; }
     const defTop=low-hc-R; if (!moved.text){ t.y=Math.max(t.y,defTop); t.h=low-t.y; }
     ctx.fillStyle=th.ink; ctx.fillRect(t.x,t.y,t.w,Math.max(1,3*u));
@@ -102,6 +101,9 @@ export default {
       const y0=d.y+(moved.date?0:(d.h-dh)/2), lh=stackH(env,lab,1);
       outlineLines(ctx,tf,q.px,q.lines,d.x-q.px*0.02,y0-q.px*0.03,q.px*0.84,th.accent,th.bg,solid,11*u);
       stackDraw(env,lab,1,y0+dh-lh); }
+    else if (has('date')){ const d=arranged(env,'date',{x:m,y:gy,w:cw,h:Math.max(120*u,Math.max(gy,defTop)-40*u-gy)});
+      const q=fitBox(ctx,tf,Math.min(d.h,200*u*sz(st,'date')*d.k),tr(T.date).toUpperCase(),d.w,d.h,1.06,solid);
+      outlineLines(ctx,tf,q.px,q.lines,d.x,d.y+(moved.date?0:(d.h-q.lines.length*q.px*1.06)/2),q.px*1.06,th.accent,th.bg,solid,11*u); }
 
     drawFooter(env,m,cw,bottom,'left',th.muted);
   }

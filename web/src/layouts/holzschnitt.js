@@ -85,7 +85,7 @@ export default {
     /* Text: Spruchband, Titel, Vers – Raute – Termin, Mitwirkende, Kasten, Hinweis, Spruchband */
     const fh=footerH(env), bottom=H-fi-34*u, t=arranged(env,'text',{x:fi+50*u,y:top,w:W-2*fi-100*u,h:bottom-fh-(fh?34*u:0)-top}), x=t.x, w=t.w, els=[];
     const tx=(k,font,size,lh,color,gap,more={})=>{ if (tr(T[k])) els.push(textEl(env,{text:tr(T[k]),font,size,lh,color,x,w,align:'center',gap,...more})); };
-    if (tr(T.eyebrow)) els.push(ribbonEl(env,{text:tr(T.eyebrow),font:fs.title,size:30*bs*f('eyebrow'),x,w,color:th.ink}));
+    if (tr(T.eyebrow)) els.push(ribbonEl(env,{text:tr(T.eyebrow),font:fs.strong,size:27*bs*f('eyebrow'),x,w,color:th.ink}));
     if (tr(T.title)){ const ts0=fs.title.size*1.22*sz(st,'title'), e=textEl(env,{text:tr(T.title),font:fs.title,size:ts0,lh:fs.title.lh,sp:fs.title.sp||0,color:th.ink,x,w,align:'center'});
       // lange Titel werden allein kleiner, bis sie höchstens etwa drei Zeilen brauchen – sonst bliebe für den Rest nur Kleingedrucktes
       els.push({gap:els.length?26:0,width:()=>e.width(),measure(k){ let q=k, h=e.measure(q); while (h>3.3*ts0*q*u*fs.title.lh && q>0.45*k){ q*=0.93; h=e.measure(q); } return h; },draw:y=>e.draw(y)}); }
@@ -102,7 +102,7 @@ export default {
     tx('boxText',fs.body,21*bs*f('boxText'),1.45,th.muted,tr(T.boxTitle)?4:24);
     tx('note',fs.italic,22*bs*fs.italicBoost*f('note'),1.35,th.accent,18);
     if (els.length>head){ if (head) els.splice(head,0,lozengeEl(env,x,w,32)); els[head+(head?1:0)].gap=head?28:0; }
-    if (tr(T.closing)) els.push(ribbonEl(env,{text:tr(T.closing),font:fs.title,size:26*bs*f('closing'),x,w,color:th.ink,gap:els.length?34:0}));
+    if (tr(T.closing)) els.push(ribbonEl(env,{text:tr(T.closing),font:fs.strong,size:24*bs*f('closing'),x,w,color:th.ink,gap:els.length?34:0}));
     warmStack(env,els,t,'center');
 
     drawFooter(env,fi+50*u,W-2*fi-100*u,bottom,'center',th.muted);
