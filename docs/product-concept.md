@@ -53,6 +53,14 @@ Two things are not steps and sit outside the tab bar, each in its own dialog:
 
 The last step's button "Weiter: Exportieren" opens the export dialog.
 
+**Anordnung ändern** sits under the preview, not in a step: it acts on the preview, and people notice "this should
+go a little higher" after typing the texts as often as after picking the layout. In the mode, the large parts of the layout
+(photo, text, date rows …) show an outline and a handle. Dragging moves a part, the handle resizes it (its text grows
+and shrinks with it, half to double), and parts snap to the centre line. Parts move on their own and never push each other.
+Changes are kept per layout inside the poster, so switching layouts never asks anything. "Zurücksetzen" restores the
+layout, with the same two-step confirmation as deleting a poster. Pinnwand, Abriss, Doppelbogen and Milchglas keep a
+fixed arrangement; the button is hidden there.
+
 ## Text sizes
 
 Each layout sets its own sizes, and the workshop shrinks everything together when a poster gets too full. On top of
@@ -118,3 +126,8 @@ examples only preview the design: they are small, heavily compressed and not mea
 - Blocking the export: a warning is enough; the user decides.
 - Highlighting sample texts on the poster preview itself. Maybe later, if testers still miss the marking.
 - Picking an occasion also changing the look (font, colour, layout). Occasion and look stay independent.
+- A free editor like Canva (single text fields, rotating, layers, adding elements). It would undo what the layouts
+  solve (shrinking to fit, decorations that belong to the text) and is too much for occasional users.
+  "Anordnung ändern" moves the large parts only.
+- Saved custom layouts ("Meine Layouts"), for now. The arrangement travels with the poster, so a saved poster can be
+  reused. Maybe later, once moving parts has proved itself.

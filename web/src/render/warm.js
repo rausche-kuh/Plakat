@@ -178,10 +178,10 @@ export function warmClosing(env,wc,maxW){
         if (doodle) churchIcon(ctx,bx+m.padX+m.hs*0.3,y+m.bh/2-m.f.px*0.05,m.f.px*1.0,wc.onBand); }); } };
 }
 /** Stapelt Elemente in Rechteck r; verkleinert bis es passt und verteilt übrigen Platz auf die Abstände.
-    mode: 'top' (oben beginnen) oder 'center'. Gibt die Unterkante zurück. */
+    mode: 'top' (oben beginnen) oder 'center'; r.k: Startgröße, sonst 1. Gibt die Unterkante zurück. */
 export function warmStack(env,els,r,mode){
   const {u}=env; if (!els.length) return; let hs,total,gaps;
-  for (let k=1;k>=0.25;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); total=hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0); if (total<=r.h) break; }
+  for (let k=r.k||1;k>=0.25;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); total=hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0); if (total<=r.h) break; }
   const gsum=gaps.reduce((a,b)=>a+b,0), extra=Math.max(0,r.h-total), add=Math.min(extra,gsum*(mode==='top'?0.7:1.5)), f=gsum?add/gsum:0;
   let y=mode==='top'?r.y:r.y+(r.h-total-add)/2;
   els.forEach((e,i)=>{ y+=gaps[i]*(1+f); e.draw(y); y+=hs[i]; });

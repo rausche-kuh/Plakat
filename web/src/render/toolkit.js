@@ -8,8 +8,8 @@ export { mix, rgba } from '../core/color.js';
 export { shapePath, rng, rot, flame, heart } from './shapes.js';
 // Textsatz auf unterster Ebene
 export { sz, fontStr, measureW, drawSpaced, wrapLines, wrapBalanced, quote, tLines, maxLineW, fillLines, fitText } from './text.js';
-// Bausteine: Foto, Fußzeile, Rahmen, Farbsätze
-export { drawPhoto, footerH, drawFooter, drawFrame, lightCols, ornCols } from './parts.js';
+// Bausteine: Foto, Fußzeile, Rahmen, Farbsätze, verschiebbare Teile
+export { drawPhoto, footerH, drawFooter, drawFrame, lightCols, ornCols, arranged } from './parts.js';
 // Klassischer Textsatz (Klassisch, Vollbild, Seitenspalte, Nur Schrift, Bogen, Farbfeld)
 export { blocks, measureGroup, drawGroup, fitDraw } from './blocks.js';
 // Herzlich-Baukasten (Einladung, Pinnwand, Abriss, Aquarell)

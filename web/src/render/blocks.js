@@ -67,11 +67,11 @@ export function drawGroup(env,g,x,y,w,align){
   }
   return y;
 }
-/** Setzt head und detail in Rechteck r={x,y,w,h}.
+/** Setzt head und detail in Rechteck r={x,y,w,h} (r.k: Startgröße, sonst 1).
     align: 'center'|'left'; mode: 'center'|'top'|'bottom' (beide Gruppen zusammen) oder 'spread' (head oben, detail unten) */
 export function fitDraw(env,head,detail,r,align,mode){
   const {u}=env; let mh,md,sp;
-  for (let k=1;k>=0.25;k-=0.03){
+  for (let k=r.k||1;k>=0.25;k-=0.03){
     mh=measureGroup(env,head,k,r.w); md=measureGroup(env,detail,k,r.w);
     sp=(head.length&&detail.length)?48*k*u:0;
     if (!mh.overflow && !md.overflow && mh.h+md.h+sp<=r.h) break;

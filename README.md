@@ -86,6 +86,9 @@ from playful to quiet:
   It is modelled on a concert poster template. Both look like their models with the colour "Dunkel"
   and the font "Plakativ" (heavy grotesque), which works with every other layout too.
 
+Under the preview, „Anordnung ändern“ lets you drag the large parts of a layout (photo, text …) and resize them;
+the text re-fits inside. It works in all layouts except Pinnwand, Abriss, Doppelbogen and Milchglas.
+
 Medaillon, Passepartout and Kirchenfenster were retired. Saved posters that used them open as "Klassisch".
 
 ## Project structure
@@ -111,7 +114,7 @@ web/                  the website: everything nginx serves (see "Deploying")
       parts.js        photo, footer, frame
       text.js, shapes.js
     core/             no UI: state, colour scheme, images, storage, file format, PDF writer
-    ui/               one module per step (anlass, texte, foto, layout = step "Gestaltung") and dialog (ablage = "Meine Plakate", ki, export) + preview, sync
+    ui/               one module per step (anlass, texte, foto, layout = step "Gestaltung") and dialog (ablage = "Meine Plakate", ki, export) + preview, anordnung ("Anordnung ändern"), sync
   assets/beispielfotos/ example photos (WebP) with source and licence   → README.md
 scripts/              build.mjs (single file), serve.mjs (dev server)
 docs/product-concept.md  users, principles, step structure, sample texts and photos
@@ -130,7 +133,8 @@ so never rename them. A layout that is removed gets an entry in `RETIRED` in `we
 ## Data flow
 
 The state of the current poster (`st` in `web/src/core/state.js`) is a plain object: occasion, layout, font,
-colour variant, options, texts, `confirmed` (sample texts kept with „Passt so“), photo and logo (as data URLs).
+colour variant, options, texts, `confirmed` (sample texts kept with „Passt so“), `arrange` (parts moved with
+„Anordnung ändern“, per layout), photo and logo (as data URLs).
 Whether a text is still a sample is not stored: `sampleKeys()` compares it with the occasion's sample text. The UI changes `st` and calls `changed()`
 (`web/src/ui/sync.js`), which redraws the preview and saves the draft. `renderPoster(ctx, st, W)` draws the poster
 at any resolution, the same way for preview, thumbnails and export. Saved files and AI answers go through
