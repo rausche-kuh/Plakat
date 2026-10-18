@@ -31,6 +31,14 @@ export function drawPhoto(env,r,shape,ph={}){
   ctx.restore();
 }
 
+/** Verschiebbarer Teil des Layouts („Anordnung ändern“): das Rechteck r des Layouts oder das, auf das der Nutzer
+    den Teil gezogen hat – in Pixeln, dazu k = Textgröße (1 = wie im Layout). Merkt sich beides in env.parts für die Vorschau.
+    Ändert das Layout das Ergebnis noch (z. B. Mindesthöhe), stimmt auch der Umriss in der Vorschau. */
+export function arranged(env,id,r){
+  const {u,st}=env, a=st.arrange?.[st.layout]?.[id], p=a? {x:a.x*u,y:a.y*u,w:a.w*u,h:a.h*u,k:a.k} : {...r,k:1};
+  env.parts.push({id,r:p,def:r}); return p;
+}
+
 /** Höhe der Fußzeile (Logo und Gemeindename) in Pixeln, 0 wenn beides fehlt */
 export function footerH(env){ const {u,st}=env; let h=0; if ((st.texts.parish||'').trim()) h+=20*u*st.textScale*sz(st,'parish'); if (env.logo) h+=62*u+(h?16*u:0); return h; }
 /** Fußzeile über der Unterkante bottom zeichnen */

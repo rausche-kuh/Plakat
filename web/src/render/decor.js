@@ -219,10 +219,10 @@ export function panelEl(env,els,o){
       ctx.save(); ctx.translate(dx,0); if (o.deg) rot(ctx,o.x+o.w/2,y+m.h/2,o.deg,go); else go(); ctx.restore(); } };
   return el;
 }
-/** Stapelt Elemente kompakt ab y; verkleinert nur, wenn maxH nicht reicht. Gibt die Unterkante zurück. */
-export function stackAt(env,els,y,maxH){
+/** Stapelt Elemente kompakt ab y in Größe k0 (sonst 1); verkleinert nur, wenn maxH nicht reicht. Gibt die Unterkante zurück. */
+export function stackAt(env,els,y,maxH,k0=1){
   const {u}=env; if (!els.length) return y; let hs,gaps;
-  for (let k=1;k>=0.25;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); if (hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0)<=maxH) break; }
+  for (let k=k0;k>=0.25;k-=0.03){ hs=els.map(e=>e.measure(k)); gaps=els.map((e,i)=>i?e.gap*k*u:0); if (hs.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0)<=maxH) break; }
   els.forEach((e,i)=>{ y+=gaps[i]; e.draw(y); y+=hs[i]; }); return y;
 }
 /** Höhe eines Stapels bei Faktor 1 (zum Planen der Flächen) */

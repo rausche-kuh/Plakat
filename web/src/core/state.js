@@ -2,7 +2,7 @@
    `st` ist das aktuell bearbeitete Plakat. Es wird an vielen Stellen direkt verändert
    (st.layout = …); ganz ersetzt wird es nur über setState(). */
 import { OCC } from '../occasions/index.js';
-import { layoutId } from '../layouts/index.js';
+import { layoutId, LAYOUT_BY_ID } from '../layouts/index.js';
 import { FONTSETS } from '../data/fontsets.js';
 import { clamp } from './util.js';
 
@@ -14,7 +14,7 @@ export const SIZE_MIN = 0.5, SIZE_MAX = 2;   // Größe eines Textfelds (Schritt
 export function defaults(occ='advent', keep){
   const t = OCC[occ].texts;
   return {v:1,id:null,name:'',occasion:occ,layout:'einladung',fontStyle:'herzlich',variant:'kraeftig',accent:null,
-    ornament:true,frame:false,doodles:true,sunlight:true,textScale:1,sizes:{},
+    ornament:true,frame:false,doodles:true,sunlight:true,textScale:1,sizes:{},arrange:{},
     texts:{...t, place:keep?.place??PLACE, address:keep?.address??ADDRESS, parish:keep?.parish??PARISH}, confirmed:[],
     photo:{src:null,example:true,zoom:1,x:0,y:0,filter:'original',brightness:0},
     logo:{src:keep?.logo??null}};
@@ -38,6 +38,12 @@ export function sanitize(s){
   // Größe je Textfeld als Faktor; ältere Plakate hatten nur titleScale für den Titel
   const sz = {...(s.titleScale!=null && {title:s.titleScale}), ...s.sizes}; out.sizes = {};
   for (const k in d.texts){ const v=clamp(Math.round(+sz[k]*100)/100||1,SIZE_MIN,SIZE_MAX); if (v!==1) out.sizes[k]=v; }
+  // „Anordnung ändern“: je Layout die verschobenen Teile {x,y,w,h} in Plakat-Einheiten und k (Textgröße)
+  out.arrange = {};
+  for (const id in s.arrange){ const parts=LAYOUT_BY_ID[id]?.parts, a=s.arrange[id]; if (!parts || !a || typeof a!=='object') continue;
+    for (const p of parts){ const r=a[p]; if (!r || typeof r!=='object') continue;
+      const w=clamp(+r.w||0,40,1000), h=clamp(+r.h||0,40,1416);   // 1416: Plakathöhe ≈ 1414 plus Rundung (anordnung.js)
+      (out.arrange[id]??={})[p]={x:clamp(+r.x||0,0,1000-w),y:clamp(+r.y||0,0,1416-h),w,h,k:clamp(+r.k||1,0.5,2)}; } }
   out.confirmed = Array.isArray(s.confirmed) ? s.confirmed.filter(k=>Object.hasOwn(d.texts,k)) : [];
   const p = s.photo||{};
   out.photo = {src: typeof p.src==='string'&&p.src.startsWith('data:image/')?p.src:null, example:p.example===true, zoom:clamp(+p.zoom||1,1,3), x:clamp(+p.x||0,-1,1), y:clamp(+p.y||0,-1,1), filter:FILTERS.includes(p.filter)?p.filter:'original', brightness:clamp(+p.brightness||0,-30,30)};

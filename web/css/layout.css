@@ -22,7 +22,8 @@
 .stage-inner{position:sticky;top:20px;display:flex;flex-direction:column;align-items:center;gap:12px}
 .poster-wrap{position:relative;width:100%;max-width:calc((100vh - 150px)/1.4142);max-width:calc((100dvh - 150px)/1.4142)}
 #poster{display:block;width:100%;aspect-ratio:1/1.4142;background:#fff;box-shadow:var(--shadow);border-radius:1px}
-#poster.pan{touch-action:none;outline:2px dashed var(--accent);outline-offset:5px}
+#poster.pan,#poster.arrange{touch-action:none;outline:2px dashed var(--accent);outline-offset:5px}
+.arrange-hint{text-align:center;margin:0}
 .stage-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;color:var(--muted);font-size:13px;min-height:32px}
 .drop-hint{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(45,75,107,.18);border:2px dashed var(--accent);font-weight:600;color:var(--ink);font-size:16px}
 .stage.dragover .drop-hint{display:flex}

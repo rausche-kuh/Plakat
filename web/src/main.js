@@ -7,6 +7,7 @@ import { FONTSETS, FONT_ROLES } from './data/fontsets.js';
 import { fontStr } from './render/text.js';
 import { syncUI } from './ui/sync.js';
 import { initPreview, requestRender } from './ui/preview.js';
+import { initArrange } from './ui/anordnung.js';
 import { initTabs } from './ui/tabs.js';
 import { initAnlass } from './ui/anlass.js';
 import { initLayoutTab } from './ui/layout.js';
@@ -24,7 +25,7 @@ async function loadFonts(){
   await Promise.race([Promise.all([...specs].map(s=>document.fonts.load(s,'Aa ÄÖÜäöüß „“').catch(()=>{}))),new Promise(r=>setTimeout(r,3500))]);
 }
 
-initPreview(); initTabs(); initAnlass(); initLayoutTab(); initTexte(); initFoto(); initAblage(); getDownloads(); initKI(); initExport();
+initPreview(); initArrange(); initTabs(); initAnlass(); initLayoutTab(); initTexte(); initFoto(); initAblage(); getDownloads(); initKI(); initExport();
 
 (async()=>{
   syncUI(); requestRender();

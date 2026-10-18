@@ -35,6 +35,8 @@ Everything else follows automatically: the tile with a live thumbnail under its 
 validity when loading posters and files, the grouped layout list with descriptions in the AI instruction,
 and the hints "zeigt kein Foto" (`photo: false`) and "Verzierungen wirken in …" (`warm: true`).
 
+To let people move its parts with "Anordnung ändern", see [Movable parts](#movable-parts) below.
+
 **Removing a layout:** delete the file and its line, and add its id to `RETIRED` in `index.js` with the layout
 that should open instead. Saved posters keep working.
 
@@ -72,7 +74,7 @@ Read the state only through `env.st`, never the global one, because the thumbnai
   `align`: `'center'` | `'left'`; `mode`: `'center'` | `'top'` | `'bottom'` | `'spread'` (head at the top, detail at the bottom).
 - `footerH(env)` / `drawFooter(env, x, w, bottom, align, color)`: logo and parish name at the bottom.
 
-**Building blocks**: `drawPhoto(env, rect, 'rect'|'arch'|'circle', {fill, k})`, `drawFrame(env, inset, color)`,
+**Building blocks**: `drawPhoto(env, rect, 'rect'|'arch'|'circle', {fill, k})`, `drawFrame(env, inset, color)`, `arranged` (see below),
 `shapePath`, `lightCols`, `ornCols`, `rgba`, `mix`.
 
 **Herzlich kit** (see `einladung.js`, `pinnwand.js`): `warmCols`, `warmEls`, `warmCard`, `warmClosing`,
@@ -97,6 +99,35 @@ footer apply it already. When a layout sets a size itself, multiply it by `sz(st
 every other text also by `st.textScale` (e.g. `size: 38*st.textScale*sz(st,'subtitle')`). In `infoEl`, each row takes its
 factor as `f` (and `sf` for the line below). Where two fields share one element (place and address on one line), use the
 place factor, or the address factor when the place is empty.
+
+## Movable parts
+
+Under the preview, "Anordnung ändern" lets people drag a layout's large parts and resize them with a handle at the
+bottom-right corner. A layout takes part by listing its parts and running each part's rectangle through `arranged()`:
+
+```js
+parts: ['photo','text'],  // stored in saved posters – never rename later
+draw(env){
+  const {W,H,u}=env, p=arranged(env,'photo',{x:0,y:0,w:W,h:420*u});  // the layout's rect, or where the user put it
+  drawPhoto(env,p,'rect');
+  fitDraw(env,head,detail,arranged(env,'text',{x:110*u,y:470*u,w:W-220*u,h:800*u}),'center','center');
+}
+```
+
+- `arranged(env, id, rect)` returns the rect the user set, or `rect` itself, in pixels, plus `k`: the text size (1 = as in
+  the layout, 0.5–2; a bigger part means bigger text). `fitDraw`, `warmStack` and `stackAt` (5th argument) start at `k`.
+  The rect is remembered in `env.parts` for the outline in the preview, so if the layout still changes it (a minimum height,
+  as in `bogen.js`), change the returned object.
+- A part is a large block, such as the photo or the whole text, never a single field. Whatever belongs to it is computed from
+  the returned rect, so it moves along: the ornament on the photo edge, the date stamp, the arches, the shading behind text
+  on a full-bleed photo (`vollbild.js`, `einladung.js`). Neighbours are computed from the *default* rects, so moving one
+  part never pushes another.
+- Call `arranged()` before building elements that take a fixed `x`/`w` (`textEl`, `warmEls`, …) and pass its `x`/`w` in.
+  Anything drawn at `W/2` stays behind otherwise (see the box in `aquarell.js`).
+- Only parts the user touched are stored (`st.arrange[layout][id]`, poster units). Untouched parts keep adapting to the
+  content as before, and a poster nobody rearranged looks exactly as without the feature.
+- Without `parts`, the button is hidden. Pinnwand, Abriss, Doppelbogen and Milchglas have none: their photo size follows
+  the amount of text, or all their text is fitted as one.
 
 ## Templates
 
@@ -123,6 +154,7 @@ Run `npm run dev`, pick the tile in step 2 "Gestaltung" and try it out:
 - very long and empty texts
 - text sizes at their limits (50 and 200 % on single fields in step "Texte", the text slider in step "Gestaltung")
 - ornament and frame on and off
+- with `parts`: each part moved, enlarged and shrunk in "Anordnung ändern"
 
 Nothing may be cut off or overlap. For many combinations at once, render posters with
 `renderPoster(ctx, state, W)` in a Playwright script and look at a contact sheet.
