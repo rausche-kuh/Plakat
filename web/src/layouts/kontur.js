@@ -79,7 +79,7 @@ export default {
     const R=30*u, dMin=dp&&!moved.date? 170*u : 0, colH=(cs,k)=>Math.max(...cs.map(c=>stackH(env,c,k)));
 
     /* Titel in Umrissen: so groß, wie die Breite erlaubt – höchstens knapp die halbe Höhe und so, dass die Spalten in voller Größe Platz haben */
-    const title=tr(T.title).toUpperCase(), tlh=0.94, tpx=330*u*sz(st,'title');
+    const title=tr(T.title).toUpperCase(), tlh=1, tpx=330*u*sz(st,'title');
     const tMax=rest? Math.max(200*u,Math.min((low-y)*0.46,low-y-44*u-colH(columns(m,cw),1)-R-dMin-(dMin?40*u:0))) : low-y;
     const tFit=title? fitBox(ctx,tf,tpx,title,cw,tMax,tlh,solid) : {px:0,lines:[]}, tH=tFit.lines.length*tFit.px*tlh;
     if (title){ const ty=rest? y : y+(low-y-tH)/2, p=arranged(env,'title',{x:m,y:ty,w:cw,h:Math.max(tH,40*u)}), q=moved.title? fitBox(ctx,tf,tpx*p.k,title,p.w,p.h,tlh,solid) : tFit;
@@ -88,7 +88,7 @@ export default {
     const gy=y+(title?tH+44*u:0), t=arranged(env,'text',{x:m,y:gy,w:cw,h:low-gy}), [L,Rt]=columns(t.x,t.w);
 
     // gemeinsame Größe für beide Spalten; über ihnen bleibt Platz für die Datumsziffern
-    let k=t.k, hc;
+    let k=t.k*(dp||moved.text?1:1.2), hc;   // ohne Datumsziffern dürfen die Spalten etwas größer werden
     for (;k>=0.25;k-=0.03){ hc=colH([L,Rt],k); if (hc+R<=t.h-dMin-(dMin?40*u:0)) break; }
     const defTop=low-hc-R; if (!moved.text){ t.y=Math.max(t.y,defTop); t.h=low-t.y; }
     ctx.fillStyle=th.ink; ctx.fillRect(t.x,t.y,t.w,Math.max(1,3*u));
