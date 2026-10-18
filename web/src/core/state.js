@@ -8,7 +8,7 @@ import { clamp } from './util.js';
 
 export const PLACE = 'Ev. Kirche St. Johannis', ADDRESS = 'Kirchplatz 1', PARISH = 'Ev.-luth. Kirchengemeinde St. Johannis';
 export const FILTERS = ['original','sonnig','warm','sanft','sw','sepia'];
-export const VARIANTS = ['hell','getoent','kraeftig','dunkel'];
+export const VARIANTS = ['hell','getoent','kraeftig','dunkel','schwarzweiss'];
 export const SIZE_MIN = 0.5, SIZE_MAX = 2;   // Größe eines Textfelds (Schritt „Texte“)
 
 export function defaults(occ='advent', keep){
