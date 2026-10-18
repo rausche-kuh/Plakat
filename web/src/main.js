@@ -20,7 +20,7 @@ import { initExport } from './ui/export.js';
 async function loadFonts(){
   if (!document.fonts || !document.fonts.load) return;
   const specs=new Set();
-  Object.values(FONTSETS).forEach(f=>FONT_ROLES.forEach(k=>specs.add(fontStr(f[k],20))));
+  Object.values(FONTSETS).forEach(f=>FONT_ROLES.forEach(k=>f[k]&&specs.add(fontStr(f[k],20))));
   await Promise.race([Promise.all([...specs].map(s=>document.fonts.load(s,'Aa ÄÖÜäöüß „“').catch(()=>{}))),new Promise(r=>setTimeout(r,3500))]);
 }
 

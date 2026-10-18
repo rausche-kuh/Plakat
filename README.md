@@ -71,7 +71,7 @@ from playful to quiet:
 | Group (UI name) | Layouts | For |
 |---|---|---|
 | **Herzlich und bunt** | Einladung, Pinnwand, Milchglas, Abriss, Aquarell | Festivals, families, summer events. These are the community favourites in the style of AI posters. |
-| **Freundlich und klar** | Farbfeld, Bogen, Vollbild | Concerts, baptisms, youth: clear shapes with some colour |
+| **Freundlich und klar** | Farbfeld, Bogen, Vollbild, Abendlicht, Doppelbogen | Concerts, baptisms, youth: clear shapes with some colour |
 | **Ruhig und edel** | Klassisch, Seitenspalte, Nur Schrift | Funerals, Good Friday, remembrance |
 
 - **Milchglas** is modelled on a summer-picnic poster from the group chat: a full-bleed photo,
@@ -80,6 +80,11 @@ from playful to quiet:
 - **Aquarell** sets the photo in a painted shape on paper with watercolour washes.
 - **Farbfeld** has a bold colour field, a tilted photo print and a date stamp.
 - **Bogen** sets the photo in an arch inside colourful rainbow arches.
+- **Abendlicht** fades the photo on the right into the background, with a big title, one word in script
+  and the date on a coloured band. It is modelled on a prayer-service poster template.
+- **Doppelbogen** sets the photo in a two-lobed shape, with a large stacked date and a very large title.
+  It is modelled on a concert poster template. Both look like their models with the colour "Dunkel"
+  and the font "Plakativ" (heavy grotesque), which works with every other layout too.
 
 Medaillon, Passepartout and Kirchenfenster were retired. Saved posters that used them open as "Klassisch".
 

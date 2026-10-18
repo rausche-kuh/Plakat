@@ -6,6 +6,7 @@
      body    Fließtext          strong  Datum, Kasten-Überschrift
      italic  Hinweis, Schluss   hand    Handschrift (Herzlich-Layouts)
      handB   Handschrift fett   num     Datum groß (Herzlich-Layouts)
+     script  Schreibschrift für einzelne Zierwörter (optional, sonst nehmen Layouts handB)
    bs           Faktor für alle übrigen Textgrößen
    italicBoost  Faktor für Einladungszeile, Hinweis und Schlusszeile
    warmTitle/warmDate/warmCard  Größen für Titel, Datum und Kasten in den Herzlich-Layouts
@@ -47,7 +48,14 @@ export const FONTSETS = {
     verse:{f:'Jost',w:300,s:'italic',size:28,lh:1.45},
     body:{f:'Jost',w:400,s:'normal'}, strong:{f:'Jost',w:500,s:'normal'},
     italic:{f:'Jost',w:300,s:'italic'}, hand:{f:'Jost',w:300,s:'italic'}, handB:{f:'Jost',w:500,s:'normal'}, num:{f:'Jost',w:500,s:'normal'},
-    bs:1, italicBoost:1, warmTitle:94, warmDate:86, warmCard:40}
+    bs:1, italicBoost:1, warmTitle:94, warmDate:86, warmCard:40},
+  plakativ:{name:'Plakativ',sub:'Kräftige Grotesk',css:"'Inter Tight'",cssW:900,
+    title:{f:'Inter Tight',w:900,s:'normal',size:80,lh:1.0,sp:0},
+    verse:{f:'Source Sans 3',w:600,s:'normal',size:29,lh:1.38},
+    body:{f:'Source Sans 3',w:400,s:'normal'}, strong:{f:'Source Sans 3',w:700,s:'normal'},
+    italic:{f:'Source Sans 3',w:600,s:'normal'}, hand:{f:'Source Sans 3',w:600,s:'normal'}, handB:{f:'Source Sans 3',w:700,s:'normal'}, num:{f:'Inter Tight',w:900,s:'normal'},
+    script:{f:'Allura',w:400,s:'normal'},
+    bs:1, italicBoost:1, warmTitle:96, warmDate:88, warmCard:44}
 };
 /** Rollen, deren Schriften beim Start vorgeladen werden */
-export const FONT_ROLES = ['title','verse','body','strong','italic','hand','handB','num'];
+export const FONT_ROLES = ['title','verse','body','strong','italic','hand','handB','num','script'];
