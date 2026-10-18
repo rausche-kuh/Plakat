@@ -71,7 +71,7 @@ export default {
         if (capEl){ capEl.measure(k); capEl.draw(y+ph+12*k*u); } if (side.length){ ctx.fillStyle=th.line; ctx.fillRect(x+pw+gut/2-hair/2,y,hair,this.measure(k)); drawStack(side,y,k); } }},
       quoteEls.length&&{measure:k=>stack(quoteEls,k)+36*k*u,draw(y,k){ const qh=stack(quoteEls,k); rule(y,hair,x+w*0.3,x+w*0.7); drawStack(quoteEls,y+18*k*u,k); rule(y+qh+36*k*u-hair,hair,x+w*0.3,x+w*0.7); }},
       {measure:k=>rowB.measure(k),draw:(y,k)=>rowB.draw(y,k)},
-      ends.length&&{measure:k=>stack(ends,k),draw:(y,k)=>drawStack(ends,y,k)}].filter(r=>r&&r.measure(1)!==undefined);
+      ends.length&&{measure:k=>stack(ends,k),draw:(y,k)=>drawStack(ends,y,k)}].filter(r=>r&&(r.flex||r.measure(1)>0));
     const top=56*u, bottom=H-50*u-(fh?fh+26*u:0), sum=k=>R.reduce((s,r)=>s+r.measure(k),0)+34*k*u*(R.length-1);
     let k=1.15; for (;k>0.3;k-=0.03){ ph=0; const rest=bottom-top-sum(k); if (!hasPh){ if (rest>=0) break; continue; }
       const sh=stack(side,k), A=rest+Math.max(capH(k),sh); ph=Math.min(maxPh,A-capH(k)); if (sh<=A && ph>=Math.min(250*k*u,maxPh)) break; }

@@ -1,6 +1,6 @@
 /* Layout „Scherenschnitt“ – Spitzenrand wie aus schwarzem Papier geschnitten, oben eine Krone aus Ranken und Tulpen
    um das Zierelement im Medaillon, Foto im Oval mit Spitzenkranz, Text mittig. Wenig Tinte: nur schmale Stege und Punkte. */
-import { blocks, fitDraw, footerH, drawFooter, drawPhoto, heart, arranged } from '../render/toolkit.js';
+import { blocks, fitDraw, measureGroup, footerH, drawFooter, drawPhoto, heart, arranged } from '../render/toolkit.js';
 
 export default {
   id: 'scherenschnitt',
@@ -19,15 +19,15 @@ export default {
     crown(W/2,cy,ck*u);
     let top=cy+(hasPh?112:120)*u;
 
-    /* Foto im Oval mit Spitzenkranz */
+    /* Foto im Oval mit Spitzenkranz; bei viel Text kleiner */
+    const fh=footerH(env), bottom=H-92*u, tb=bottom-fh-(fh?30*u:0), g=blocks(env,{titleBoost:hasPh?1:1.12}), tw=W-260*u;
     if (hasPh){
-      const rx=222*u, ry=164*u, p=arranged(env,'photo',{x:W/2-rx,y:top+32*u,w:2*rx,h:2*ry}), ox=p.x+p.w/2, oy=p.y+p.h/2;
+      const need=measureGroup(env,[...g.top,...g.verse],1,tw).h+measureGroup(env,g.detail,1,tw).h+48*u, ry=Math.max(112*u,Math.min(164*u,(tb-top-88*u-need*0.8)/2)), rx=ry*1.35, p=arranged(env,'photo',{x:W/2-rx,y:top+32*u,w:2*rx,h:2*ry}), ox=p.x+p.w/2, oy=p.y+p.h/2;
       ctx.save(); ctx.beginPath(); ctx.ellipse(ox,oy,p.w/2,p.h/2,0,0,Math.PI*2); ctx.clip(); drawPhoto(env,p,'rect'); ctx.restore();
       ovalLace(ox,oy,p.w/2,p.h/2);
       top+=32*u+2*ry+56*u;
     }
-    const fh=footerH(env), bottom=H-92*u, g=blocks(env,{titleBoost:hasPh?1:1.12});
-    fitDraw(env,[...g.top,...g.verse],g.detail,arranged(env,'text',{x:130*u,y:top,w:W-260*u,h:bottom-fh-(fh?30*u:0)-top}),'center','center');
+    fitDraw(env,[...g.top,...g.verse],g.detail,arranged(env,'text',{x:130*u,y:top,w:tw,h:tb-top}),'center','center');
     drawFooter(env,130*u,W-260*u,bottom,'center',th.muted);
     if (st.frame){ ctx.strokeStyle=ink; ctx.lineWidth=Math.max(1,1.2*u); ctx.strokeRect(88*u,88*u,W-176*u,H-176*u); }
 
